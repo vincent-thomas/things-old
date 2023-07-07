@@ -1,7 +1,7 @@
-import { utils } from "@/services/utils";
+import { utils } from "@drive/services/utils";
 import type { NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
-import { api } from "@/services/api";
+import { api } from "@drive/services/api";
 
 export const POST = async (req: NextRequest) => {
   const body = await req.text();

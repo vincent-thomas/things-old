@@ -1,10 +1,10 @@
-import { env } from "env.mjs";
+import { env } from "@drive/env.mjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { getTokens } from "./getTokens";
-import { utils } from "@/services/utils";
-import { c } from "@/services/clients";
+import { utils } from "@drive/services/utils";
+import { c } from "@drive/services/clients";
 
 export const GET = async () => {
   const store = cookies();

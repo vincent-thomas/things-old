@@ -1,8 +1,8 @@
 import { type NextRequest } from "next/server";
 import { createToken, createTokenHeaders } from "./utils";
-import { c } from "@/services/clients";
-import { utils } from "@/services/utils";
-import { api } from "@/services/api";
+import { c } from "@drive/services/clients";
+import { utils } from "@drive/services/utils";
+import { api } from "@drive/services/api";
 import type { User } from "@prisma/client";
 
 export const POST = async (req: NextRequest) => {

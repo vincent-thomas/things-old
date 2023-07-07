@@ -2,7 +2,7 @@ import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
 import {
   fromBuffer,
   toBuffer,
-} from "@/app/(oauth-server)/oauth/utils/serialize";
+} from "../app/(oauth-server)/oauth/utils/serialize";
 
 const IV_LENGTH = 16;
 const ALGORITHM = "aes-256-cbc";
@@ -25,4 +25,3 @@ export const decrypt = (text: string, key: Buffer) => {
   const decipher = createDecipheriv(ALGORITHM, key, iv);
   return decipher.update(msg, "hex", "utf8") + decipher.final("utf8");
 };
-""

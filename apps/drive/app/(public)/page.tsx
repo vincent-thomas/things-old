@@ -1,7 +1,7 @@
-import { api } from "@/services/api";
+import { api } from "@drive/services/api";
 import { LoginButton } from "./components/LoginButton";
 import { SignInButton } from "./components/SignInButton";
-import { utils } from "@/services/utils";
+import { LogoutButton } from "./components/LogoutButton";
 
 const page = async () => {
   const user = await api.getUser();
@@ -16,7 +16,7 @@ const page = async () => {
         </>
       ) : (
         <>
-          <a href={`/oauth/logout?callback_url=${utils.getAppUrl()}`}>Logout</a>
+        <LogoutButton />
           <a href={`/drive/root`}>Go to drive</a>
         </>
       )}

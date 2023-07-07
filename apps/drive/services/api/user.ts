@@ -1,5 +1,4 @@
-import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { env } from "env.mjs";
+import { env } from "@drive/env.mjs";
 import { type JwtPayload, default as jwt } from "jsonwebtoken";
 import { getCachedUser } from "./cache";
 import { cookies } from "next/headers";

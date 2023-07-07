@@ -1,10 +1,10 @@
-import { c } from "@/services/clients";
+import { c } from "@drive/services/clients";
 import { api } from ".";
 import { NextResponse } from "next/server";
 import { utils } from "../utils";
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { decrypt, encrypt } from "../cryptography";
-import { env } from "@/env.mjs";
+import { env } from "@drive/env.mjs";
 const streamToString = (stream: NodeJS.ReadableStream): Promise<string> =>
   new Promise((resolve, reject) => {
     const chunks: Uint8Array[] = [];

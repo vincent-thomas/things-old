@@ -1,4 +1,4 @@
-import { env } from "env.mjs";
+import { env } from "@drive/env.mjs";
 import jwt from "jsonwebtoken";
 
 type TScope = "email" | "name";

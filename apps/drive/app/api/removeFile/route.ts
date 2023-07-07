@@ -1,12 +1,11 @@
-import { utils } from "@/services/utils";
-import { api } from "@/services/api";
-import { c } from "@/services/clients";
-import { cookies } from "next/headers";
+import { utils } from "@drive/services/utils";
+import { api } from "@drive/services/api";
+import { c } from "@drive/services/clients";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { env } from "env.mjs";
+import { env } from "@drive/env.mjs";
 
 const schema = z.object({
   fileId: z.string().uuid(),

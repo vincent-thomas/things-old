@@ -1,11 +1,11 @@
-import { c } from "@/services/clients";
+import { c } from "@drive/services/clients";
 import { cookies } from "next/headers";
 import { createToken } from "../token/utils";
-import type { ServerPage } from "@/types/page";
+import type { ServerPage } from "@drive/types/page";
 import { redirect } from "next/navigation";
 import { createHash } from "../utils/hash";
 import { randomBytes } from "crypto";
-import { utils } from "@/services/utils";
+import { utils } from "@drive/services/utils";
 
 const Page = ({ searchParams }: ServerPage) => {
   const Post = async (data: FormData) => {
@@ -54,7 +54,6 @@ const Page = ({ searchParams }: ServerPage) => {
 
     redirectURL.searchParams.set("callback_url", callback);
     redirectURL.searchParams.set("state", searchParams.state as string);
-
     redirect(redirectURL.toString());
   };
 

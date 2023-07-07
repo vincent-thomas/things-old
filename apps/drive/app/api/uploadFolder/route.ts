@@ -1,8 +1,8 @@
-import { utils } from "@/services/utils";
-import { c } from "@/services/clients";
+import { utils } from "@drive/services/utils";
+import { c } from "@drive/services/clients";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import { api } from "@/services/api";
+import { api } from "@drive/services/api";
 import { revalidatePath } from "next/cache";
 const schema = z.object({
   key: z.string().min(1),

@@ -1,7 +1,7 @@
 "use client";
 
 import { loginAuthStateGen } from "./loginHandler";
-import { utils } from "@/services/utils";
+import { utils } from "@drive/services/utils";
 
 export const LoginButton = () => {
   return (

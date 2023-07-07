@@ -1,4 +1,4 @@
-import { api } from "@/services/api";
+import { api } from "@drive/services/api";
 import { NextResponse, type NextRequest } from "next/server";
 
 export const GET = async (

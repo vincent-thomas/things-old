@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CreateFolderButton } from "../../create-folder-button";
 import { CreateFileButton } from "../../create-file.button";
-import type { ServerPage } from "@/types/page";
+import type { ServerPage } from "@drive/types/page";
 
 const SideBar = ({ params: p }: ServerPage) => {
   return (

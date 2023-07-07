@@ -1,11 +1,11 @@
-import { c } from "@/services/clients";
+import { c } from "@drive/services/clients";
 import { redirect } from "next/navigation";
 import { verifyHash } from "../utils/hash";
 import { cookies } from "next/headers";
 import { createToken } from "../token/utils";
-import type { ServerPage } from "@/types/page";
-import { utils } from "@/services/utils";
-import { api } from "@/services/api";
+import type { ServerPage } from "@drive/types/page";
+import { utils } from "@drive/services/utils";
+import { api } from "@drive/services/api";
 
 const Login = ({ searchParams }: ServerPage) => {
   async function submit(e: FormData) {

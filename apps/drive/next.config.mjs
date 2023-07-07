@@ -1,33 +1,53 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
-await import("./env.mjs");
-import withBundleAnalyzer from "@next/bundle-analyzer";
+//@ts-check
 
-const analyze = withBundleAnalyzer({
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { composePlugins, withNx }from '@nx/next';
+import withBundleAnalyzer from "@next/bundle-analyzer";
+import  { PrismaPlugin }from '@prisma/nextjs-monorepo-workaround-plugin'
+
+await import("./env.mjs");
+
+const withAnalyze = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
-/** @type {import("next").NextConfig} */
-const config = {
-  reactStrictMode: true,
-  swcMinify: true,
-  output: "standalone",
-  experimental: {
-    serverActions: true,
+/**
+ * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
+ **/
+const nextConfig = {
+  nx: {
+    // Set this to true if you would like to to use SVGR
+    // See: https://github.com/gregberge/svgr
+    svgr: false    
   },
-  async redirects() {
-    return [
-      {
-        source: "/drive",
-        destination: "/drive/root",
-        permanent: true,
-      },
-    ];
-  },
-  images: {
-    domains: ["api.dicebear.com"],
-    dangerouslyAllowSVG: true,
-  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()]
+    }
+
+    return config
+  },    reactStrictMode: true,
+    swcMinify: true,
+    experimental: {
+      serverActions: true,
+    },
+    async redirects() {
+      return [
+        {
+          source: "/drive",
+          destination: "/drive/root",
+          permanent: true,
+        },
+      ];
+    },
+    images: {
+      domains: ["api.dicebear.com"],
+      dangerouslyAllowSVG: true,
+    },
 };
-export default analyze(config);
+
+const plugins = [
+  withNx,
+  withAnalyze
+];
+
+export default composePlugins(...plugins)(nextConfig);

@@ -2,9 +2,9 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { type NextRequest, NextResponse } from "next/server";
-import { c } from "@/services/clients";
-import { api } from "@/services/api";
-import { utils } from "@/services/utils";
+import { c } from "@drive/services/clients";
+import { api } from "@drive/services/api";
+import { utils } from "@drive/services/utils";
 
 export const GET = async (req: NextRequest) => {
   const state = req.cookies.get("authorization_state");

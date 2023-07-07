@@ -1,8 +1,8 @@
-import { c } from "@/services/clients";
+import { c } from "@drive/services/clients";
 import { randomUUID } from "crypto";
 import { type NextRequest, NextResponse } from "next/server";
-import { api } from "@/services/api";
-import { utils } from "@/services/utils";
+import { api } from "@drive/services/api";
+import { utils } from "@drive/services/utils";
 
 export const GET = async (req: NextRequest) => {
   const callback = decodeURIComponent(

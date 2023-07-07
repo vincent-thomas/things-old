@@ -1,5 +1,5 @@
-import type { ServerPage } from "@/types/page";
-import { api } from "@/services/api";
+import type { ServerPage } from "@drive/types/page";
+import { api } from "@drive/services/api";
 import Link from "next/link";
 
 const test = async ({ params }: ServerPage) => {

@@ -1,5 +1,5 @@
-import { getUser } from "@/services/api/user";
-import { c } from "@/services/clients";
+import { getUser } from "@drive/services/api/user";
+import { c } from "@drive/services/clients";
 
 export const getFolderContent = async (userId: string, folderId: string) => {
   const files = await c.prisma.file.findMany({
