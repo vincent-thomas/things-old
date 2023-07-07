@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@drive/*": ["./apps/drive/*"]
+    }
+  },
+  "include": ["./apps/**/*.{ts,tsx}"],
+  "exclude": ["node_modules"]
+}
