@@ -3,11 +3,15 @@ import type { FC } from "react";
 import Image from "next/image";
 import { utils } from "@/services/utils";
 
-const Layout: FC<{
+const Layout = async ({
+  children,
+  filebar,
+  sidebar,
+}: {
   children: React.ReactNode;
   filebar: React.ReactNode;
   sidebar: React.ReactNode;
-}> = async ({ children, filebar, sidebar }) => {
+}) => {
   const user = await api.getUser();
   return (
     <div className="flex min-h-[100vh] min-w-[100vw]">

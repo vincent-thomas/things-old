@@ -28,7 +28,7 @@
     "serve": "dotenv -v VERCEL_URL=localhost:3001 -v PORT=3001 -- next dev",
     "pre": "prisma generate",
     "dev:db-studio": "dotenv -c local -- prisma studio",
-    "lint": "next lint",
+    "lint": "dotenv -v SKIP_ENV_VALIDATION=1 -- next lint",
     "start": "next start",
     "p:studio": "prisma studio",
     "p:gen": "prisma generate",

@@ -38,8 +38,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# temp
-.github
 .next
 next-env.d.ts
 .env

@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
+    "@nx/workspace": "^16.5.0",
     "nx": "16.5.0",
     "nx-cloud": "latest"
   }
