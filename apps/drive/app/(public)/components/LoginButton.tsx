@@ -1,16 +1,18 @@
-"use client";
+'use client';
 
-import { loginAuthStateGen } from "./loginHandler";
-import { utils } from "@drive/services/utils";
+import { loginAuthStateGen } from './loginHandler';
+import { utils } from '@drive/services/utils';
+import { getAuthUrl } from './authUrlHandler';
 
 export const LoginButton = () => {
   return (
     <button
       onClick={async () => {
         const result = await loginAuthStateGen();
-        window.location.href = `/oauth/authorize?callback_url=${encodeURIComponent(
+        const authUrl = await getAuthUrl();
+        window.location.href = `${authUrl}/oauth/authorize?callback_uri=${encodeURIComponent(
           `${utils.getAppUrl()}/callback`
-        )}&state=${result.state}`;
+        )}&state=${result.state}&client_id=&scopes=email,name`;
       }}
     >
       Login

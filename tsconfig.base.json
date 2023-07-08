@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@auth/*": ["./apps/auth/*"],
+      "@auth/sdk": ["libs/auth-sdk/src/index.ts"],
       "@drive/*": ["./apps/drive/*"],
       "@prisma/client": ["./apps/drive/prisma/out/index"]
     }

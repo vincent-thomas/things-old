@@ -1,10 +1,10 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
-    AUTH_KEY: z.string().length(64, "Needs to be 64 bytes"),
+    AUTH_URL: z.string().url(),
+    NODE_ENV: z.enum(['development', 'test', 'production']),
     S3_FILES_KEY: z.string(),
     S3_FILES_REGION: z.string(),
     S3_FILES_SECRET: z.string(),
@@ -17,19 +17,19 @@ export const env = createEnv({
   client: {},
 
   runtimeEnv: {
+    AUTH_URL: process.env.AUTH_URL,
     NODE_ENV: process.env.NODE_ENV,
-    AUTH_KEY: process.env.AUTH_KEY,
     APP_URL: `${
       process.env?.IS_DOCKER
-        ? "http"
-        : process.env.VERCEL_ENV === "development"
-        ? "http"
-        : "https"
+        ? 'http'
+        : process.env.VERCEL_ENV === 'development'
+        ? 'http'
+        : 'https'
     }://${
-      process.env?.VERCEL_ENV === "production"
-        ? process.env?.IS_DOCKER === "true"
+      process.env?.VERCEL_ENV === 'production'
+        ? process.env?.IS_DOCKER === 'true'
           ? process.env.VERCEL_URL
-          : "drive.v-thomas.com"
+          : 'drive.v-thomas.com'
         : process.env.VERCEL_URL
     }`,
     S3_FILES_REGION: process.env.S3_FILES_REGION,

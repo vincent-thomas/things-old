@@ -5,37 +5,34 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/next:build",
+      "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "apps/drive/dist"
+        "outputPath": "apps/drive/.next",
+        "cwd": "apps/drive",
+        "command": "pnpm pre next build"
       },
       "configurations": {
         "development": {
           "outputPath": "apps/drive"
         },
-        "production": {
-
-        }
+        "production": {}
       }
     },
+
     "serve": {
-      "executor": "@nx/next:server",
-      "defaultConfiguration": "development",
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "dev",
       "options": {
-        "buildTarget": "drive:build",
-        "dev": true
+        "cwd": "apps/drive"
       },
       "configurations": {
-        "development": {
-          "buildTarget": "drive:build:development",
-          "dev": true,
-          "port": 3000
+        "dev": {
+          "command": "pnpm pre next dev"
         },
-        "production": {
-          "buildTarget": "drive:build:production",
-          "dev": false
+        "prod": {
+          "command": "pnpm pre next start"
         }
       }
     },

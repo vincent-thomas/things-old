@@ -9,8 +9,8 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers-contrib/features/vercel-cli:1": {},
-	"ghcr.io/devcontainers-contrib/features/act-asdf:2": {},
-	"ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
+    "ghcr.io/devcontainers-contrib/features/act-asdf:2": {},
+    "ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
   },
   "postCreateCommand": "pnpm install",
 
@@ -26,7 +26,9 @@
         "beardedbear.beardedicons",
         "usernamehw.errorlens",
         "github.vscode-github-actions",
-        "rssowl.close-all"
+        "rssowl.close-all",
+        "nrwl.angular-console",
+        "firsttris.vscode-jest-runner"
       ],
       "settings": {
         "typescript.tsdk": "node_modules/typescript/lib"

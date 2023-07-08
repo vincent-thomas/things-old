@@ -1,9 +1,12 @@
-import { env } from "@drive/env.mjs";
+import { env } from '@drive/env.mjs';
 
 export const getAppUrl = () => {
-  return typeof window !== "undefined"
-    ? `${window.location.hostname === "localhost" ? "http:" : "https:"}//${
-        window.location.host
-      }`
+  return typeof window !== 'undefined'
+    ? `${
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+          ? 'http:'
+          : 'https:'
+      }//${window.location.host}`
     : env.APP_URL;
 };

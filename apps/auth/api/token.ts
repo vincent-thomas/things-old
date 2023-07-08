@@ -1,7 +1,7 @@
-import { env } from "@drive/env.mjs";
-import jwt from "jsonwebtoken";
+import { env } from 'process';
+import jwt from 'jsonwebtoken';
 
-type TScope = "email" | "name";
+type TScope = 'email' | 'name';
 
 export const createToken = (
   userId: string,
@@ -15,17 +15,17 @@ export const createToken = (
     jti: crypto.randomUUID(),
     iat: date,
     exp: date + 86_400_000,
-    aud: "client",
+    aud: 'client',
     data: {
       roles,
       scopes,
     },
   };
-  return jwt.sign(payload, env.AUTH_KEY, { algorithm: "HS512" });
+  return jwt.sign(payload, 'test', { algorithm: 'HS512' });
 };
 
 export const createTokenHeaders = (accessToken: string) => {
   return {
-    "Set-Cookie": `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`,
+    'Set-Cookie': `access_token=${accessToken}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`,
   };
 };
