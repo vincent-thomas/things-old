@@ -2,6 +2,7 @@ import { getUser } from '@auth/api/user';
 import { createSession, saveSession } from '@auth/api/session';
 import { redirect } from 'next/navigation';
 import { env } from '@auth/env.mjs';
+import { verifyHash } from '@auth/api/hash';
 
 const Login = ({ searchParams }: any) => {
   // const sessionId = cookies().get('session')?.value;
