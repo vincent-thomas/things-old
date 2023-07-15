@@ -1,0 +1,10 @@
+import { z } from 'zod';
+
+const envSchema = z.object({
+  AUTH_REDIS_URL: z.string().url('Unvalid url'),
+  AUTH_APP_URL: z.string().url('Unvalid url'),
+  AUTH_SIGN_KEY: z.string().length(64, 'Must be 64 characters'),
+  AUTH_DATABASE_URL: z.string().url('Unvalid url'),
+});
+
+export const env = envSchema.parse(process.env);

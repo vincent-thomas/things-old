@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+  redis-stack:
+    container_name: redis-stack
+    ports:
+      - '6379:6379'
+      - '8001:8001'
+    image: 'redis/redis-stack:latest'

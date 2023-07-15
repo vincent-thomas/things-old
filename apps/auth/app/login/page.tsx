@@ -1,43 +1,49 @@
-import { cookies } from 'next/headers';
-import { createHash, verifyHash } from '@auth/api/hash';
-import { redis } from '@auth/clients';
 import { getUser } from '@auth/api/user';
 import { createSession, saveSession } from '@auth/api/session';
 import { redirect } from 'next/navigation';
+import { env } from '@auth/env.mjs';
 
 const Login = ({ searchParams }: any) => {
-  const sessionId = cookies().get('session')?.value;
-  const redirectUrl = new URL('/login', process.env.APP_URL as string);
-  redirectUrl.searchParams.set('callback_uri', searchParams.callbackUrl);
-  redirectUrl.searchParams.set('scopes', searchParams.scopes);
-  redirectUrl.searchParams.set('client_id', searchParams.clientId);
-  if (searchParams.state)
-    redirectUrl.searchParams.set('state', searchParams.state);
-  if (sessionId) {
-    // return NextResponse.json('not logged in');
-    // return NextResponse.redirect(redirectUrl.toString());
-  }
+  // const sessionId = cookies().get('session')?.value;
+  // redirectUrl.searchParams.set('callback_uri', searchParams.callbackUrl);
+  // redirectUrl.searchParams.set('scopes', searchParams.scopes);
+  // redirectUrl.searchParams.set('client_id', searchParams.clientId);
+  // if (searchParams.state)
+  //   redirectUrl.searchParams.set('state', searchParams.state);
+  // if (sessionId) {
+  //   // return NextResponse.json('not logged in');
+  //   // return NextResponse.redirect(redirectUrl.toString());
+  // }
 
   const action = async (data: FormData) => {
     'use server';
+
+    const handleUserNotFound = () => {
+      console.log('not good');
+    };
     const email = data.get('email') as string;
     const password = data.get('password') as string;
 
     const user = await getUser(email);
 
-    const passwordIsGood = await verifyHash(user?.key, password);
+    console.log(user);
 
-    if (!user || !passwordIsGood) {
-      // TODO: Error handling
+    if (user === null) {
+      handleUserNotFound();
       return;
     }
-    const session = await createSession(email);
+
+    const passwordIsGood = await verifyHash(user.password, password);
+    if (!passwordIsGood) {
+      handleUserNotFound();
+      return;
+    }
+    const session = await createSession(user.id);
+
+    console.log(session);
 
     saveSession(session);
-    const redirectUrl = new URL(
-      '/oauth/authorize',
-      process.env.APP_URL as string
-    );
+    const redirectUrl = new URL(`/oauth/authorize`, env.AUTH_APP_URL);
     redirectUrl.searchParams.set('callback_uri', searchParams.callback_uri);
     redirectUrl.searchParams.set('scopes', searchParams.scopes);
     redirectUrl.searchParams.set('client_id', searchParams.client_id);

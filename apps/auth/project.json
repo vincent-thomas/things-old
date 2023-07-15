@@ -43,16 +43,19 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "inputs": ["test"],
       "options": {
-        "jestConfig": "apps/auth/jest.config.ts",
-        "passWithNoTests": true
+        "command": "vitest run",
+        "cwd": "./apps/auth"
       },
       "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+        "coverage": {
+          "command": "vitest run --coverage"
+        },
+        "ui": {
+          "command": "vitest --ui"
         }
       }
     },
@@ -62,7 +65,25 @@
       "options": {
         "lintFilePatterns": ["apps/auth/**/*.{ts,tsx,js,jsx}"]
       }
+    },
+    "drizzle": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "generate",
+      "configurations": {
+        "push": {
+          "command": "pnpm drizzle-kit push:mysql --config=./apps/auth/drizzle.config.ts"
+        },
+        "generate": {
+          "command": "pnpm drizzle-kit generate:mysql --config=./apps/auth/drizzle.config.ts"
+        },
+        "drop": {
+          "command": "pnpm drizzle-kit drop --config=./apps/auth/drizzle.config.ts"
+        },
+        "studio": {
+          "command": "pnpm drizzle-kit studio --config=./apps/auth/drizzle.config.ts"
+        }
+      }
     }
   },
-  "tags": []
+  "tags": ["runtime:node", "runtime:browser"]
 }

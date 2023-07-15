@@ -1,64 +1,75 @@
-import { redis } from '@auth/clients';
+import { db } from '@auth/db';
 import { UserSession } from '@auth/types/user';
-import { randomBytes } from 'crypto';
-import { createHash } from './hash';
+import { session, authCode } from '@auth/db/schema';
 import { cookies } from 'next/headers';
+import { eq } from 'drizzle-orm';
+import { uid } from 'uid/secure';
 
 const EXPIRES = 86400;
 
 type scope = 'name' | 'email';
 
-export const createSession = async (email: string) => {
-  const sessionId = Buffer.from(randomBytes(32)).toString('hex');
-  const userId = createHash(email);
-  await redis.json.set(`session:${sessionId}`, '.', {
+export const createSession = async (userId: string) => {
+  const sessionId = uid(32);
+
+  const createdAt = new Date();
+  const expires = new Date(createdAt.getTime() + 86_400_000);
+  await db.insert(session).values({
     sessionId,
     userId,
+    createdAt,
+    expires,
   });
-  await redis.sendCommand(['EXPIRE', `session:${sessionId}`, String(EXPIRES)]);
-  return { userId, sessionId } as UserSession;
+  return { userId, sessionId, createdAt } satisfies UserSession;
 };
 
 export const saveSession = (session: UserSession) => {
   return cookies().set('session', session.sessionId, {
     maxAge: EXPIRES,
     httpOnly: true,
-    path: '/',
-    sameSite: 'strict',
-    domain: 'google.com',
+    // sameSite: 'strict',
   });
 };
 
-export const getSession = async (sessionId: string) => {
-  const result = (await redis.json.get(`session:${sessionId}`)) as unknown;
-  return result as UserSession;
+export const getSession = (sessionId: string) => {
+  return db.query.session.findFirst({
+    where: eq(session.sessionId, sessionId),
+  });
 };
 
 export const createAuthCode = async (userId: string, scopes: scope[]) => {
-  const id = Buffer.from(randomBytes(16)).toString('hex');
-  await redis.json.set(`authorization-code:${id}`, '.', { userId, scopes });
-  await redis.sendCommand([
-    'EXPIRE',
-    `authorization-code:${id}`,
-    String(60 * 5),
-  ]);
-  return { code: id };
+  const code = uid(32);
+  const data = {
+    code,
+    userId,
+    scopes: scopes.join('_'),
+    createdAt: new Date(),
+    expires: new Date(new Date().getTime() + 300_000),
+  };
+  console.log(data);
+  await db.insert(authCode).values(data);
+
+  return data;
 };
 
-export const verifyAuthCode = async (codeId: string, userId: string) => {
-  const result = (await redis.json.get(
-    `authorization-code:${codeId}`
-  )) as unknown as { userId: string };
-  if (!result || result?.userId !== userId) {
+export const verifyAuthCode = async (code: string, userId: string) => {
+  const codee = await db.query.authCode.findFirst({
+    where: eq(authCode.code, code),
+  });
+  if (!codee || codee?.userId !== userId) {
     return false;
   }
-  return true;
+  return codee;
 };
 
 export const checkSession = async () => {
-  const sessionId = cookies().get('session')?.value as string;
+  const costore = cookies();
+  const sessionId = costore.get('session')?.value as string;
   if (!sessionId) return null;
   const sessio = await getSession(sessionId);
-  if (!sessio) return null;
-  return sessio;
+  if (!sessio) {
+    costore.delete('session');
+    return null;
+  }
+  return sessio satisfies UserSession;
 };

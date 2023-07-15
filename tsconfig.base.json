@@ -16,8 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@auth/*": ["./apps/auth/*"],
-      "@auth/sdk": ["libs/auth-sdk/src/index.ts"],
       "@drive/*": ["./apps/drive/*"],
+      "@api/*": ["./apps/api/*"],
       "@prisma/client": ["./apps/drive/prisma/out/index"]
     }
   },

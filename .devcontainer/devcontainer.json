@@ -9,8 +9,8 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers-contrib/features/vercel-cli:1": {},
-    "ghcr.io/devcontainers-contrib/features/act-asdf:2": {},
-    "ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
+    "ghcr.io/devcontainers-contrib/features/nx-npm:1": {},
+    "ghcr.io/devcontainers-contrib/features/direnv-asdf:2": {}
   },
   "postCreateCommand": "pnpm install",
 
@@ -19,7 +19,6 @@
       "extensions": [
         "rangav.vscode-thunder-client",
         "bradlc.vscode-tailwindcss",
-        "Prisma.prisma",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "beardedbear.beardedtheme",

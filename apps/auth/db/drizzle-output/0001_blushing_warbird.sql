@@ -1,0 +1,1 @@
+ALTER TABLE `authentication_codes` ADD `expires` timestamp;
