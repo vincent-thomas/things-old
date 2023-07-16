@@ -18,7 +18,10 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"]
+    "types": [
+      "jest",
+      "node"
+    ]
   },
   "include": [
     "**/*.ts",
@@ -27,7 +30,8 @@
     "**/*.jsx",
     "next-env.d.ts",
     "env.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../dist/apps/drive/.next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

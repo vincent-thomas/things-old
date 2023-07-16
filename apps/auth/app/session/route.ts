@@ -1,21 +1,13 @@
 import { cookies } from 'next/headers';
-import { redis } from '@auth/clients';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { checkSession, getSession, verifyAuthCode } from '@auth/api/session';
-import { db } from '@auth/db';
-import { user } from '@auth/db/schema';
-import { eq } from 'drizzle-orm';
 
 export const GET = async () => {
   const sessionId = cookies().get('session')?.value as string;
   const session = await getSession(sessionId);
 
   return NextResponse.json(session);
-
-  // const dbSession = await redis.json.get(`session:${session}`);
-
-  // return NextResponse.json(dbSession);
 };
 
 const codeVerify = z.object({
@@ -26,7 +18,6 @@ export const POST = async (req: NextRequest) => {
   const body = await req.json();
   const { code } = codeVerify.parse(body);
 
-  // const code = codeVerify.parse(req.nextUrl.searchParams.get('code'));
   const session = await checkSession();
   if (session === null) {
     return NextResponse.json('nooo');
@@ -37,16 +28,5 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json('authcode cannot be verified');
   }
   const scopes = isReal.scopes.split('_');
-  console.log(scopes);
-  // const currentUser = await db.query.user.findFirst({
-  //   where: eq(user.id, isReal.userId),
-  //   columns: {
-  //     email: scopes.includes('email'),
-  //     name: scopes.includes('name'),
-  //     id: true,
-  //     createdAt: true,
-  //   },
-  // });
-  // console.log(isReal);
   return NextResponse.json('to be continue');
 };

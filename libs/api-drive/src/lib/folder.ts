@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-
+import { authorize } from '@api/shared/middleware';
 const bodySchema = z.object({
   folder_key: z
     .string()
@@ -8,14 +8,8 @@ const bodySchema = z.object({
     .max(10, 'Folder-name cannot be more than 10 character'),
 });
 
-const getAuthorizationValues = (authHeaderValue: string) => {
-  const [type, token] = authHeaderValue.split(' ');
-  return [type, token];
-};
-
 const folder = Router();
-folder.post('/', (req, res) => {
-  console.log(req.headers);
+folder.post('/', authorize, (req, res) => {
   const body = bodySchema.parse(req.body);
   res.send(body);
 });

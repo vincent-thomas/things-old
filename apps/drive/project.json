@@ -6,12 +6,11 @@
   "implicitDependencies": ["api", "auth"],
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "outputs": ["apps/drive/.next"],
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "cwd": "apps/drive",
-        "command": "pnpm pre next build"
+        "outputPath": "dist/apps/drive"
       },
       "configurations": {
         "development": {
@@ -20,22 +19,25 @@
         "production": {}
       }
     },
-
     "serve": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "dev",
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
       "options": {
-        "cwd": "apps/drive"
+        "buildTarget": "drive:build",
+        "dev": true
       },
       "configurations": {
-        "dev": {
-          "command": "pnpm pre next dev"
+        "development": {
+          "buildTarget": "drive:build:development",
+          "dev": true
         },
-        "prod": {
-          "command": "pnpm pre next start"
+        "production": {
+          "buildTarget": "drive:build:production",
+          "dev": false
         }
       }
     },
+
     "export": {
       "executor": "@nx/next:export",
       "options": {

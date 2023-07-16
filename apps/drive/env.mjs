@@ -9,8 +9,8 @@ export const env = createEnv({
     S3_FILES_REGION: z.string(),
     S3_FILES_SECRET: z.string(),
     S3_FILES_BUCKET: z.string(),
-    DATABASE_URL: z.string().url(),
-    REDIS_URL: z.string().url(),
+    DATABASE_URL: z.string(),
+    REDIS_URL: z.string(),
     APP_URL: z.string().url(),
   },
 

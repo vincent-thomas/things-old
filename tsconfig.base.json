@@ -17,6 +17,7 @@
     "paths": {
       "@api/*": ["./apps/api/*"],
       "@api/drive": ["libs/api-drive/src/index.ts"],
+      "@api/shared/*": ["libs/api-shared/src"],
       "@auth/*": ["./apps/auth/*"],
       "@drive/*": ["./apps/drive/*"],
       "@prisma/client": ["./apps/drive/prisma/out/index"]

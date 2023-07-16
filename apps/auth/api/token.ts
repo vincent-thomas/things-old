@@ -1,8 +1,18 @@
+import { redis } from '@auth/clients';
 import { env } from '@auth/env.mjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import { IAuthCode, deleteAuthCode } from './auth_code';
 
 type TScope = 'email' | 'name';
+
+export interface AccessToken {
+  sub: string;
+  jti: string;
+  iat: number;
+  exp: number;
+  scopes: TScope[];
+}
 
 export const createToken = (userId: string, scopes: TScope[]) => {
   const date = new Date().getTime();
@@ -45,4 +55,14 @@ export const saveToken = (accessToken: string) => {
     secure: true,
     httpOnly: true,
   });
+};
+
+export const tradeAuthCodeToken = async (
+  authCode: string,
+  userId: string,
+  scopes: TScope[]
+) => {
+  const token = createToken(userId, scopes);
+  await deleteAuthCode(authCode);
+  return token;
 };

@@ -1,4 +1,4 @@
-import { checkSession, createAuthCode } from '@auth/api/session';
+import { createAuthCode } from '@auth/api/auth_code';
 import { getToken } from '@auth/api/token';
 
 import { redis } from '@auth/clients';
@@ -52,7 +52,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.redirect(redirectUrl.toString());
   }
 
-  const {code} = await createAuthCode(token.sub, scopes);
+  const code = await createAuthCode(token.sub, scopes);
 
   // const { code } = await createAuthCode(session.userId, scopes);
 

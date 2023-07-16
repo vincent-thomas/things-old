@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@drive/env.mjs';
 import { useSearchParams } from 'next/navigation';
 import { NextResponse, type NextRequest } from 'next/server';
 import { useEffect } from 'react';
@@ -18,7 +19,7 @@ const Page = async () => {
   // cookieStore.delete('authorization_state');
   useEffect(() => {
     async function main() {
-      const result = await fetch(`http://localhost:4200/oauth/session`, {
+      const result = await fetch(`${env.AUTH_URL}/oauth/token`, {
         method: 'POST',
         body: JSON.stringify({
           code: searchParams.get('code'),
