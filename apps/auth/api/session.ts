@@ -54,12 +54,12 @@ export const removeSession = async (sessionId: string) => {
   return await db.delete(session).where(eq(session.sessionId, sessionId));
 };
 
-export const createAuthCode = async (userId: string, scopes: scope[]) => {
+export const createAuthCode = async (userId: string, scope: scope[]) => {
   const code = uid(32);
   const data = {
     code,
     userId,
-    scopes: scopes.join(','),
+    scope: scope.join(','),
     createdAt: new Date(),
     expires: new Date(new Date().getTime() + 300_000),
   };

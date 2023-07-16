@@ -27,6 +27,6 @@ export const POST = async (req: NextRequest) => {
   if (!isReal) {
     return NextResponse.json('authcode cannot be verified');
   }
-  const scopes = isReal.scopes.split('_');
+  const scope = isReal.scope.split('_');
   return NextResponse.json('to be continue');
 };

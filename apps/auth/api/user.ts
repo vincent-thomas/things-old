@@ -1,13 +1,9 @@
-import { redis } from '@auth/clients';
-import { randomBytes, randomUUID } from 'crypto';
-import { createHash, createKeyHash } from './hash';
-import { User } from '@auth/types/user';
+import { randomUUID } from 'crypto';
+import { createKeyHash } from './hash';
 import { db } from '@auth/db';
 import { eq } from 'drizzle-orm';
 import { user } from '@auth/db/schema';
 import { uid } from 'uid/secure';
-import { env } from '@auth/env.mjs';
-const KEY_ENCODING = 'base64';
 export const createUser = async (
   email: string,
   name: string,
@@ -26,21 +22,6 @@ export const createUser = async (
   });
 
   return { userId };
-
-  // await redis.json.set(`account:${userId}`, '.', {
-  //   email,
-  //   id: userId,
-  //   name,
-  //   encryptionKey: Buffer.from(encKey).toString(KEY_ENCODING),
-  //   key,
-  // });
-  // return {
-  //   email,
-  //   id: userId,
-  //   name,
-  //   encryptionKey: encKey,
-  //   key,
-  // } as User;
 };
 
 export const getUser = async (email: string) => {
@@ -50,7 +31,3 @@ export const getUser = async (email: string) => {
   if (!existingUser) return null;
   return existingUser;
 };
-
-// return (await redis.json.get(
-//   `account:${createHash(email)}`
-// )) as unknown as User;

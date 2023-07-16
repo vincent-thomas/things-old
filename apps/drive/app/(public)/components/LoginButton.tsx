@@ -10,9 +10,9 @@ export const LoginButton = () => {
       onClick={async () => {
         const result = await loginAuthStateGen();
         const authUrl = await getAuthUrl();
-        window.location.href = `${authUrl}/oauth/authorize?callback_uri=${encodeURIComponent(
+        window.location.href = `${authUrl}/oauth/authorize?redirect_uri=${encodeURIComponent(
           `${utils.getAppUrl()}/callback`
-        )}&state=${result.state}&client_id=&scopes=email,name`;
+        )}&state=${result.state}&client_id=&scope=email,name`;
       }}
     >
       Login

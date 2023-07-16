@@ -23,8 +23,8 @@ export const GET = async (req: NextRequest) => {
     where: eq(user.id, isVerifiedUser.sub),
     columns: {
       createdAt: true,
-      email: isVerifiedUser.scopes.includes('email'),
-      name: isVerifiedUser.scopes.includes('name'),
+      email: isVerifiedUser.scope.includes('email'),
+      name: isVerifiedUser.scope.includes('name'),
       id: true,
     },
   });

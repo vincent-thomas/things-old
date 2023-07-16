@@ -7,9 +7,11 @@ import { ApiDriveRouter } from '@api/drive';
 import express from 'express';
 import * as path from 'path';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use('/drive', ApiDriveRouter);
 

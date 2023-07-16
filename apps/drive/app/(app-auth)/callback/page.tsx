@@ -1,11 +1,10 @@
 'use client';
 
-import { env } from '@drive/env.mjs';
 import { useSearchParams } from 'next/navigation';
-import { NextResponse, type NextRequest } from 'next/server';
 import { useEffect } from 'react';
-
-const Page = async () => {
+import { getAuthUrl } from '../../(public)/components/authUrlHandler';
+import qs from 'qs';
+const Page = () => {
   const searchParams = useSearchParams();
   // const cookieStore = cookies();
 
@@ -19,17 +18,20 @@ const Page = async () => {
   // cookieStore.delete('authorization_state');
   useEffect(() => {
     async function main() {
-      const result = await fetch(`${env.AUTH_URL}/oauth/token`, {
+      const result = await fetch(`${await getAuthUrl()}/oauth/token`, {
         method: 'POST',
-        body: JSON.stringify({
+        body: qs.stringify({
           code: searchParams.get('code'),
+          client_secret: 'drive',
+          client_id: 'drive',
         }),
+        credentials: 'include',
       });
 
       console.log(await result.json());
     }
     main();
-  }, []);
+  }, [searchParams]);
 
   return <>loading...</>;
 

@@ -1,6 +1,5 @@
 import { createUser, getUser } from '@auth/api/user';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
 import { createSession, saveSession } from '@auth/api/session';
 import { env } from '@auth/env.mjs';
 
@@ -21,12 +20,12 @@ const Page = ({ searchParams }: any) => {
     const session = await createSession(userId);
     saveSession(session);
     // console.log('RESULT', cookies().get('session'));
-    const callback = searchParams.callback_uri as string;
+    const callback = searchParams.redirect_uri as string;
     const redirectURL = new URL(`${env.AUTH_APP_URL}/oauth/authorize`);
-    redirectURL.searchParams.set('callback_uri', callback);
+    redirectURL.searchParams.set('redirect_uri', callback);
     redirectURL.searchParams.set('state', searchParams.state as string);
     redirectURL.searchParams.set('client_id', searchParams.client_id as string);
-    redirectURL.searchParams.set('scopes', searchParams.scopes as string);
+    redirectURL.searchParams.set('scope', searchParams.scope as string);
     redirect(redirectURL.toString());
   };
 

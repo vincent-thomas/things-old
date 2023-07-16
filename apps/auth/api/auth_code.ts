@@ -3,19 +3,19 @@ import { uid } from 'uid/secure';
 
 export interface IAuthCode {
   userId: string;
-  scopes: string;
+  scope: string;
   createdAt: Date;
   expires: Date;
 }
 
 export const createAuthCode = async (
   userId: string,
-  scopes: ('email' | 'name')[]
+  scope: ('email' | 'name')[]
 ) => {
   const code = uid(32);
   const data = {
     userId,
-    scopes: scopes.join(','),
+    scope: scope.join(','),
     createdAt: new Date(),
     expires: new Date(new Date().getTime() + 300_000),
   } satisfies IAuthCode;

@@ -38,11 +38,11 @@ const Page = () => {
       },
       {
         onSuccess() {
-          const callback = sp?.get('callback_uri');
-          const scopes = sp?.get('scopes');
+          const callback = sp?.get('redirect_uri');
+          const scope = sp?.get('scope');
           const state = sp?.get('state');
           const clientId = sp?.get('client_id');
-          window.location.href = `/oauth/authorize?callback_uri=${callback}&scopes=${scopes}&client_id=${clientId}&state=${state}`;
+          window.location.href = `/oauth/authorize?redirect_uri=${callback}&scope=${scope}&client_id=${clientId}&state=${state}`;
         },
       }
     );

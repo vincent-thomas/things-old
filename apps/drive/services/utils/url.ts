@@ -8,5 +8,5 @@ export const getAppUrl = () => {
           ? 'http:'
           : 'https:'
       }//${window.location.host}`
-    : env.APP_URL;
+    : env.DRIVE_APP_URL;
 };

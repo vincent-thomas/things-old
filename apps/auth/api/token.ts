@@ -11,10 +11,10 @@ export interface AccessToken {
   jti: string;
   iat: number;
   exp: number;
-  scopes: TScope[];
+  scope: TScope[];
 }
 
-export const createToken = (userId: string, scopes: TScope[]) => {
+export const createToken = (userId: string, scope: TScope[]) => {
   const date = new Date().getTime();
 
   const payload = {
@@ -22,7 +22,7 @@ export const createToken = (userId: string, scopes: TScope[]) => {
     jti: crypto.randomUUID(),
     iat: date,
     exp: date + 86_400_000,
-    scopes,
+    scope,
   };
   return jwt.sign(payload, env.AUTH_SIGN_KEY, { algorithm: 'HS512' });
 };
@@ -36,6 +36,7 @@ export const createTokenHeaders = (accessToken: string) => {
 export const getToken = async () => {
   const costore = cookies();
   const token = costore.get('access_token')?.value as string;
+  console.log(token);
   if (!token) return null;
 
   const accessToken = jwt.verify(token, env.AUTH_SIGN_KEY);
@@ -44,7 +45,7 @@ export const getToken = async () => {
     jti: string;
     iat: number;
     exp: number;
-    scopes: TScope[];
+    scope: TScope[];
   };
 };
 
@@ -52,7 +53,6 @@ export const saveToken = (accessToken: string) => {
   const store = cookies();
   store.set('access_token', accessToken, {
     maxAge: 86_400,
-    secure: true,
     httpOnly: true,
   });
 };
@@ -60,9 +60,9 @@ export const saveToken = (accessToken: string) => {
 export const tradeAuthCodeToken = async (
   authCode: string,
   userId: string,
-  scopes: TScope[]
+  scope: TScope[]
 ) => {
-  const token = createToken(userId, scopes);
+  const token = createToken(userId, scope);
   await deleteAuthCode(authCode);
   return token;
 };

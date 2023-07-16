@@ -24,7 +24,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "drive:build",
-        "dev": true
+        "dev": true,
+        "port": 8000
       },
       "configurations": {
         "development": {

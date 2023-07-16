@@ -23,7 +23,7 @@ export const authCode = mysqlTable('authentication_codes', {
   code: varchar('authentication_code', { length: 32 }).primaryKey(),
   userId: varchar('user_id', { length: 36 }).notNull(),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
-  scopes: varchar('scopes', { length: 256 }).notNull(),
+  scope: varchar('scope', { length: 256 }).notNull(),
   expires: timestamp('expires').notNull(),
 });
 

@@ -1,8 +1,5 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
-import {
-  fromBuffer,
-  toBuffer,
-} from '../app/(oauth-server)/_oauth/utils/serialize';
+import { fromBuffer, toBuffer } from './utils/serialize';
 
 const IV_LENGTH = 16;
 const ALGORITHM = 'aes-256-cbc';

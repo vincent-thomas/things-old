@@ -33,12 +33,16 @@ export const POST = async (req: NextRequest) => {
 
   const token = await getToken();
 
+  if (!token) {
+    return NextResponse.json({ error: '401 Unauthorized' }, { status: 401 });
+  }
+
   const authCode = await verifyAuthCode(params.code, token?.sub as string);
 
   const authToken = await tradeAuthCodeToken(
     params.code,
     token?.sub as string,
-    authCode?.scopes.split(',') as ('name' | 'email')[]
+    authCode?.scope.split(',') as ('name' | 'email')[]
   );
 
   cookies().set('access_token', authToken, {

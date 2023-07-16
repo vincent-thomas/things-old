@@ -42,6 +42,6 @@ Thumbs.db
 # Next.js
 .next
 .env*
-.envrc
+!/.env.default
 **/prisma/out
 .astro
