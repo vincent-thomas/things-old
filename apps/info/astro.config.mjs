@@ -1,7 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 import prefetch from '@astrojs/prefetch';
-
 // https://astro.build/config
 export default defineConfig({
   outDir: '../../dist/apps/info',
@@ -10,5 +9,5 @@ export default defineConfig({
       intentSelector: 'a',
     }),
   ],
-  srcDir: '.',
+  srcDir: './src',
 });
