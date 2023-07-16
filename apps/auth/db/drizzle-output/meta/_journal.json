@@ -29,6 +29,13 @@
       "when": 1689449653870,
       "tag": "0003_mature_revanche",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1689498831415,
+      "tag": "0004_heavy_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

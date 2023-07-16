@@ -18,14 +18,15 @@ const Login = ({ searchParams }: any) => {
 
   const action = async (data: FormData) => {
     'use server';
-
     const handleUserNotFound = () => {
       console.log('not good');
     };
     const email = data.get('email') as string;
     const password = data.get('password') as string;
+    console.log('seev');
 
     const user = await getUser(email);
+    console.log('seev acter');
 
     console.log(user);
 

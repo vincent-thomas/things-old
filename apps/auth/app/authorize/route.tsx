@@ -1,8 +1,5 @@
 import { checkSession, createAuthCode } from '@auth/api/session';
-import { redis } from '@auth/clients';
 import { env } from '@auth/env.mjs';
-import { User } from '@auth/types/user';
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -17,28 +14,34 @@ const schema = z.object({
 const scopesSchema = z.array(z.string().regex(/name|email/));
 
 export const GET = async (req: NextRequest) => {
-  const params = req.nextUrl.searchParams;
-  const state = params.get('state');
-  const clientId = params.get('client_id');
-  const callbackUrl = params.get('callback_uri');
-  const urlScopes = params.get('scopes');
+  const nextParams = req.nextUrl.searchParams;
+  const state = nextParams.get('state');
+  const clientId = nextParams.get('client_id');
+  const callbackUrl = nextParams.get('callback_uri');
+  const urlScopes = nextParams.get('scopes');
 
-  const p = schema.parse({
+  const p = schema.safeParse({
     callbackUrl,
     state,
     clientId,
     scopes: urlScopes,
   });
 
-  const scopes = scopesSchema.parse(p.scopes) as ('name' | 'email')[];
+  if (!p.success) {
+    return NextResponse.json(p.error);
+  }
+
+  const params = p.data;
+
+  const scopes = scopesSchema.parse(params.scopes) as ('name' | 'email')[];
   const session = await checkSession();
 
   if (session === null) {
     const redirectUrl = new URL(`/oauth/login`, env.AUTH_APP_URL);
-    redirectUrl.searchParams.set('callback_uri', p.callbackUrl);
-    redirectUrl.searchParams.set('scopes', p.scopes.join(','));
-    redirectUrl.searchParams.set('client_id', p.clientId);
-    if (p.state) redirectUrl.searchParams.set('state', p.state);
+    redirectUrl.searchParams.set('callback_uri', params.callbackUrl);
+    redirectUrl.searchParams.set('scopes', params.scopes.join(','));
+    redirectUrl.searchParams.set('client_id', params.clientId);
+    if (params.state) redirectUrl.searchParams.set('state', params.state);
     return NextResponse.redirect(redirectUrl.toString());
   }
 
@@ -49,8 +52,8 @@ export const GET = async (req: NextRequest) => {
 
   const { code } = await createAuthCode(session.userId, scopes);
 
-  const redirectUrl = new URL(p.callbackUrl);
-  if (p.state) redirectUrl.searchParams.set('state', p.state);
+  const redirectUrl = new URL(params.callbackUrl);
+  if (params.state) redirectUrl.searchParams.set('state', params.state);
   redirectUrl.searchParams.set('code', code);
   return NextResponse.redirect(redirectUrl.toString());
 };

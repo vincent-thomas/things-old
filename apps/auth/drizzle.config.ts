@@ -1,7 +1,7 @@
 import type { Config } from 'drizzle-kit';
-import { config } from 'dotenv';
-import { env } from '@auth/env.mjs';
-config();
+import 'dotenv/config';
+import { env } from './env.mjs';
+
 export default {
   schema: './apps/auth/db/schema/index.ts',
   out: './apps/auth/db/drizzle-output',
