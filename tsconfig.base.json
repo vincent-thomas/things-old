@@ -15,9 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@api/*": ["./apps/api/*"],
       "@auth/*": ["./apps/auth/*"],
       "@drive/*": ["./apps/drive/*"],
-      "@api/*": ["./apps/api/*"],
       "@prisma/client": ["./apps/drive/prisma/out/index"]
     }
   },

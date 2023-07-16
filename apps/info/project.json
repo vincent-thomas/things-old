@@ -1,0 +1,74 @@
+{
+  "name": "info",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/info",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/apps/info"],
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "pnpm astro build",
+        "cwd": "apps/info"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "command": "pnpm astro dev",
+        "cwd": "apps/info"
+      }
+    },
+    "export": {
+      "executor": "@nx/next:export",
+      "options": {
+        "buildTarget": "auth:build:production"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "inputs": ["test"],
+      "options": {
+        "command": "vitest run",
+        "cwd": "./apps/auth"
+      },
+      "configurations": {
+        "coverage": {
+          "command": "vitest run --coverage"
+        },
+        "ui": {
+          "command": "vitest --ui"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/auth/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "drizzle": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "generate",
+      "configurations": {
+        "push": {
+          "command": "pnpm drizzle-kit push:mysql --config=./apps/auth/drizzle.config.ts"
+        },
+        "generate": {
+          "command": "pnpm drizzle-kit generate:mysql --config=./apps/auth/drizzle.config.ts"
+        },
+        "drop": {
+          "command": "pnpm drizzle-kit drop --config=./apps/auth/drizzle.config.ts"
+        },
+        "studio": {
+          "command": "pnpm drizzle-kit studio --config=./apps/auth/drizzle.config.ts"
+        }
+      }
+    }
+  },
+  "tags": ["runtime:node", "runtime:browser"]
+}
