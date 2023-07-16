@@ -3,6 +3,7 @@ import { createSession, saveSession } from '@auth/api/session';
 import { redirect } from 'next/navigation';
 import { env } from '@auth/env.mjs';
 import { verifyHash } from '@auth/api/hash';
+import Link from 'next/link';
 
 const Login = ({ searchParams }: any) => {
   // const sessionId = cookies().get('session')?.value;
@@ -23,12 +24,8 @@ const Login = ({ searchParams }: any) => {
     };
     const email = data.get('email') as string;
     const password = data.get('password') as string;
-    console.log('seev');
 
     const user = await getUser(email);
-    console.log('seev acter');
-
-    console.log(user);
 
     if (user === null) {
       handleUserNotFound();
@@ -61,6 +58,7 @@ const Login = ({ searchParams }: any) => {
       <input type="text" name="email" />
       <input type="password" name="password" />
       <button type="submit">submit</button>
+      <Link href="/oauth/signup">Maybe signup?</Link>
     </form>
   );
   // const { handleSubmit, register } = useForm();

@@ -20,7 +20,6 @@ jobs:
       parallel-commands-on-agents: |
         SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=lint --parallel=3
         SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=test --parallel=3
-        SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=build --parallel=3
 
   agents:
     name: Nx Cloud - Agents

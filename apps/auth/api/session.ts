@@ -1,6 +1,6 @@
 import { db } from '@auth/db';
 import { UserSession } from '@auth/types/user';
-import { session, authCode } from '@auth/db/schema';
+import { session, authCode, user } from '@auth/db/schema';
 import { cookies } from 'next/headers';
 import { eq } from 'drizzle-orm';
 import { uid } from 'uid/secure';
@@ -27,14 +27,23 @@ export const saveSession = (session: UserSession) => {
   return cookies().set('session', session.sessionId, {
     maxAge: EXPIRES,
     httpOnly: true,
+    sameSite: true,
     // sameSite: 'strict',
   });
 };
 
-export const getSession = (sessionId: string) => {
-  return db.query.session.findFirst({
+export const getSession = async (sessionId: string) => {
+  const tes = await db.query.session.findFirst({
     where: eq(session.sessionId, sessionId),
+    with: {
+      user: true,
+    },
   });
+  return tes;
+};
+
+export const removeSession = async (sessionId: string) => {
+  return await db.delete(session).where(eq(session.sessionId, sessionId));
 };
 
 export const createAuthCode = async (userId: string, scopes: scope[]) => {
@@ -47,6 +56,7 @@ export const createAuthCode = async (userId: string, scopes: scope[]) => {
     expires: new Date(new Date().getTime() + 300_000),
   };
   console.log(data);
+  await db.delete(authCode).where(eq(authCode.userId, userId));
   await db.insert(authCode).values(data);
 
   return data;
@@ -66,8 +76,15 @@ export const checkSession = async () => {
   const costore = cookies();
   const sessionId = costore.get('session')?.value as string;
   if (!sessionId) return null;
+
   const sessio = await getSession(sessionId);
+  const valid = new Date().getTime() < sessio?.expires.getTime();
   if (!sessio) {
+    costore.delete('session');
+    return null;
+  }
+  if (!valid) {
+    // await removeSession(sessio.sessionId);
     costore.delete('session');
     return null;
   }

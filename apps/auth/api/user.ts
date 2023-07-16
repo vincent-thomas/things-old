@@ -6,6 +6,7 @@ import { db } from '@auth/db';
 import { eq } from 'drizzle-orm';
 import { user } from '@auth/db/schema';
 import { uid } from 'uid/secure';
+import { env } from '@auth/env.mjs';
 const KEY_ENCODING = 'base64';
 export const createUser = async (
   email: string,
@@ -16,7 +17,7 @@ export const createUser = async (
   const encryptionKey = uid(32);
   const key = await createKeyHash(password);
 
-  const test = await db.insert(user).values({
+  await db.insert(user).values({
     id: userId,
     email,
     name,
@@ -24,7 +25,7 @@ export const createUser = async (
     password: key,
   });
 
-  console.log('YUSER', test);
+  return { userId };
 
   // await redis.json.set(`account:${userId}`, '.', {
   //   email,
@@ -46,13 +47,10 @@ export const getUser = async (email: string) => {
   const existingUser = await db.query.user.findFirst({
     where: eq(user.email, email),
   });
-
-  if (!existingUser) {
-    return null;
-  }
-
+  if (!existingUser) return null;
   return existingUser;
-  // return (await redis.json.get(
-  //   `account:${createHash(email)}`
-  // )) as unknown as User;
 };
+
+// return (await redis.json.get(
+//   `account:${createHash(email)}`
+// )) as unknown as User;

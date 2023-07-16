@@ -28,7 +28,8 @@
       "configurations": {
         "development": {
           "buildTarget": "auth:build:development",
-          "dev": true
+          "dev": true,
+          "hostname": "auth.localhost"
         },
         "production": {
           "buildTarget": "auth:build:production",

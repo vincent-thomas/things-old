@@ -8,7 +8,10 @@ import { user } from '@auth/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const GET = async () => {
-  const session = cookies().get('session')?.value;
+  const sessionId = cookies().get('session')?.value;
+  const session = await getSession(sessionId);
+
+  return NextResponse.json(session);
 
   // const dbSession = await redis.json.get(`session:${session}`);
 

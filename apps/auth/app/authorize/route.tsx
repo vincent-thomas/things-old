@@ -32,7 +32,6 @@ export const GET = async (req: NextRequest) => {
   }
 
   const params = p.data;
-
   const scopes = scopesSchema.parse(params.scopes) as ('name' | 'email')[];
   const session = await checkSession();
 
@@ -45,15 +44,10 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.redirect(redirectUrl.toString());
   }
 
-  // // TODO: Implement comfirming of scopes
-  // const user = (await redis.json.get(
-  //   `account:${session.userId}`
-  // )) as unknown as User;
-
   const { code } = await createAuthCode(session.userId, scopes);
 
   const redirectUrl = new URL(params.callbackUrl);
-  if (params.state) redirectUrl.searchParams.set('state', params.state);
+  if (params.state) redirectUrl.searchParams.set('state', params?.state);
   redirectUrl.searchParams.set('code', code);
   return NextResponse.redirect(redirectUrl.toString());
 };
