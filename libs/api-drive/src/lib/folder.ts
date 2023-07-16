@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { authorize } from '@api/shared/middleware';
+import { authorize } from '@api-shared/middleware';
 const bodySchema = z.object({
   folder_key: z
     .string()
