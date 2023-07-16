@@ -87,6 +87,9 @@ export const checkSession = async () => {
   if (!sessionId) return null;
 
   const sessio = await getSession(sessionId);
+  if (sessio === undefined) {
+    return null;
+  }
   const valid = new Date().getTime() < sessio?.expires.getTime();
   if (!sessio) {
     costore.delete('session');
