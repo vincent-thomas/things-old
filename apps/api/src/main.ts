@@ -3,10 +3,15 @@
  * This is only a minimal backend to get started.
  */
 
+import { ApiDriveRouter } from '@api/drive';
 import express from 'express';
 import * as path from 'path';
-
+import bodyParser from 'body-parser';
 const app = express();
+
+app.use(bodyParser.json());
+
+app.use('/drive', ApiDriveRouter);
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 

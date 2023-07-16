@@ -8,7 +8,7 @@ import { user } from '@auth/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const GET = async () => {
-  const sessionId = cookies().get('session')?.value;
+  const sessionId = cookies().get('session')?.value as string;
   const session = await getSession(sessionId);
 
   return NextResponse.json(session);
@@ -36,7 +36,8 @@ export const POST = async (req: NextRequest) => {
   if (!isReal) {
     return NextResponse.json('authcode cannot be verified');
   }
-  // const scopes = isReal.scopes.split('_');
+  const scopes = isReal.scopes.split('_');
+  console.log(scopes);
   // const currentUser = await db.query.user.findFirst({
   //   where: eq(user.id, isReal.userId),
   //   columns: {

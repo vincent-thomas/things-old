@@ -1,9 +1,12 @@
 import { db } from '@auth/db';
 import { UserSession } from '@auth/types/user';
-import { session, authCode, user } from '@auth/db/schema';
+import { session, authCode } from '@auth/db/schema';
 import { cookies } from 'next/headers';
 import { eq } from 'drizzle-orm';
 import { uid } from 'uid/secure';
+import jwt from 'jsonwebtoken';
+import { env } from '@auth/env.mjs';
+import { redis } from '@auth/clients';
 
 const EXPIRES = 86400;
 
@@ -36,7 +39,12 @@ export const getSession = async (sessionId: string) => {
   const tes = await db.query.session.findFirst({
     where: eq(session.sessionId, sessionId),
     with: {
-      user: true,
+      user: {
+        columns: {
+          createdAt: true,
+          email: true,
+        },
+      },
     },
   });
   return tes;
@@ -51,13 +59,14 @@ export const createAuthCode = async (userId: string, scopes: scope[]) => {
   const data = {
     code,
     userId,
-    scopes: scopes.join('_'),
+    scopes: scopes.join(','),
     createdAt: new Date(),
     expires: new Date(new Date().getTime() + 300_000),
   };
-  console.log(data);
-  await db.delete(authCode).where(eq(authCode.userId, userId));
-  await db.insert(authCode).values(data);
+  const key = 'auth_code:' + userId;
+
+  redis.json.set(key, '.', data);
+  redis.sendCommand(['EXPIRE', key, '300']);
 
   return data;
 };
