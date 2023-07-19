@@ -29,8 +29,7 @@
         "default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
-      ],
-      "dependsOn": ["prelint"]
+      ]
     },
     "serve": {
       "dependsOn": ["prepare"]
