@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "sh ./scripts/setup.sh"
+    "setup": "sh ./scripts/setup.sh"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec nx affected -t lint",
