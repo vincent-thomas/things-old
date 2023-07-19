@@ -46,3 +46,4 @@ Thumbs.db
 **/prisma/out
 .astro
 *.exe
+.local

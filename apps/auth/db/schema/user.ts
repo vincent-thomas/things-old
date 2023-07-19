@@ -10,7 +10,7 @@ import { authCode, session } from './auth';
 
 export const user = mysqlTable('users', {
   id: varchar('id', { length: 36 }).primaryKey(),
-  name: text('name').notNull(), // TODO:
+  name: text('name').notNull(),
   password: text('password').notNull(),
   encryptionKey: binary('encryptionKey', {
     length: 32,

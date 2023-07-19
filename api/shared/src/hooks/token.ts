@@ -1,16 +1,20 @@
 import { Request } from 'express';
 import { verify, decode } from 'jsonwebtoken';
 
-export const getToken = (req: Request, isDecoded = true) => {
+interface Token {
+  sub: string;
+  jti: string;
+  iat: number;
+  exp: number;
+  scope: ('name' | 'email')[];
+}
+
+export const getToken = (req: Request): Token => {
   const authHeader = req.headers?.authorization;
-  if (!authHeader) {
-    return null;
-  }
-  const [type, token] = authHeader.split(' ');
-  if (type.toLowerCase() !== 'bearer') {
-    return null;
-  }
-  return isDecoded ? decode(token) : token;
+
+  const [_, token] = authHeader!.split(' ');
+
+  return decode(token) as Token;
 };
 export const getVerifiedToken = (token: string) => {
   try {

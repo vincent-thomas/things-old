@@ -20,6 +20,24 @@
       "options": {
         "lintFilePatterns": ["api/data/**/*.ts"]
       }
+    },
+    "drizzle": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "push",
+      "configurations": {
+        "push": {
+          "command": "pnpm drizzle-kit push:mysql --config=api/data/drizzle.config.ts"
+        },
+        "generate": {
+          "command": "pnpm drizzle-kit generate:mysql --config=api/data/drizzle.config.ts"
+        },
+        "drop": {
+          "command": "pnpm drizzle-kit drop --config=api/data/drizzle.config.ts"
+        },
+        "studio": {
+          "command": "pnpm drizzle-kit studio --config=api/data/drizzle.config.ts"
+        }
+      }
     }
   },
   "tags": ["runtime:node"]

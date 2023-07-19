@@ -1,2 +1,3 @@
 npx simple-git-hooks
-docker compose -f ./deps-compose.yml up -d
+docker compose up -d
+echo "run 'pnpm exec nx run api-data:drizzle'"
