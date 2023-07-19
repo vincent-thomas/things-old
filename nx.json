@@ -12,23 +12,25 @@
     ],
     "sharedGlobals": []
   },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "./"
+  },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["prebuild"],
+      "dependsOn": ["lint"],
       "inputs": ["production", "^production"]
     },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
-    },
-    "e2e": {
-      "inputs": ["default", "^production"]
     },
     "lint": {
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
-      ]
+      ],
+      "dependsOn": ["prelint"]
     },
     "serve": {
       "dependsOn": ["prepare"]
@@ -41,14 +43,7 @@
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e",
-          "generate",
-          "check"
-        ],
+        "cacheableOperations": ["build", "prelint", "lint", "test", "check"],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="
       }
     }

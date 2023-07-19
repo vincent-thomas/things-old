@@ -2,7 +2,7 @@
   "name": "auth",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/auth",
-  "projectType": "application",
+  "implicitDependencies": ["api"],
   "targets": {
     "build": {
       "executor": "@nx/next:build",

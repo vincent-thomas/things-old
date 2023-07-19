@@ -17,7 +17,6 @@ const schema = z.object({
 const scopeSchema = z.array(z.string().regex(/name|email/));
 
 export const GET = async (req: NextRequest) => {
-  console.log('SEARC', req.nextUrl.search);
   const nextParams = req.nextUrl.searchParams;
   const pState = nextParams.get('state');
   const client_id = nextParams.get('client_id');

@@ -1,7 +1,7 @@
-import { env } from "../env.mjs";
-import { S3Client } from "@aws-sdk/client-s3";
-import { PrismaClient } from "@prisma/client";
-import { createClient } from "redis";
+import { env } from '../env.mjs';
+import { S3Client } from '@aws-sdk/client-s3';
+import { PrismaClient } from '@prisma/client';
+import { createClient } from 'redis';
 
 interface CustomNodeJsGlobal {
   prisma: PrismaClient;
@@ -10,7 +10,7 @@ declare const global: CustomNodeJsGlobal;
 
 const prisma = global.prisma || new PrismaClient();
 
-if (process.env.NODE_ENV === "development") global.prisma = prisma;
+if (process.env.NODE_ENV === 'development') global.prisma = prisma;
 const s3 = new S3Client({
   region: env.S3_FILES_REGION,
   credentials: {
@@ -20,8 +20,8 @@ const s3 = new S3Client({
 });
 
 const redis = createClient({
-  url: env.REDIS_URL,
-}).on("error", (err) => console.log("Redis Client Error", err));
+  url: env.DRIVE_REDIS_URL,
+}).on('error', (err) => console.log('Redis Client Error', err));
 redis.connect();
 
 export const c = {

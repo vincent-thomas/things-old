@@ -39,7 +39,7 @@ export const verifyAuthCode = async (
   const authCode = (await redis.json.get(
     `auth_code:${code}`
   )) as unknown as IAuthCode;
-  if (authCode.userId !== userId && authCode === null) {
+  if (authCode?.userId !== userId && authCode === null) {
     return null;
   }
 

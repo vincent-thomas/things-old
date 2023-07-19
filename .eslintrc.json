@@ -16,6 +16,18 @@
               {
                 "sourceTag": "*",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "runtime:node",
+                "onlyDependOnLibsWithTags": ["runtime:node"]
+              },
+              {
+                "sourceTag": "runtime:deno",
+                "onlyDependOnLibsWithTags": ["runtime:deno"]
+              },
+              {
+                "sourceTag": "runtime:browser",
+                "onlyDependOnLibsWithTags": ["runtime:browser"]
               }
             ]
           }

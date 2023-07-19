@@ -15,9 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["./apps/api/*"],
-      "@api/drive": ["libs/api-drive/src/index.ts"],
-      "@api-shared/*": ["libs/api-shared/src/*"],
+      "@api/api": ["api/api/*"],
+      "@api/data": ["api/data/src/index.ts"],
+      "@api/drive": ["api/drive/src/index.ts"],
+      "@api/shared": ["api/shared/src/index.ts"],
       "@auth/*": ["./apps/auth/*"],
       "@drive/*": ["./apps/drive/*"],
       "@prisma/client": ["./apps/drive/prisma/out/index"]

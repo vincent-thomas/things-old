@@ -1,0 +1,26 @@
+{
+  "name": "api-data",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "api/data/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/api/data",
+        "tsConfig": "api/data/tsconfig.lib.json",
+        "packageJson": "api/data/package.json",
+        "main": "api/data/src/index.ts",
+        "assets": ["api/data/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["api/data/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["runtime:node"]
+}

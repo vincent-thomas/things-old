@@ -4,8 +4,6 @@ import { session, authCode } from '@auth/db/schema';
 import { cookies } from 'next/headers';
 import { eq } from 'drizzle-orm';
 import { uid } from 'uid/secure';
-import jwt from 'jsonwebtoken';
-import { env } from '@auth/env.mjs';
 import { redis } from '@auth/clients';
 
 const EXPIRES = 86400;

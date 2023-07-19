@@ -16,17 +16,14 @@ const bodySchema = z.object({
 export const POST = async (req: NextRequest) => {
   const json = await req.json();
   const body = bodySchema.parse(json);
-  console.log('test 1');
   const user = await getUser(body.email);
-  console.log('test 2');
 
   if (user === null) return falseCredentialsAction();
 
   const passwordIsValid = await verifyHash(user.password, body.password);
   if (!passwordIsValid) return falseCredentialsAction();
 
-  const token = await createToken(user.id, ['email', 'name']);
-  console.log(token);
+  const token = createToken(user.id, ['email', 'name']);
 
   saveToken(token);
 

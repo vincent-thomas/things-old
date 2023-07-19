@@ -1,0 +1,40 @@
+{
+  "name": "api-drive",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "api/drive/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "rootDir": ".",
+        "outputPath": "dist/api/drive",
+        "tsConfig": "api/drive/tsconfig.lib.json",
+        "main": "api/drive/src/index.ts",
+        "assets": ["api/drive/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["api/drive/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "api/drive/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": ["runtime:node"]
+}

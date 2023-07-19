@@ -19,11 +19,7 @@ const handleLogin = ({
   }).then((res) => res.json());
 
 const Page = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   const sp = useSearchParams();
   const mutation = useMutation({

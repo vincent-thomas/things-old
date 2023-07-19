@@ -2,7 +2,6 @@
   "name": "drive",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/drive",
-  "projectType": "application",
   "implicitDependencies": ["api", "auth"],
   "targets": {
     "build": {
@@ -38,7 +37,6 @@
         }
       }
     },
-
     "export": {
       "executor": "@nx/next:export",
       "options": {

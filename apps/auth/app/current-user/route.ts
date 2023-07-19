@@ -2,9 +2,6 @@ import { db } from '@auth/db';
 import { user } from '@auth/db/schema';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
-import { env } from '@auth/env.mjs';
-import { AccessToken } from '@auth/api/token';
 import { verifyAuthorizationHeader } from '@auth/api/authorization';
 export const GET = async (req: NextRequest) => {
   const header = req.headers.get('authorization');
@@ -28,7 +25,6 @@ export const GET = async (req: NextRequest) => {
       id: true,
     },
   });
-  console.log(dbUser);
 
   return NextResponse.json(dbUser);
 };

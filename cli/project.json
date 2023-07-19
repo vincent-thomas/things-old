@@ -1,0 +1,44 @@
+{
+  "name": "cli",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "cli",
+  "implicitDependencies": ["api", "auth"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["dist/cli"],
+      "options": {
+        "command": "deno compile ./mod.ts --output ../dist/cli/things",
+        "cwd": "cli"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "development": {
+          "command": "deno run --watch mod.ts",
+          "cwd": "cli"
+        },
+        "production": {
+          "command": "things.exe",
+          "cwd": "dist/cli"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["cli/**/*.ts"]
+      }
+    },
+    "prelint": {
+      "command": "deno lint",
+      "options": {
+        "cwd": "cli"
+      }
+    }
+  },
+  "tags": ["runtime:deno"]
+}

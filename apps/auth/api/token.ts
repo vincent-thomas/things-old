@@ -1,8 +1,7 @@
-import { redis } from '@auth/clients';
 import { env } from '@auth/env.mjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import { IAuthCode, deleteAuthCode } from './auth_code';
+import { deleteAuthCode } from './auth_code';
 
 type TScope = 'email' | 'name';
 
@@ -36,10 +35,10 @@ export const createTokenHeaders = (accessToken: string) => {
 export const getToken = async () => {
   const costore = cookies();
   const token = costore.get('access_token')?.value as string;
-  console.log(token);
   if (!token) return null;
 
   const accessToken = jwt.verify(token, env.AUTH_SIGN_KEY);
+
   return accessToken as {
     sub: string;
     jti: string;
@@ -54,6 +53,7 @@ export const saveToken = (accessToken: string) => {
   store.set('access_token', accessToken, {
     maxAge: 86_400,
     httpOnly: true,
+    sameSite: 'lax',
   });
 };
 

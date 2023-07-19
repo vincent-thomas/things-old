@@ -28,7 +28,8 @@
 		"rssowl.close-all",
 		"nrwl.angular-console",
 		"astro-build.astro-vscode",
-		"ZixuanChen.vitest-explorer"
+		"ZixuanChen.vitest-explorer",
+		"golang.go"
 	],
       "settings": {
         "typescript.tsdk": "node_modules/typescript/lib"
