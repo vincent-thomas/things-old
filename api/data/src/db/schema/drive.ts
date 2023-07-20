@@ -1,13 +1,30 @@
-import { binary, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
+import {
+  binary,
+  mysqlTable,
+  uniqueIndex,
+  varchar,
+} from 'drizzle-orm/mysql-core';
 import { relations } from 'drizzle-orm';
+import { createdAt, userId, id } from '../helpers';
 
-export const folder = mysqlTable('folders', {
-  id: varchar('id', { length: 36 }).primaryKey(),
-  folderName: varchar('folderName', { length: 36 }).notNull(),
-  ownedById: varchar('ownedById', { length: 36 }).notNull(),
-  parentFolderId: varchar('id', { length: 36 }),
-  createdAt: timestamp('createdAt').defaultNow().notNull(),
-});
+export const fileType = varchar('fileType', { length: 3 }).notNull();
+
+export const folder = mysqlTable(
+  'folders',
+  {
+    id,
+    folderName: varchar('folderName', { length: 36 }).notNull(),
+    ownedById: userId('ownedById'),
+    parentFolderId: varchar('parentFolderId', { length: 36 }),
+    createdAt,
+  },
+  (folder) => ({
+    nameIndex: uniqueIndex('folder_name').on(
+      folder.folderName,
+      folder.parentFolderId
+    ),
+  })
+);
 
 export const folderRelation = relations(folder, ({ one, many }) => ({
   folders: many(folder, { relationName: 'child_folder' }),
@@ -20,15 +37,15 @@ export const folderRelation = relations(folder, ({ one, many }) => ({
 }));
 
 export const file = mysqlTable('files', {
-  id: varchar('id', { length: 36 }).primaryKey(),
+  id,
   filename: varchar('filename', { length: 36 }).notNull(),
-  ownedById: varchar('ownedById', { length: 36 }).notNull(),
-  fileType: varchar('fileType', { length: 3 }).notNull(),
+  ownedById: userId('ownedById'),
+  fileType,
   encryptionKey: binary('encryptionKey', {
     length: 32,
   }).notNull(),
-  parentFolderId: varchar('id', { length: 36 }),
-  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  parentFolderId: varchar('parentFolderId', { length: 36 }),
+  createdAt,
 });
 
 export const fileRelation = relations(file, ({ one }) => ({

@@ -8,7 +8,9 @@ export const validate = <T>(schema: ZodSchema<T>) => ({
     if (!isValid.success) {
       res.status(400).send(isValid);
       return;
-    } else next();
+    } else {
+      next();
+    }
   },
   values: (req: Request) => {
     const { body, params, query } = req;

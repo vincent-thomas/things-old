@@ -4,13 +4,13 @@
   "sourceRoot": "api/drive/src",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "rootDir": ".",
         "outputPath": "dist/api/drive",
         "tsConfig": "api/drive/tsconfig.lib.json",
         "main": "api/drive/src/index.ts",
+        "packageJson": "api/drive/package.json",
         "assets": ["api/drive/*.md"]
       }
     },
@@ -22,5 +22,5 @@
       }
     }
   },
-  "tags": ["runtime:node"]
+  "tags": ["runtime:node", "lib:api"]
 }

@@ -19,10 +19,9 @@
       "@api/data": ["api/data/src/index.ts"],
       "@api/drive": ["api/drive/src/index.ts"],
       "@api/shared": ["api/shared/src/index.ts"],
-      "@auth/*": ["./apps/auth/*"],
-      "@drive/*": ["./apps/drive/*"],
-      "@prisma/client": ["./apps/drive/prisma/out/index"]
+      "@auth/*": ["apps/auth/*"],
+      "@drive/*": ["apps/drive/*"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist", "out"]
 }

@@ -4,13 +4,13 @@
   "sourceRoot": "api/data/src",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/api/data",
         "tsConfig": "api/data/tsconfig.lib.json",
-        "packageJson": "api/data/package.json",
         "main": "api/data/src/index.ts",
+        "packageJson": "api/data/package.json",
         "assets": ["api/data/*.md"]
       }
     },
@@ -40,5 +40,5 @@
       }
     }
   },
-  "tags": ["runtime:node"]
+  "tags": ["runtime:node", "lib:api"]
 }

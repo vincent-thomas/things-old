@@ -1,10 +1,10 @@
-import { api } from "@drive/services/api";
+import { api } from '@drive/services/api';
 
-import type { ServerPage } from "@drive/types/page";
-import type { File } from "@prisma/client";
-import { DeleteFileButton } from "./delete-file-button";
-import { Folder } from "./folder";
-import Link from "next/link";
+import type { ServerPage } from '@drive/types/page';
+import type { File } from '@drive/prisma/out';
+import { DeleteFileButton } from './delete-file-button';
+import { Folder } from './folder';
+import Link from 'next/link';
 
 const Page = async ({ params }: ServerPage) => {
   const user = await api.getUser();
@@ -35,7 +35,9 @@ const Page = async ({ params }: ServerPage) => {
           <div className="flex flex-col gap-4">
             {files.map((file: File) => (
               <div key={file.id} className="flex gap-4">
-                <Link href={`/drive/${folder?.id}/file/${file.id}`}>{file.filename}</Link>
+                <Link href={`/drive/${folder?.id}/file/${file.id}`}>
+                  {file.filename}
+                </Link>
                 <DeleteFileButton fileId={file.id} />
               </div>
             ))}

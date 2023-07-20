@@ -4,13 +4,13 @@
   "sourceRoot": "api/shared/src",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "rootDir": ".",
         "outputPath": "dist/api/shared",
         "tsConfig": "api/shared/tsconfig.lib.json",
         "main": "api/shared/src/index.ts",
+        "packageJson": "api/shared/package.json",
         "assets": ["api/shared/*.md"]
       }
     },
@@ -22,5 +22,5 @@
       }
     }
   },
-  "tags": ["runtime:node"]
+  "tags": ["runtime:node", "lib:api"]
 }

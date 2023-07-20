@@ -10,7 +10,6 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["@prisma/client"],
             "allowCircularSelfDependency": true,
             "depConstraints": [
               {
@@ -28,6 +27,10 @@
               {
                 "sourceTag": "runtime:browser",
                 "onlyDependOnLibsWithTags": ["runtime:browser"]
+              },
+              {
+                "sourceTag": "app:api",
+                "onlyDependOnLibsWithTags": ["lib:api"]
               }
             ]
           }

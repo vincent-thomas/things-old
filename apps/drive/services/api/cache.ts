@@ -1,5 +1,5 @@
-import type { User } from "@prisma/client";
-import { c } from "../clients";
+import type { User } from '@drive/prisma/out';
+import { c } from '../clients';
 
 interface UserCache {
   email: string;
@@ -8,7 +8,7 @@ interface UserCache {
   encryptionKey: Buffer;
 }
 
-const KEY_ENCODING = "base64";
+const KEY_ENCODING = 'base64';
 
 export const getCachedUser = async (
   userId: string,
@@ -16,7 +16,7 @@ export const getCachedUser = async (
 ): Promise<UserCache | null> => {
   const userCache = (await c.redis.json.get(
     `user-session:${userId}`
-  )) as unknown as Omit<UserCache, "encryptionKey"> & { encryptionKey: string };
+  )) as unknown as Omit<UserCache, 'encryptionKey'> & { encryptionKey: string };
   if (!userCache?.id) {
     return null;
   }
@@ -33,11 +33,11 @@ export const getCachedUser = async (
 };
 
 export const cacheUser = async (user: User) => {
-  c.redis.json.set(`user-session:${user.id}`, ".", {
+  c.redis.json.set(`user-session:${user.id}`, '.', {
     email: user.email,
     id: user.id,
     name: user.name,
     encryptionKey: Buffer.from(user.encryption_key).toString(KEY_ENCODING),
   });
-  await c.redis.sendCommand(["EXPIRE", `user-session:${user.id}`, "86400"]);
+  await c.redis.sendCommand(['EXPIRE', `user-session:${user.id}`, '86400']);
 };

@@ -3,12 +3,13 @@
  * This is only a minimal backend to get started.
  */
 
-import { ApiDriveRouter } from '@api/drive';
+import driveRoute from '@api/drive';
 import express from 'express';
-import * as path from 'path';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import config from 'dotenv';
+config.config();
 const app = express();
 
 app.use(
@@ -21,8 +22,7 @@ app.use(
   cookieParser()
 );
 
-app.use('/drive', ApiDriveRouter);
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/drive', driveRoute);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {

@@ -1,4 +1,4 @@
-import { AuthRequest } from '@api/shared';
+import { AuthRequest, Error, ErrorCause } from '@api/shared';
 import { NextFunction, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 
@@ -12,13 +12,17 @@ export const authorize: any = async (
   res: Response,
   next: NextFunction
 ) => {
+  const error = new Error(
+    ErrorCause.NOT_AUTHORIZED,
+    'You are not authorized to beform this action'
+  ).getError();
   if (!req.headers?.authorization) {
-    res.status(401).json({ no: 'no' });
+    res.status(401).json(error);
     return;
   }
   const [type, value] = getAuthorizationValues(req.headers?.authorization);
   if (type.toLowerCase() !== 'bearer') {
-    res.status(401).json({ no: 'no' });
+    res.status(401).json(error);
     return;
   }
   const validToken = jwt.verify(
@@ -26,7 +30,7 @@ export const authorize: any = async (
     process.env['AUTH_SIGN_KEY'] as string
   ) as jwt.JwtPayload;
   if (validToken?.exp === undefined || validToken?.exp < new Date().getTime()) {
-    res.status(401).json({ no: 'no' });
+    res.status(401).json(error);
     return;
   }
   next();

@@ -8,6 +8,7 @@ const envSchema = z.object({
   API_S3_ACCOUNT_ID: z.string(),
   API_S3_SECRET: z.string(),
   API_S3_REGION: z.string(),
+  API_S3_BUCKET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

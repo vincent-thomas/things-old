@@ -1,6 +1,6 @@
 import { env } from '../env.mjs';
 import { S3Client } from '@aws-sdk/client-s3';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@drive/prisma/out';
 import { createClient } from 'redis';
 
 interface CustomNodeJsGlobal {

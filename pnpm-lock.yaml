@@ -261,9 +261,6 @@ importers:
       prisma:
         specifier: ^4.16.1
         version: 4.16.1
-      simple-git-hooks:
-        specifier: ^2.8.1
-        version: 2.8.1
       tailwindcss:
         specifier: ^3.3.0
         version: 3.3.0(postcss@8.4.21)(ts-node@10.9.1)
@@ -15601,12 +15598,6 @@ packages:
       decompress-response: 6.0.0
       once: 1.4.0
       simple-concat: 1.0.1
-
-  /simple-git-hooks@2.8.1:
-    resolution: {integrity: sha512-DYpcVR1AGtSfFUNzlBdHrQGPsOhuuEJ/FkmPOOlFysP60AHd3nsEpkGq/QEOdtUyT1Qhk7w9oLmFoMG+75BDog==}
-    hasBin: true
-    requiresBuild: true
-    dev: true
 
   /simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}

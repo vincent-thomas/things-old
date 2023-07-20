@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { folder } from './lib/folder';
+import { file } from './lib/file';
 
-const ApiDriveRouter = Router();
+const driveRouter = Router();
 
-ApiDriveRouter.use('/folder', folder);
-ApiDriveRouter.get('/ping', (req, res) => {
+driveRouter.use('/folder', folder);
+driveRouter.use('/file', file);
+driveRouter.get('/ping', (req, res) => {
   res.send('Drive api is up');
 });
-export { ApiDriveRouter };
+export default driveRouter;

@@ -13,7 +13,6 @@
         "outputPath": "dist/api/api",
         "main": "api/api/src/main.ts",
         "tsConfig": "api/api/tsconfig.app.json",
-        "assets": ["api/api/src/assets"],
         "isolatedConfig": true,
         "webpackConfig": "api/api/webpack.config.js"
       },
@@ -45,5 +44,5 @@
       }
     }
   },
-  "tags": ["runtime:node"]
+  "tags": ["runtime:node", "app:api"]
 }
