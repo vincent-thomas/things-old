@@ -1,7 +1,7 @@
-import { api } from "@drive/services/api";
-import type { FC } from "react";
-import Image from "next/image";
-import { LogoutButton } from "@drive/app/(public)/components/LogoutButton";
+import { api } from '@drive/services/api';
+import type { FC } from 'react';
+import { LogoutButton } from '@drive/app/(public)/components/LogoutButton';
+import { Avatar } from './avatar';
 
 const Layout: FC<{
   children: React.ReactNode;
@@ -16,12 +16,13 @@ const Layout: FC<{
         <nav className="align-center flex justify-end gap-4 bg-gray-200 px-4 py-2">
           <LogoutButton />
           <h2 className="font-bold">{user?.name}</h2>
-          <Image
+          <Avatar userId={user?.id} />
+          {/* <Image
             src={`https://api.dicebear.com/6.x/pixel-art/svg?seed=${user?.id}`}
             alt="user generated image"
             height={50}
             width={50}
-          />
+          /> */}
         </nav>
         <div className="min-h-[100%]">
           {filebar}

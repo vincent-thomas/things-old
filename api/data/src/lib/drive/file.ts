@@ -27,7 +27,7 @@ export const uploadFile = async ({
   const encryptionKey = uid(32);
   const fileId = uid(14);
 
-  await db.insert(file).values({
+  const data = {
     id: fileId,
     encryptionKey,
     filename: fileKey,
@@ -35,7 +35,9 @@ export const uploadFile = async ({
     ownedById: userId,
     parentFolderId: folderId,
     createdAt: new Date(),
-  });
+  };
+
+  await db.insert(file).values(data);
   const usableKey = toBuffer(encryptionKey, 'utf-8');
 
   const sendCommand = new PutObjectCommand({
@@ -43,7 +45,11 @@ export const uploadFile = async ({
     Key: getFilePath(userId, fileId),
     Body: encrypt(fromBuffer(content, 'utf-8'), usableKey),
   });
-  return await s3.send(sendCommand);
+  await s3.send(sendCommand);
+  return {
+    ...data,
+    encryptionKey: undefined,
+  };
 };
 
 interface getFileInput {
@@ -52,15 +58,22 @@ interface getFileInput {
 }
 
 export const getFile = async ({ fileId, userId }: getFileInput) => {
-  const { encryptionKey, ...fileRecord } = await db.query.file.findFirst({
+  const fileR = await db.query.file.findFirst({
     where: and(eq(file.ownedById, userId), eq(file.id, fileId)),
   });
+  if (fileR === undefined) {
+    return null;
+  }
+  const { encryptionKey, ...fileRecord } = fileR;
   const getFileCommand = new GetObjectCommand({
     Key: `${userId}/drive/${fileRecord.id}`,
     Bucket: env.API_S3_BUCKET,
   });
   const result = await s3.send(getFileCommand);
-  const encryptedBody = await result.Body.transformToString('utf-8');
+  const encryptedBody = await result?.Body?.transformToString();
+  if (encryptedBody === undefined) {
+    return null;
+  }
   const body = decrypt(encryptedBody, toBuffer(encryptionKey, 'utf-8'));
 
   return { ...fileRecord, body };

@@ -1,44 +1,48 @@
 {
-  "name": "cli",
+  "name": "things",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "cli",
-  "implicitDependencies": ["api", "auth"],
+  "projectType": "application",
+  "sourceRoot": "./cli/src",
   "targets": {
     "build": {
-      "executor": "nx:run-commands",
-      "outputs": ["dist/cli"],
+      "executor": "@monodon/rust:build",
+      "outputs": ["{options.target-dir}"],
       "options": {
-        "command": "deno compile ./mod.ts --output ../dist/cli/things",
-        "cwd": "cli"
+        "target-dir": "dist/target/cli",
+        "release": true
       }
     },
-    "serve": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "development",
+    "test": {
+      "executor": "@monodon/rust:test",
+      "outputs": ["{options.target-dir}"],
+      "options": {
+        "target-dir": "dist/target/cli"
+      },
       "configurations": {
-        "development": {
-          "command": "deno run --watch mod.ts",
-          "cwd": "cli"
-        },
         "production": {
-          "command": "things.exe",
-          "cwd": "dist/cli"
+          "release": true
         }
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@monodon/rust:lint",
+      "outputs": ["{options.target-dir}"],
       "options": {
-        "lintFilePatterns": ["cli/**/*.ts"]
+        "target-dir": "dist/target/cli"
       }
     },
-    "prelint": {
-      "command": "deno lint",
+    "run": {
+      "executor": "@monodon/rust:run",
+      "outputs": ["{options.target-dir}"],
       "options": {
-        "cwd": "cli"
+        "target-dir": "dist/target/cli"
+      },
+      "configurations": {
+        "production": {
+          "release": true
+        }
       }
     }
   },
-  "tags": ["runtime:deno"]
+  "tags": []
 }

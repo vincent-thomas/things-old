@@ -1,6 +1,7 @@
 import { useSearchParams } from 'next/navigation';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
+import { Button } from '@things/ui';
 type Inputs = {
   email: string;
   password: string;
@@ -48,7 +49,7 @@ const Page = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type="email" {...register('email')} />
       <input type="password" {...register('password')} />
-      <button type="submit">testing</button>
+      <Button type="submit">testing</Button>
     </form>
   );
 };

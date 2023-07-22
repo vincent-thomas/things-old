@@ -3,17 +3,16 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "api/drive/src",
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/api/drive",
-        "tsConfig": "api/drive/tsconfig.lib.json",
-        "main": "api/drive/src/index.ts",
-        "packageJson": "api/drive/package.json",
-        "assets": ["api/drive/*.md"]
-      }
-    },
+    // "build": {
+    //   "executor": "@nx/js:tsc",
+    //   "outputs": ["{options.outputPath}"],
+    //   "options": {
+    //     "outputPath": "dist/api/drive",
+    //     "tsConfig": "api/drive/tsconfig.lib.json",
+    //     "main": "api/drive/src/index.ts",
+    //     "assets": ["api/drive/*.md"]
+    //   }
+    // },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

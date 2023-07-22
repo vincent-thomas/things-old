@@ -7,12 +7,12 @@ import { Error, ErrorCause } from '@api/shared';
 interface Inputs {
   ownerId: string;
   folderKey: string;
-  parentFolderId: string | null;
+  parentFolderId?: string;
 }
 
 export const createFolder = async ({
   folderKey,
-  parentFolderId = null,
+  parentFolderId,
   ownerId,
 }: Inputs) => {
   if (parentFolderId) {
@@ -60,7 +60,13 @@ export const getFolders = async (
       parentFolderId === null ? undefined : eq(folder.id, parentFolderId)
     ),
     with: {
-      files: files ? true : undefined,
+      files: files
+        ? {
+            columns: {
+              encryptionKey: false,
+            },
+          }
+        : undefined,
       folders: folders ? true : undefined,
     },
   });

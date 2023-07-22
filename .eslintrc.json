@@ -29,6 +29,10 @@
                 "onlyDependOnLibsWithTags": ["runtime:browser"]
               },
               {
+                "sourceTag": "runtime:ssr",
+                "onlyDependOnLibsWithTags": ["runtime:browser", "runtime:node"]
+              },
+              {
                 "sourceTag": "app:api",
                 "onlyDependOnLibsWithTags": ["lib:api"]
               }

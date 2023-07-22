@@ -2,6 +2,7 @@
   "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "api/api/src",
+  "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",

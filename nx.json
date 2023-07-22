@@ -8,7 +8,10 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/.eslintrc.json"
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
+      "!{projectRoot}/.storybook/**/*",
+      "!{projectRoot}/tsconfig.storybook.json"
     ],
     "sharedGlobals": []
   },
@@ -18,7 +21,7 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["lint"],
+      "dependsOn": ["prebuild", "lint"],
       "inputs": ["production", "^production"]
     },
     "test": {
@@ -29,20 +32,36 @@
         "default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
-      ]
+      ],
+      "dependsOn": ["prelint"]
     },
     "serve": {
       "dependsOn": ["prepare"]
     },
     "check": {
       "inputs": ["production", "^production"]
+    },
+    "build-storybook": {
+      "inputs": [
+        "default",
+        "^production",
+        "{projectRoot}/.storybook/**/*",
+        "{projectRoot}/tsconfig.storybook.json"
+      ]
     }
   },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "prelint", "lint", "test", "check"],
+        "cacheableOperations": [
+          "build",
+          "prelint",
+          "lint",
+          "test",
+          "check",
+          "build-storybook"
+        ],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="
       }
     }
@@ -53,6 +72,15 @@
         "style": "none",
         "linter": "eslint"
       }
+    },
+    "@nx/react": {
+      "application": {
+        "babel": true
+      },
+      "library": {
+        "unitTestRunner": "vitest"
+      }
     }
-  }
+  },
+  "plugins": ["@monodon/rust"]
 }

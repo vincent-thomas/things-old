@@ -1,4 +1,3 @@
-import { c } from '@drive/services/clients';
 import { cookies } from 'next/headers';
 
 const Page = async () => {

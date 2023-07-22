@@ -1,4 +1,4 @@
-import { AuthRequest, Error, ErrorCause } from '@api/shared';
+import { AuthRequest, Error, ErrorCause } from '../';
 import { NextFunction, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 

@@ -2,26 +2,29 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "baseUrl": ".",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "strict": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2017",
     "module": "esnext",
+    "esModuleInterop": true,
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "paths": {
-      "@api/api": ["api/api/*"],
+      "@api/app": ["api/api/*"],
       "@api/data": ["api/data/src/index.ts"],
       "@api/drive": ["api/drive/src/index.ts"],
       "@api/shared": ["api/shared/src/index.ts"],
       "@auth/*": ["apps/auth/*"],
-      "@drive/*": ["apps/drive/*"]
+      "@drive/*": ["apps/drive/*"],
+      "@things/ui": ["libs/ui/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "out"]
+  "exclude": ["node_modules", "tmp", "dist", "out", "cli"]
 }

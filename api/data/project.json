@@ -3,17 +3,17 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "api/data/src",
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/api/data",
-        "tsConfig": "api/data/tsconfig.lib.json",
-        "main": "api/data/src/index.ts",
-        "packageJson": "api/data/package.json",
-        "assets": ["api/data/*.md"]
-      }
-    },
+    // "build": {
+    //   "executor": "@nx/js:swc",
+    //   "outputs": ["{options.outputPath}"],
+    //   "options": {
+    //     "outputPath": "dist/api/data",
+    //     "tsConfig": "api/data/tsconfig.lib.json",
+    //     "main": "api/data/src/index.ts",
+    //     "packageJson": "api/data/package.json",
+    //     "assets": ["api/data/*.md"]
+    //   }
+    // },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

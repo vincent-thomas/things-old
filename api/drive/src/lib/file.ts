@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { authorize, getToken, validate } from '@api/shared';
+import { authorize, getToken, toBuffer, validate } from '@api/shared';
 import { getFile, uploadFile } from '@api/data';
+import bodyParser from 'body-parser';
 const file = Router();
 
 const { input: getFileValidator, values: getFileValues } = validate(
@@ -30,20 +31,28 @@ const { input: createFileValidator, values: getFileInput } = validate(
       fileType: z.string().min(2).max(4),
       folderId: z.string(),
     }),
+    body: z.string(),
   })
 );
 
-file.post('/', authorize, createFileValidator, async (req, res) => {
-  const { query } = getFileInput(req);
-  const token = getToken(req);
-  const result = await uploadFile({
-    fileKey: query.fileKey,
-    fileType: query.fileType,
-    userId: token.sub,
-    folderId: query.folderId,
-    content: Buffer.from('testing'),
-  });
-  res.send(result);
-});
+file.post(
+  '/',
+  bodyParser.text(),
+  authorize,
+  createFileValidator,
+  async (req, res) => {
+    const { query, body } = getFileInput(req);
+    const token = getToken(req);
+    const result = await uploadFile({
+      fileKey: query.fileKey,
+      fileType: query.fileType,
+      userId: token.sub,
+      folderId: query.folderId,
+      content: toBuffer(body, 'utf-8'),
+    });
+
+    res.send(result);
+  }
+);
 
 export { file };
