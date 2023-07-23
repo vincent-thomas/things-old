@@ -9,8 +9,14 @@ const Input = forwardRef<
   return (
     <input
       type={type}
+      onKeyDown={(e) => {
+        if (e.key !== 'Escape' || document.activeElement === document.body)
+          return;
+        if (document.activeElement instanceof HTMLElement)
+          document.activeElement.blur();
+      }}
       className={cn(
-        `flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
+        `flex h-10 w-full text-primary rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-border-placeholder focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
         className
       )}
       ref={ref}

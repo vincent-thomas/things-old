@@ -23,4 +23,8 @@ pre-commit:
       tags: Prettier
       glob: '*.{js,ts,jsx,tsx}'
       exclude: 'application.rb|routes.rb'
-      run: pnpm exec prettier -c *.{js,ts,jsx,tsx} --config .prettierrc -w
+      run: pnpm exec prettier -c *.{js,ts,jsx,tsx} --config .prettierrc
+    nx-lint:
+      tags: Prettier
+      glob: '*.{js,ts,jsx,tsx}'
+      run: pnpm exec nx format:check

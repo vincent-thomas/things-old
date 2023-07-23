@@ -1,0 +1,81 @@
+import { Meta, Story, Canvas } from '@storybook/blocks';
+import {
+  default as ButtonStories,
+  Default,
+  Destructive,
+  Ghost,
+  Link,
+  Outline,
+} from './button.stories';
+
+<Meta title="Button" of={ButtonStories} />
+
+# Buttons
+
+<p className="w-[40rem]">All variants of `Button`. These are in order:</p>
+
+- Default (**Primary**)
+- Outline (**Secondary**)
+- Destructive
+- Ghost
+- Link
+
+<Canvas>
+  <Story of={Default} />
+  <Story of={Outline} />
+  <Story of={Destructive} />
+  <Story of={Ghost} />
+  <Story of={Link} />
+</Canvas>
+
+# Default
+
+<p className="w-[40rem]">
+  Default `Button` is often used as a primary action for the user. It also
+  indicates the clear and logital path for the user to take, to achieve the
+  desired user-flow
+</p>
+
+<Canvas>
+  <Story of={Default} />
+</Canvas>
+
+# Outline
+
+<p className="w-[40rem]">
+  Outline `Button` is often used as a secondary action for the user.
+</p>
+
+<Canvas>
+  <Story of={Outline} />
+</Canvas>
+
+# Destructive
+
+<p className="w-[40rem]">
+  Destructive `Button` promotes an action that is dangreous and destructive to
+  click.
+</p>
+
+<Canvas>
+  <Story of={Destructive} />
+</Canvas>
+
+# Ghost
+
+<p className="w-[40rem]">Ghost `Button` is a boring action</p>
+
+<Canvas>
+  <Story of={Ghost} />
+</Canvas>
+
+# Link
+
+<p className="w-[40rem]">
+  Link `Button` is a link. Can be an external link or a button that only wants
+  to look like a link.
+</p>
+
+<Canvas>
+  <Story of={Link} />
+</Canvas>

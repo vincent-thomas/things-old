@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { verify, decode } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 
 interface Token {
   sub: string;
@@ -12,14 +12,10 @@ interface Token {
 export const getToken = (req: Request): Token => {
   const authHeader = req.headers?.authorization;
 
-  const token = authHeader!.split(' ')[1];
+  const token = authHeader?.split(' ')[1];
 
-  return decode(token) as Token;
-};
-export const getVerifiedToken = (token: string) => {
-  try {
-    return verify(token, process.env['AUTH_SIGN_KEY'] as string);
-  } catch {
-    return null;
-  }
+  return verify(
+    token as string,
+    process.env['AUTH_SIGN_KEY'] as string
+  ) as Token;
 };

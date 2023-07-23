@@ -1,5 +1,5 @@
 ---
-
+import "@things/ui/styles";
 interface Props {
 	title: string;
 }
@@ -27,7 +27,9 @@ const { title } = Astro.props;
 	:root {
 		--accent: 124, 58, 237;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-		--font-sans: "Poppins"
+		--font-sans: "Poppins";
+
+    background-color: var(--background)
 	}
 	html {
 		font-family: system-ui, sans-serif;

@@ -17,7 +17,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/libs/ui"
+        "outputPath": "dist/libs/ui",
+        "cssCodeSplit": true
       },
       "configurations": {
         "development": {

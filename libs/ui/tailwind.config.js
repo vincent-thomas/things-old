@@ -6,44 +6,43 @@ module.exports = {
   content: [
     join(__dirname, './src/**/*.tsx'),
     join(__dirname, './src/**/*.stories.tsx'),
+    join(__dirname, './src/**/*.mdx'),
   ],
   theme: {
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: {
+          DEFAULT: 'var(--border)',
+          placeholder: 'var(--border-placeholder)',
+        },
+        input: 'var(--input)',
         background: 'var(--background)',
-        foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'var(--primary)',
           foreground: 'var(--primary-foreground)',
-          hover: 'var(--primary-hover)',
-        },
-        secondary: {
-          DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foreground)',
+          muted: 'var(--primary-muted)',
+          ghost: 'var(--primary-ghost)',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'var(--destructive)',
+          foreground: 'var(--destructive-foreground)',
         },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        // muted: {
+        //   DEFAULT: 'hsl(var(--muted))',
+        //   foreground: 'var(--muted-foreground)',
+        // },
+        // accent: {
+        //   DEFAULT: 'hsl(var(--accent))',
+        //   foreground: 'hsl(var(--accent-foreground))',
+        // },
+        // popover: {
+        //   DEFAULT: 'hsl(var(--popover))',
+        //   foreground: 'hsl(var(--popover-foreground))',
+        // },
+        // card: {
+        //   DEFAULT: 'hsl(var(--card))',
+        //   foreground: 'hsl(var(--card-foreground))',
+        // },
       },
       borderRadius: {
         lg: `var(--radius)`,

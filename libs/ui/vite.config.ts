@@ -7,7 +7,6 @@ import * as path from 'path';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
-
   plugins: [
     dts({
       entryRoot: 'src',
@@ -19,15 +18,7 @@ export default defineConfig({
       root: '../../',
     }),
   ],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
+  publicDir: './public',
 
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
@@ -37,12 +28,11 @@ export default defineConfig({
       entry: 'src/lib.ts',
       name: 'ui',
       fileName: 'index',
-      // Change this to the formats you want to support.
-      // Don't forget to update your package.json as well.
       formats: ['es', 'cjs'],
     },
+    cssMinify: true,
+    minify: true,
     rollupOptions: {
-      // External packages that should not be bundled into your library.
       external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
   },

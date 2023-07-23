@@ -8,14 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+        default: 'bg-primary text-primary-foreground hover:bg-primary-muted',
         destructive:
-          'border-2 border-destructive text-destructive-foreground hover:bg-destructive',
+          'border-2 border-destructive text-primary  bg-transparent hover:text-destructive-foreground hover:bg-destructive',
         outline:
-          'border-2 border-input bg-transparent hover:bg-primary text-primary hover:text-primary-foreground',
-        // secondary:
-        //   'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent text-primary hover:text-accent-foreground',
+          'border-2 border-border hover:border-primary bg-transparent hover:bg-primary text-primary hover:text-primary-foreground',
+        ghost: 'hover:bg-primary-ghost text-primary bg-opacity-100 ',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
@@ -39,6 +37,7 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    console.log(props);
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp

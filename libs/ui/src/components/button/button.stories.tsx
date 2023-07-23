@@ -5,6 +5,9 @@ import { Button as Comp } from '.';
 
 const meta: Meta<typeof Comp> = {
   component: Comp,
+  args: {
+    children: 'Click Me',
+  },
 };
 
 export default meta;
@@ -17,35 +20,32 @@ type Story = StoryObj<typeof Comp>;
  * to learn how to use render functions.
  */
 
-export const Button: Story = {
-  name: Comp.displayName,
+export const Default: Story = {
   args: {
     variant: 'default',
-    children: 'Button',
   },
-  argTypes: { onClick: { action: 'clicked' } },
-  parameters: {
-    variant: {
-      values: {
-        name: 'default',
-        value: 'default',
-      },
-      destructive: {
-        name: 'destructive',
-        value: 'destructive',
-      },
-      outline: {
-        name: 'outline',
-        value: 'outline',
-      },
-      ghost: {
-        name: 'ghost',
-        value: 'ghost',
-      },
-      link: {
-        name: 'link',
-        value: 'link',
-      },
-    },
+};
+
+export const Destructive: Story = {
+  args: {
+    variant: 'destructive',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
+  },
+};
+
+export const Link: Story = {
+  args: {
+    variant: 'link',
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    variant: 'outline',
   },
 };
