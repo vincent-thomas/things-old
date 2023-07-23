@@ -1,4 +1,3 @@
-import './styles.css';
-export * from './lib/ui';
+import './styles/styles.css';
 export * from './components/avatar';
 export * from './components/button';

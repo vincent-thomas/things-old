@@ -12,7 +12,7 @@ interface Token {
 export const getToken = (req: Request): Token => {
   const authHeader = req.headers?.authorization;
 
-  const [_, token] = authHeader!.split(' ');
+  const token = authHeader!.split(' ')[1];
 
   return decode(token) as Token;
 };

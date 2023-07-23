@@ -21,12 +21,13 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["prebuild", "lint"],
+      "dependsOn": ["prebuild"],
       "inputs": ["production", "^production"]
     },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
+
     "lint": {
       "inputs": [
         "default",
