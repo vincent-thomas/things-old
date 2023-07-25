@@ -49,8 +49,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'pnpm'
-
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Cache Cypress binary
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-cypress-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-cypress-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - run: pnpm install
       - run: pnpm exec nx affected -t test,e2e --configuration=ci --base=${{ env.NX_BASE }} --head=${{env.NX_HEAD}}
       - run: pnpm exec nx affected -t deploy,deploy-storybook --base=${{ env.NX_BASE }} --head=${{env.NX_HEAD}}
