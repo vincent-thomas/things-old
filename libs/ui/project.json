@@ -68,6 +68,9 @@
         "command": "test-storybook -c libs/ui/.storybook --url=http://localhost:4400"
       }
     },
+    "deploy-storybook": {
+      "command": "sh ./scripts/ui/deploy-storybook.sh"
+    },
     "static-storybook": {
       "executor": "@nx/web:file-server",
       "options": {

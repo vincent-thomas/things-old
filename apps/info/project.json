@@ -9,25 +9,31 @@
       "executor": "nx:run-commands",
       "outputs": ["dist/apps/info"],
       "options": {
-        "command": "sh ./scripts/build-info.sh"
+        "command": "sh ./scripts/things/build.sh"
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "defaultConfiguration": "development",
+      "options": {
+        "command": "pnpm astro dev",
+        "cwd": "apps/info"
+      }
+    },
+    "preview": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "info:build",
+        "staticFilePath": "dist/apps/info"
+      },
       "configurations": {
-        "development": {
-          "command": "pnpm astro dev",
-          "cwd": "apps/info"
-        },
-        "production": {
-          "command": "pnpm astro preview",
-          "cwd": "apps/info"
+        "ci": {
+          "buildTarget": "ui:build-storybook:ci"
         }
       }
     },
     "deploy": {
-      "command": "sh ./scripts/deploy-info.sh"
+      "command": "sh ./scripts/things/deploy.sh"
     },
     "lint": {
       "executor": "@nx/linter:eslint",
