@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  BEFORE_SHA: ${{ github.event.before }}
+
 jobs:
   main:
     name: Nx Cloud - Main Job
@@ -52,9 +55,9 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install
-      - run: pnpm exec nx affected -t build
-      - run: pnpm exec nx affected -t build-storybook
-      - run: pnpm exec nx affected -t deploy
+      - run: pnpm exec nx affected -t build --base=$BEFORE_SHA
+      - run: pnpm exec nx affected -t build-storybook --base=$BEFORE_SHA
+      - run: pnpm exec nx affected -t deploy --base=$BEFORE_SHA
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
           NETLIFY_INFO_SITE_ID: ${{ secrets.NETLIFY_INFO_SITE_ID }}
