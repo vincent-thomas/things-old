@@ -65,6 +65,9 @@ dependencies:
   express:
     specifier: ^4.18.1
     version: 4.18.1
+  express-rate-limit:
+    specifier: ^6.8.0
+    version: 6.8.0(express@4.18.1)
   helmet:
     specifier: ^7.0.0
     version: 7.0.0
@@ -80,6 +83,9 @@ dependencies:
   qs:
     specifier: ^6.11.2
     version: 6.11.2
+  rate-limit-redis:
+    specifier: ^3.0.2
+    version: 3.0.2(express-rate-limit@6.8.0)
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -15293,6 +15299,15 @@ packages:
       on-headers: 1.0.2
     dev: true
 
+  /express-rate-limit@6.8.0(express@4.18.1):
+    resolution: {integrity: sha512-yVeDWczkh8qgo9INJB1tT4j7LFu+n6ei/oqSMsqpsUIGYjTM+gk+Q3wv19TMUdo8chvus8XohAuOhG7RYRM9ZQ==}
+    engines: {node: '>= 14.0.0'}
+    peerDependencies:
+      express: ^4 || ^5
+    dependencies:
+      express: 4.18.1
+    dev: false
+
   /express@4.18.1:
     resolution: {integrity: sha512-zZBcOX9TfehHQhtupq57OF8lFZ3UZi08Y97dwFCkD8p9d/d2Y3M+ykKcwaMDEL+4qyUolgBDX6AblpR3fL212Q==}
     engines: {node: '>= 0.10.0'}
@@ -23947,6 +23962,15 @@ packages:
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
+
+  /rate-limit-redis@3.0.2(express-rate-limit@6.8.0):
+    resolution: {integrity: sha512-4SBK6AzIr9PKkCF4HmSDcJH2O2KKMF3fZEcsbNMXyaL5I9d6X71uOreUldFRiyrRyP+qkQrTxzJ38ZKKN+sScw==}
+    engines: {node: '>= 14.5.0'}
+    peerDependencies:
+      express-rate-limit: ^6
+    dependencies:
+      express-rate-limit: 6.8.0(express@4.18.1)
+    dev: false
 
   /raw-body@2.5.1:
     resolution: {integrity: sha512-qqJBtEyVgS0ZmPGdCFPWJ3FreoqvG4MVQln/kCgF7Olq95IbOp0/BWyMwbdtn4VTvkM8Y7khCQ2Xgk/tcrCXig==}

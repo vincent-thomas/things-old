@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { authorize, getToken, toBuffer, validate } from '@api/shared';
+import {
+  authorize,
+  getToken,
+  rateLimit,
+  toBuffer,
+  validate,
+} from '@api/shared';
 import { getFile, uploadFile } from '@api/data';
 import bodyParser from 'body-parser';
 const file = Router();
@@ -13,7 +19,7 @@ const { input: getFileValidator, values: getFileValues } = validate(
   })
 );
 
-file.get('/', authorize, getFileValidator, async (req, res) => {
+file.get('/', authorize, rateLimit, getFileValidator, async (req, res) => {
   const { body } = getFileValues(req);
   const user = getToken(req);
   const file = await getFile({
@@ -39,6 +45,7 @@ file.post(
   '/',
   bodyParser.text(),
   authorize,
+  rateLimit,
   createFileValidator,
   async (req, res) => {
     const { query, body } = getFileInput(req);

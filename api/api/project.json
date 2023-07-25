@@ -1,7 +1,7 @@
 {
   "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "api/api/src",
+  "sourceRoot": "api/api",
   "projectType": "application",
   "targets": {
     "build": {
@@ -12,7 +12,7 @@
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/api/api",
-        "main": "api/api/src/main.ts",
+        "main": "api/api/main.ts",
         "tsConfig": "api/api/tsconfig.app.json",
         "isolatedConfig": true,
         "webpackConfig": "api/api/webpack.config.js"
