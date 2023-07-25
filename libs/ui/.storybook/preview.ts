@@ -1,4 +1,4 @@
-import '../public/styles.css';
+import '../src/styles/styles.css';
 import '../src/styles/local.css';
 
 // .storybook/preview.ts

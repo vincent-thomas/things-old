@@ -24,6 +24,12 @@
       "dependsOn": ["prebuild"],
       "inputs": ["production", "^production"]
     },
+    "deploy": {
+      "dependsOn": ["build"]
+    },
+    "deploy-storybook": {
+      "dependsOn": ["build-storybook"]
+    },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },

@@ -26,6 +26,9 @@
         }
       }
     },
+    "deploy": {
+      "command": "sh ./scripts/deploy-info.sh"
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
