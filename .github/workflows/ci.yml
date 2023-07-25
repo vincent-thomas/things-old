@@ -52,7 +52,8 @@ jobs:
           cache: 'pnpm'
 
       - run: pnpm install
-      - run: pnpm exec nx affected -t deploy,deploy-storybook
+      - run: pnpm exec nx affected -t deploy,deploy-storybook --base=${{ env.NX_BASE }} --head=${{env.NX_HEAD}}
         env:
           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
           NETLIFY_INFO_SITE_ID: ${{ secrets.NETLIFY_INFO_SITE_ID }}
+          NETLIFY_UI_STORYBOOK_SITE_ID: ${{ secrets.NETLIFY_UI_STORYBOOK_SITE_ID }}
