@@ -7,6 +7,7 @@
     --background: hsl(0, 0%, 7%);
 
     --primary: hsl(0, 0%, 89%);
+    --primary-accent: hsl(0, 0%, 45%);
     --primary-foreground: hsl(0, 0%, 0%);
     --primary-muted: hsla(0, 0%, 89%, 0.7);
     --primary-ghost: rgba(255, 255, 255, 0.08);

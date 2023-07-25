@@ -21,6 +21,7 @@ module.exports = {
           DEFAULT: 'var(--primary)',
           foreground: 'var(--primary-foreground)',
           muted: 'var(--primary-muted)',
+          accent: 'var(--primary-accent)',
           ghost: 'var(--primary-ghost)',
         },
         destructive: {

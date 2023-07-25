@@ -1,13 +1,39 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import {Button} from "@things/ui"
+import {Navbar} from "../components/navbar"
 ---
 
-<Layout title="Welcome to ThingsSuite">
+<Layout title="ThingsSuite">
+  <Navbar />
 	<main>
-		<h1>This is the homepage</h1>
-		<span>description about the homepage</span>
-      <a href="/about">About</a>
-      <Button>testing</Button>
+  <div class="py-72 w-full">
+    <section class="flex flex-col 2xl:flex-row text-center justify-between px-6">
+      <div class="mt-4">
+        <h1 class="font-semibold sm:text-7xl text-5xl">
+          Designed to get <span class="text-primary-accent line relative 2xl:hover:text-primary-foreground  hover:z-50 ">things</span> done
+        </h1>
+      </div>
+    </section>
+  </div>
 	</main>
 </Layout>
+
+
+<style>
+
+  /* .line::before {
+    content: "Hover over me";
+    @apply absolute text-primary-muted text-base font-normal;
+    transform: translate(120px, -20px) rotate(5deg);
+
+  } */
+
+  .line::after {
+    content: "";
+    transition: all 0.3s ease;
+    @apply bg-primary-ghost absolute h-[5px] w-full left-0 bottom-[5px] ;
+  }
+  .line:hover::after {
+      @apply  2xl:bg-primary 2xl:left-[-10px] 2xl:bottom-[-10px] 2xl:-z-10 2xl:h-[100px] 2xl:w-[calc(100%+20px)];
+  }
+</style>

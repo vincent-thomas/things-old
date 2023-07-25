@@ -5,10 +5,11 @@
 }
 
 * {
-  @apply border-border;
+  @apply border-border text-primary-foreground;
 }
 
 body {
   @apply bg-background;
+
   font-feature-settings: "rlig" 1, "calt" 1;
 }

@@ -5,7 +5,7 @@ module.exports = {
   content: [
     join(
       __dirname,
-      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
+      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html,astro}'
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
@@ -22,6 +22,7 @@ module.exports = {
           DEFAULT: 'var(--primary)',
           foreground: 'var(--primary-foreground)',
           muted: 'var(--primary-muted)',
+          accent: 'var(--primary-accent)',
           ghost: 'var(--primary-ghost)',
         },
         destructive: {
