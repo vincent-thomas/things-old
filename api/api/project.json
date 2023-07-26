@@ -11,7 +11,7 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/api/api",
+        "outputPath": "dist/api",
         "main": "api/api/main.ts",
         "tsConfig": "api/api/tsconfig.app.json",
         "isolatedConfig": true,
@@ -45,5 +45,6 @@
       }
     }
   },
+
   "tags": ["runtime:node", "app:api"]
 }

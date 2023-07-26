@@ -31,7 +31,7 @@
         "target-dir": "dist/target/cli"
       }
     },
-    "run": {
+    "serve": {
       "executor": "@monodon/rust:run",
       "outputs": ["{options.target-dir}"],
       "options": {

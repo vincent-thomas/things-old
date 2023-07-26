@@ -30,11 +30,23 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/libs/ui"],
+      "executor": "nx:run-commands",
+      "outputs": ["dist/coverage/libs/ui"],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/libs/ui"
+        "cwd": "libs/ui",
+        "commands": [
+          "PATH=$PATH:../../node_modules/.bin",
+          "vitest run --config=./vite.config.ts --coverage"
+        ]
+      },
+      "configurations": {
+        "watch": {
+          "commands": [
+            "pwd",
+            "PATH=$PATH:../../node_modules/.bin",
+            "vitest --config=./vite.config.ts"
+          ]
+        }
       }
     },
     "storybook": {
