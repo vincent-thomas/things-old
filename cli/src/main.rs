@@ -16,5 +16,5 @@ fn main() {
         Ok(file_str) => file_str,
         Err(_) => String::from("error"),
     };
-    println!("{}", &result);
+    println!("{} {}", &result, &args.pattern);
 }
