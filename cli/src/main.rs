@@ -20,60 +20,57 @@ struct Command {
     children: Option<Vec<Command>>,
 }
 
-#[derive(Debug)]
-enum ArgsList {
-    Command(Command),
-    Flag(Flag),
-}
-
-// impl ArgsList {
-//     fn Command(name: String, short: Option<String>, children: Option<Vec<Command>>) -> Command {
-//         Command {
-//             name: name,
-//             children: children,
-//             short: short,
-//         }
-//     }
-//     fn Flag(name: String, short: Option<String>, value: Option<String>) -> Flag {
-//         Flag {
-//             name: name,
-//             short: short,
-//             value,
-//         }
-//     }
-// }
-
 fn is_flag(maybe_flag: &String) -> bool {
     maybe_flag.starts_with("-") || maybe_flag.starts_with("--")
 }
 
-fn get_registered_command(registered: &Vec<Command>, testad: &Vec<String>) {
+fn get_registered_command<'a>(
+    registered: &'a Vec<Command>,
+    testad: &Vec<String>,
+) -> Option<&'a Command> {
     let mut base_command: Option<String> = None;
+    let mut base_command_index: Option<usize> = None;
     for (_, value) in testad.iter().enumerate() {
-        for command_r in registered.iter() {
+        for (index, command_r) in registered.iter().enumerate() {
             if value.len() == 1 && command_r.short.is_some() {
                 let is = command_r.short.as_ref().unwrap() == value;
                 if is {
                     base_command = Some(command_r.name.clone());
+                    base_command_index = Some(index);
                 }
             } else {
                 let is = &command_r.name == value;
                 if is {
                     base_command = Some(command_r.name.clone());
+                    base_command_index = Some(index);
                 }
             }
         }
     }
-    if base_command.is_some() {
-        println!("{}", base_command.unwrap());
-    } else {
-        println!("nooo")
+    if base_command.is_none() {
+        return None;
     }
+
+    let index = base_command_index.unwrap();
+
+    let root_command = &registered[index];
+    println!("{:?}", root_command);
+
+    if root_command.children.is_none() {
+        return None;
+    }
+
+    let children = root_command.children.as_ref().unwrap();
+
+    if children.len() == 0 {
+        return Some(root_command);
+    }
+
+    println!("wooo {:?}", children);
+    return Some(root_command);
 }
 
 fn main() {
-    let mut config: Vec<ArgsList> = vec![];
-
     let args: Vec<String> = env::args().collect();
     let mut commands: Vec<String> = vec![];
     let mut flags: Vec<String> = vec![];
@@ -93,33 +90,16 @@ fn main() {
     }
 
     let testing_command = Command {
-        children: None,
+        children: Some(vec![Command {
+            name: String::from("test"),
+            short: Some(String::from("f")),
+            children: None,
+        }]),
         name: String::from("testing"),
         short: Some(String::from("t")),
     };
-    let till = Command {
-        children: None,
-        name: String::from("test"),
-        short: Some(String::from("f")),
-    };
-    let if_is = get_registered_command(&vec![testing_command, till], &commands);
-    println!("{:?}", if_is)
-    // config.push(command);
 
-    // match &config. {
-    //     None => println!("testing"),
-    //     ArgsList::Command::Some() => println!("Some"), // ArgsList::Command => println!("testing"),
-    // }
-    // println!("{:?}", &config.get(1));
-    // println!("{:?}", &commands);
-
-    // std::process::
-
-    // let args = Cli::parse();
-    // let file = std::fs::read_to_string(&args.path);
-    // let result = match file {
-    //     Ok(file_str) => file_str,
-    //     Err(_) => String::from("error"),
-    // };
-    // println!("{} {}", &result, &args.pattern);
+    let reigstered = vec![testing_command];
+    let if_is = get_registered_command(&reigstered, &commands);
+    println!("{:?}", if_is.unwrap())
 }
