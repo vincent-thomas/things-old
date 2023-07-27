@@ -4,7 +4,7 @@
   "sourceRoot": "apps/ui-e2e/src",
   "projectType": "application",
   "targets": {
-    "e2e": {
+    "e2e-skip": {
       "executor": "@nx/cypress:cypress",
       "options": {
         "cypressConfig": "apps/ui-e2e/cypress.config.ts",

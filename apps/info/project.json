@@ -28,7 +28,7 @@
       },
       "configurations": {
         "ci": {
-          "buildTarget": "ui:build-storybook:ci"
+          "buildTarget": "ui:build:ci"
         }
       }
     },
@@ -47,7 +47,7 @@
       "options": {
         "cypressConfig": "apps/info/cypress.config.ts",
         "testingType": "e2e",
-        "devServerTarget": "info:serve",
+        "devServerTarget": "info:preview",
         "watch": true,
         "browser": "chrome"
       },
