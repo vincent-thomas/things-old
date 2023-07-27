@@ -43,7 +43,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: 'html-spa',
-      reportsDirectory: '../../dist/coverage/libs/ui',
+      reportsDirectory: '../../coverage/libs/ui',
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
