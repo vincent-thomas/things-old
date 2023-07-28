@@ -13,7 +13,7 @@ struct Flag {
     short: Option<String>,
     value: Option<String>,
 }
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Command {
     name: String,
     short: Option<String>,
@@ -24,26 +24,21 @@ fn is_flag(maybe_flag: &String) -> bool {
     maybe_flag.starts_with("-") || maybe_flag.starts_with("--")
 }
 
-fn get_registered_command<'a>(
-    registered: &'a Vec<Command>,
-    testad: &Vec<String>,
-) -> Option<&'a Command> {
+fn get_root_command(registered: &Vec<Command>, testad: &Vec<String>) -> Option<Command> {
     let mut base_command: Option<String> = None;
     let mut base_command_index: Option<usize> = None;
     for (_, value) in testad.iter().enumerate() {
         for (index, command_r) in registered.iter().enumerate() {
-            if value.len() == 1 && command_r.short.is_some() {
-                let is = command_r.short.as_ref().unwrap() == value;
-                if is {
-                    base_command = Some(command_r.name.clone());
-                    base_command_index = Some(index);
-                }
-            } else {
-                let is = &command_r.name == value;
-                if is {
-                    base_command = Some(command_r.name.clone());
-                    base_command_index = Some(index);
-                }
+            let command_name = command_r.name.clone();
+            if value.len() == 1
+                && command_r.short.is_some()
+                && command_r.short.as_ref().unwrap() == value
+            {
+                base_command = Some(command_name);
+                base_command_index = Some(index);
+            } else if &command_r.name == value {
+                base_command = Some(command_name);
+                base_command_index = Some(index);
             }
         }
     }
@@ -51,23 +46,14 @@ fn get_registered_command<'a>(
         return None;
     }
 
-    let index = base_command_index.unwrap();
+    let index =
+        base_command_index.expect("Weird error when extracting index of found registered command");
 
     let root_command = &registered[index];
-    println!("{:?}", root_command);
 
-    if root_command.children.is_none() {
-        return None;
-    }
+    let command_to_send = root_command.clone();
 
-    let children = root_command.children.as_ref().unwrap();
-
-    if children.len() == 0 {
-        return Some(root_command);
-    }
-
-    println!("wooo {:?}", children);
-    return Some(root_command);
+    return Some(command_to_send);
 }
 
 fn main() {
@@ -100,6 +86,24 @@ fn main() {
     };
 
     let reigstered = vec![testing_command];
-    let if_is = get_registered_command(&reigstered, &commands);
-    println!("{:?}", if_is.unwrap())
+
+    let if_is = get_root_command(&reigstered, &commands);
+    let mut command_string: String = String::from("");
+
+    if if_is.is_none() {
+        println!("none :(");
+        return;
+    }
+
+    let the_command = if_is.unwrap();
+
+    command_string.push_str(the_command.name.as_str());
+    if let Some(children) = the_command.children {
+        let _ = &commands.remove(0);
+        let sub_command = get_root_command(&children, &commands).unwrap();
+        command_string.push('.');
+        command_string.push_str(sub_command.name.as_str());
+    }
+
+    println!("{command_string}")
 }
