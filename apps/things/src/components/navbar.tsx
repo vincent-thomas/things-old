@@ -8,27 +8,29 @@ export type NavbarProps = Omit<
 
 const Navbar: FC<NavbarProps> = ({ className = '' }) => {
   return (
-    <nav className={`flex justify-between py-2 px-6 ${className}`}>
-      <Button className="flex pb-6 pt-5 px-2 gap-[2px]" variant="ghost" asChild>
+    <nav className={`flex justify-between px-6 py-2 ${className}`}>
+      <Button
+        UNSAFE_className="flex gap-[2px] px-2 pb-6 pt-5"
+        variant="ghost"
+        asChild
+      >
         <a href="/">
-          <h1 className="text-primary-accent font-semibold text-3xl">things</h1>
-          <h1 className="text-[white] font-semibold text-3xl">Suite</h1>
+          <h1 className="text-primary-accent text-3xl font-semibold">things</h1>
+          <h1 className="text-3xl font-semibold text-[white]">Suite</h1>
         </a>
       </Button>
       <div className="flex items-center">
         <Button variant="link" asChild>
           <a href="/blog">Go to blog</a>
         </Button>
-        <Button variant="ghost" className="ml-1">
+        <Button variant="ghost" UNSAFE_className="ml-1">
           Get demo
         </Button>
-        <Button variant="default" className="ml-7">
+        <Button variant="default" UNSAFE_className="ml-7">
           Get Started
         </Button>
       </div>
     </nav>
   );
 };
-Navbar.displayName = 'Navbar';
-
 export { Navbar };

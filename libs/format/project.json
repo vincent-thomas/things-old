@@ -1,0 +1,79 @@
+{
+  "name": "format",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/format/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/format",
+        "tsConfig": "libs/format/tsconfig.lib.json",
+        "packageJson": "libs/format/package.json",
+        "main": "libs/format/src/index.ts",
+        "assets": ["libs/format/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs format {args.ver} {args.tag}",
+      "dependsOn": ["build"],
+      "options": {
+        "ver": "0.0.1",
+        "tag": "latest"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/format/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/format/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "build-esbuild": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "main": "libs/format/src/index.ts",
+        "outputPath": "dist/libs/format",
+        "outputFileName": "main.js",
+        "tsConfig": "libs/format/tsconfig.lib.json",
+        "bundle": false,
+        "deleteOutputPath": true,
+
+        "assets": [
+          {
+            "glob": "README.md",
+            "input": ".",
+            "output": "."
+          }
+        ],
+        "platform": "node"
+      },
+      "configurations": {
+        "development": {
+          "minify": false
+        },
+        "production": {
+          "minify": true
+        }
+      }
+    }
+  },
+  "tags": ["runtime:node"]
+}

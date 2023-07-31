@@ -1,15 +1,14 @@
 {
-  "name": "info",
+  "name": "things",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/info",
+  "sourceRoot": "apps/things",
   "projectType": "application",
-  "implicitDependencies": ["ui"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["dist/apps/info"],
+      "outputs": ["dist/apps/things"],
       "options": {
-        "command": "sh ./scripts/things/build.sh"
+        "commands": ["sh ./scripts/things/build.sh"]
       }
     },
     "serve": {
@@ -17,14 +16,14 @@
       "defaultConfiguration": "development",
       "options": {
         "command": "pnpm astro dev --port=4200",
-        "cwd": "apps/info"
+        "cwd": "apps/things"
       }
     },
     "preview": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "info:build",
-        "staticFilePath": "dist/apps/info"
+        "buildTarget": "things:build",
+        "staticFilePath": "dist/apps/things"
       },
       "configurations": {
         "ci": {
@@ -39,21 +38,20 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/info/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/things/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "e2e": {
       "executor": "@nx/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/info/cypress.config.ts",
+        "cypressConfig": "apps/things/cypress.config.ts",
         "testingType": "e2e",
-        "devServerTarget": "info:preview",
-        "watch": true,
+        "devServerTarget": "things:serve",
         "browser": "chrome"
       },
       "configurations": {
         "ci": {
-          "devServerTarget": "info:preview",
+          "devServerTarget": "things:preview",
           "watch": false,
           "port": 4200
         }

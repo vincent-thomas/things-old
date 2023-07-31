@@ -1,12 +1,5 @@
 use std::env;
 
-/// Search for a pattern in a file and display the lines that contain it.
-// struct Cli {
-//     /// The pattern to look for
-//     pattern: String,
-//     /// The path to the file to read
-//     path: std::path::PathBuf,
-// }
 #[derive(Debug)]
 struct Flag {
     name: String,
@@ -18,6 +11,7 @@ struct Command {
     name: String,
     short: Option<String>,
     children: Option<Vec<Command>>,
+    run: fn(),
 }
 
 fn is_flag(maybe_flag: &str) -> bool {
@@ -28,7 +22,7 @@ fn is_short(command: &str) -> bool {
     command.len() == 1
 }
 
-fn get_command(registered_commands: &[Command], test_args: &[String]) -> Option<Command> {
+fn get_command(registered_commands: &[Command], test_args: &[String]) -> Result<Command, ()> {
     let mut root_command: Option<String> = None;
     let mut root_command_index: Option<usize> = None;
     for (_, value) in test_args.iter().enumerate() {
@@ -48,7 +42,9 @@ fn get_command(registered_commands: &[Command], test_args: &[String]) -> Option<
             }
         }
     }
-    root_command?;
+    if root_command.is_none() {
+        return Err(());
+    }
 
     let index =
         root_command_index.expect("Weird error when extracting index of found registered command");
@@ -56,8 +52,9 @@ fn get_command(registered_commands: &[Command], test_args: &[String]) -> Option<
     let root_command = &registered_commands[index];
 
     let command_to_send = root_command.clone();
+    command_to_send.run;
 
-    Some(command_to_send)
+    Ok(command_to_send)
 }
 
 fn main() {
@@ -84,7 +81,10 @@ fn main() {
             name: String::from("test"),
             short: Some(String::from("f")),
             children: None,
+            run: || -> () { println!("t") },
         }]),
+        run: || -> () { println!("testing") },
+
         name: String::from("testing"),
         short: Some(String::from("t")),
     };
@@ -94,7 +94,7 @@ fn main() {
     let if_is = get_command(&reigstered, &commands);
     let mut command_string: String = String::from("");
 
-    if if_is.is_none() {
+    if if_is.is_err() {
         println!("none :(");
         return;
     }
@@ -104,11 +104,11 @@ fn main() {
     if let Some(children) = the_command.children {
         let _ = &commands.remove(0);
         match get_command(&children, &commands) {
-            Some(sub_command) => {
+            Ok(sub_command) => {
                 command_string.push('.');
                 command_string.push_str(sub_command.name.as_str());
             }
-            None => {
+            Err(_) => {
                 println!("{:?}", "nooo")
             }
         }

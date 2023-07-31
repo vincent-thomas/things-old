@@ -1,7 +1,7 @@
 export PATH="${PATH}:./node_modules/.bin"
+cd apps/things
 
-cd apps/info
-
-rm -rf ./.astro ../../dist/apps/info
+rm -rf ./.astro
+rm -rf  ../../dist/apps/things/*
 
 astro build

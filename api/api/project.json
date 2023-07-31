@@ -5,21 +5,29 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/api",
         "main": "api/api/main.ts",
+        "outputPath": "dist/api",
+        "outputFileName": "main.js",
         "tsConfig": "api/api/tsconfig.app.json",
-        "isolatedConfig": true,
-        "webpackConfig": "api/api/webpack.config.js"
+        "bundle": true,
+        "deleteOutputPath": true,
+        "thirdParty": true,
+        "platform": "node"
       },
       "configurations": {
-        "development": {},
-        "production": {}
+        "production": {
+          "minify": true,
+          "outputHashing": "all"
+        },
+        "development": {
+          "minify": false,
+          "sourcemap": "linked",
+          "watch": true
+        }
       }
     },
     "serve": {
@@ -43,8 +51,11 @@
       "options": {
         "lintFilePatterns": ["api/api/**/*.ts"]
       }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "command": "docker build -f api/api/Dockerfile . -t api"
     }
   },
-
   "tags": ["runtime:node", "app:api"]
 }

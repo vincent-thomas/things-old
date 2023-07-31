@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  outDir: '../../dist/apps/info',
+  outDir: '../../dist/apps/things',
   build: {
     format: 'file',
   },
@@ -17,7 +17,7 @@ export default defineConfig({
     tailwind(),
   ],
   vite: {
-    cacheDir: '../../.local/vite-cache/info',
+    cacheDir: '../../.local/vite-cache/things',
   },
   srcDir: './src',
 });

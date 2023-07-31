@@ -1,7 +1,12 @@
 {
+  "npmScope": "things",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "test": ["{projectRoot}/**/*.test.ts"],
+    "scripts": [
+      "{workspaceRoot}/scripts/**/*.sh",
+      "{workspaceRoot}/scripts/*.sh"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -22,7 +27,7 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["prebuild"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production", "scripts"]
     },
     "deploy": {
       "dependsOn": ["build"]
@@ -81,13 +86,9 @@
       }
     },
     "@nx/react": {
-      "application": {
-        "babel": true
-      },
       "library": {
         "unitTestRunner": "vitest"
       }
     }
-  },
-  "plugins": ["@monodon/rust"]
+  }
 }

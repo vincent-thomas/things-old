@@ -1,47 +1,27 @@
 {
-  "name": "things",
+  "name": "things-cli",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "./cli/src",
   "targets": {
     "build": {
-      "executor": "@monodon/rust:build",
+      "command": "cargo build --target-dir dist/target/cli -p things",
       "outputs": ["{options.target-dir}"],
       "options": {
-        "target-dir": "dist/target/cli",
-        "release": true
+        "target-dir": "dist/target/cli"
       }
     },
     "test": {
-      "executor": "@monodon/rust:test",
-      "outputs": ["{options.target-dir}"],
-      "options": {
-        "target-dir": "dist/target/cli"
-      },
-      "configurations": {
-        "production": {
-          "release": true
-        }
-      }
+      "command": "cargo test --target-dir dist/target/cli -p things --color always",
+      "outputs": ["{options.target-dir}"]
     },
     "lint": {
-      "executor": "@monodon/rust:lint",
-      "outputs": ["{options.target-dir}"],
-      "options": {
-        "target-dir": "dist/target/cli"
-      }
+      "command": "cargo clippy --target-dir dist/target/cli -p things",
+      "outputs": ["dist/target/cli"]
     },
     "serve": {
-      "executor": "@monodon/rust:run",
-      "outputs": ["{options.target-dir}"],
-      "options": {
-        "target-dir": "dist/target/cli"
-      },
-      "configurations": {
-        "production": {
-          "release": true
-        }
-      }
+      "outputs": ["dist/target/cli"],
+      "command": "cargo run things"
     }
   },
   "tags": []

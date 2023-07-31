@@ -23,6 +23,8 @@
       "@api/shared": ["api/shared/src/index.ts"],
       "@auth/*": ["apps/auth/*"],
       "@drive/*": ["apps/drive/*"],
+      "@things/crypto": ["libs/crypto/src/index.ts"],
+      "@things/format": ["libs/format/src/index.ts"],
       "@things/ui": ["libs/ui/src/lib.ts"],
       "@things/ui/styles": ["libs/ui/src/styles/styles.css"]
     }

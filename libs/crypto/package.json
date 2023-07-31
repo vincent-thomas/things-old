@@ -1,0 +1,7 @@
+{
+  "name": "@things/crypto",
+  "version": "0.0.1",
+  "dependencies": {
+    "@things/format": "npm:@things-suite/format@latest"
+  }
+}
