@@ -18,16 +18,16 @@ services:
       - '3306:3306'
     volumes:
       - ./.local/db-data:/var/lib/mysql
-  app:
-    build:
-      context: .
-      dockerfile: ./api/api/Dockerfile
-    ports:
-      - 3333:3333
-    expose:
-      - '3000'
-    env_file:
-      - ./.env
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: ./api/api/Dockerfile
+  #   ports:
+  #     - 3333:3333
+  #   expose:
+  #     - '3000'
+  #   env_file:
+  #     - ./.env
 
 volumes:
   db:

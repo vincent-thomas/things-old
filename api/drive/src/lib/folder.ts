@@ -24,7 +24,7 @@ const { input: getFoldersBalidator, values: getFolderValues } = validate(
   })
 );
 
-folder.get('/', authorize, rateLimit, getFoldersBalidator, async (req, res) => {
+folder.get('/', rateLimit, authorize, getFoldersBalidator, async (req, res) => {
   const { body, query } = getFolderValues(req);
   const token = getToken(req);
   const result = await getFolders(

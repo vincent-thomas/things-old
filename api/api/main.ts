@@ -10,8 +10,8 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import config from 'dotenv';
 config.config();
-const app = express();
 
+const app = express();
 app.use(
   helmet(),
   (_req, res, next) => {

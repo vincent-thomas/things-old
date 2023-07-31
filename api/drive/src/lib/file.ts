@@ -19,7 +19,7 @@ const { input: getFileValidator, values: getFileValues } = validate(
   })
 );
 
-file.get('/', authorize, rateLimit, getFileValidator, async (req, res) => {
+file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
   const { body } = getFileValues(req);
   const user = getToken(req);
   const file = await getFile({
@@ -44,8 +44,8 @@ const { input: createFileValidator, values: getFileInput } = validate(
 file.post(
   '/',
   bodyParser.text(),
-  authorize,
   rateLimit,
+  authorize,
   createFileValidator,
   async (req, res) => {
     const { query, body } = getFileInput(req);

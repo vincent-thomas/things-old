@@ -5,36 +5,29 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "main": "api/api/main.ts",
+        "target": "node",
+        "compiler": "tsc",
         "outputPath": "dist/api",
-        "outputFileName": "main.js",
+        "main": "api/api/main.ts",
         "tsConfig": "api/api/tsconfig.app.json",
-        "bundle": true,
-        "deleteOutputPath": true,
-        "thirdParty": true,
-        "platform": "node"
+        "isolatedConfig": true,
+        "webpackConfig": "api/api/webpack.config.js"
       },
       "configurations": {
-        "production": {
-          "minify": true,
-          "outputHashing": "all"
-        },
-        "development": {
-          "minify": false,
-          "sourcemap": "linked",
-          "watch": true
-        }
+        "development": {},
+        "production": {}
       }
     },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "api:build",
+        "debounce": 0
       },
       "configurations": {
         "development": {
