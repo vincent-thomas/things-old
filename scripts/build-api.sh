@@ -1,1 +1,0 @@
-nx run-many -t build -p tag:app:api,tag:lib:api

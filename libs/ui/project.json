@@ -81,7 +81,7 @@
       }
     },
     "deploy-storybook": {
-      "command": "sh ./scripts/ui/deploy-storybook.sh"
+      "command": "sh ./tools/scripts/deploy/ui-storybook.sh"
     },
     "static-storybook": {
       "executor": "@nx/web:file-server",

@@ -8,7 +8,7 @@
       "executor": "nx:run-commands",
       "outputs": ["dist/apps/things"],
       "options": {
-        "commands": ["sh ./scripts/things/build.sh"]
+        "commands": ["sh ./tools/scripts/build/things.sh"]
       }
     },
     "serve": {
@@ -32,7 +32,7 @@
       }
     },
     "deploy": {
-      "command": "sh ./scripts/things/deploy.sh"
+      "command": "sh ./tools/scripts/deploy/things.sh"
     },
     "lint": {
       "executor": "@nx/linter:eslint",
