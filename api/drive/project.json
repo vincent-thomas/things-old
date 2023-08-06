@@ -21,5 +21,5 @@
       }
     }
   },
-  "tags": ["runtime:node", "lib:api"]
+  "tags": ["runtime:node", "type:lib", "scope:api"]
 }

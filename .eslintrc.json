@@ -34,7 +34,7 @@
               },
               {
                 "sourceTag": "app:api",
-                "onlyDependOnLibsWithTags": ["lib:api"]
+                "onlyDependOnLibsWithTags": ["scope:api", "type:lib"]
               }
             ]
           }

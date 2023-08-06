@@ -1,20 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-  "name": "TDrive",
+  "name": "Things",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-20",
-
-  // Features to add to the dev container. More info: https://containers.dev/features.
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
   "features": {
+    "ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers-contrib/features/vercel-cli:1": {},
-    "ghcr.io/devcontainers-contrib/features/nx-npm:1": {},
-    "ghcr.io/devcontainers-contrib/features/direnv-asdf:2": {}
+    "ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
   },
+
+  "forwardPorts": [3333],
+
   "postCreateCommand": "pnpm install",
 
   "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
     "vscode": {
       "extensions": [
         "rangav.vscode-thunder-client",
@@ -32,5 +35,6 @@
         "typescript.tsdk": "node_modules/typescript/lib"
       }
     }
-  }
+  },
+  "remoteUser": "root"
 }
