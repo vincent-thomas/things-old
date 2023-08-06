@@ -9,13 +9,13 @@ interface Token {
   scope: ('name' | 'email')[];
 }
 
-export const getToken = (req: Request): Token => {
+export const getToken = (req: Request, signKey?: string): Token => {
   const authHeader = req.headers?.authorization;
 
   const token = authHeader?.split(' ')[1];
 
   return verify(
     token as string,
-    process.env['AUTH_SIGN_KEY'] as string
+    signKey || (process.env['AUTH_SIGN_KEY'] as string)
   ) as Token;
 };

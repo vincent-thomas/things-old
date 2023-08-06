@@ -1,21 +1,23 @@
-import { Router } from 'express';
-import { REQUEST_TYPE, rateLimit, sendPayload } from '@api/shared';
+import { Response, Router } from 'express';
+import { errorSender, rateLimit, resultSender, sendPayload } from '@api/shared';
 import { validateToken } from '../../lib/token';
 import { getUser } from '@api/data';
 const currentUserV1 = Router();
 
-const ifNotLoggeed = (sender: any) =>
-  sender(REQUEST_TYPE.ERROR, { errors: [{ message: 'User not logged in' }] });
+const ifNotLoggeed = (res: Response) =>
+  sendPayload(res, errorSender({ errors: ["User not logged in"], cause: "USER_UNAUTHENTICATED", status: 400 }));
 
 currentUserV1.get('/', rateLimit, async (req, res) => {
-  const sender = sendPayload(res);
 
   const { access_token: token } = req.cookies;
-  if (token === undefined) return ifNotLoggeed(sender);
+  if (token === undefined) {
+    return ifNotLoggeed(res);
+
+  }
   const validated = validateToken(token);
 
   if (validated) {
-    return ifNotLoggeed(sender);
+    return ifNotLoggeed(res);
   }
 
   const userData = validateToken(token);
@@ -26,10 +28,13 @@ currentUserV1.get('/', rateLimit, async (req, res) => {
     res.clearCookie('access_token', {
       path: '/',
     });
-    return ifNotLoggeed(sender);
+    return ifNotLoggeed(res)
   }
 
-  return sender(REQUEST_TYPE.SUCCESS, { payload: user });
+  return sendPayload(res, resultSender({
+    status: 200,
+    data: user
+  }));
 });
 
 export { currentUserV1 };

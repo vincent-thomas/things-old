@@ -12,14 +12,14 @@
         "lintFilePatterns": ["libs/ui/**/*.{ts,tsx,js,jsx}"]
       }
     },
+    // "build": {
+    //   "dependsOn": ["build-base"],
+    //   "command": "npx tailwindcss -i ./src/styles/styles.css -o internal.css",
+    //   "options": {
+    //     "cwd": "libs/ui"
+    //   }
+    // },
     "build": {
-      "dependsOn": ["build-base"],
-      "command": "npx tailwindcss -i ./src/styles/styles.css -o internal.css",
-      "options": {
-        "cwd": "libs/ui"
-      }
-    },
-    "build-base": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",

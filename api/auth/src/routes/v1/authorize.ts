@@ -1,5 +1,5 @@
 import { Response, Router } from 'express';
-import { REQUEST_TYPE, rateLimit, sendPayload, validate } from '@api/shared';
+import { rateLimit, resultSender, sendPayload, validate } from '@api/shared';
 import { z } from 'zod';
 import qs from 'qs';
 import { validateToken } from '../../lib/token';
@@ -22,7 +22,6 @@ const redirectToLogin = (res: Response, q: Record<string, unknown>) =>
   res.status(308).redirect(`/oauth/v1/login?${qs.stringify(q)}`);
 
 authorizeV1.get('/', rateLimit, input, async (req, res) => {
-  const sender = sendPayload(res);
   const { query: q } = getFolderValues(req);
 
   const { access_token: token } = req.cookies;
@@ -38,8 +37,7 @@ authorizeV1.get('/', rateLimit, input, async (req, res) => {
     });
     return redirectToLogin(res, q);
   }
-
-  return sender(REQUEST_TYPE.SUCCESS, { payload: user });
+  sendPayload(res, resultSender({ data: user, status: 200 }));
 });
 
 export { authorizeV1 };

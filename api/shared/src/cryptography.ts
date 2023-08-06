@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
-import { fromBuffer, toBuffer } from './encodings';
+import { fromBuffer, toBuffer } from "@things/format";
 
 const IV_LENGTH = 16;
 const ALGORITHM = 'aes-256-cbc';

@@ -8,16 +8,9 @@
 		"ghcr.io/devcontainers/features/rust:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
-	},
-
-	// "forwardPorts": [],
-
+  },
   "postCreateCommand": "pnpm install",
-
   "customizations": {
-    "codespaces": {
-      "openFiles": ["README.md"]
-    },
     "vscode": {
       "extensions": [
         "rangav.vscode-thunder-client",
@@ -35,6 +28,5 @@
         "typescript.tsdk": "node_modules/typescript/lib"
       }
     }
-  },
-	"remoteUser": "root"
+  }
 }

@@ -4,10 +4,8 @@ import {
   authorize,
   getToken,
   validate,
-  type IError,
-  ErrorCause,
-  Error,
   rateLimit,
+  errorSender, sender, resultSender
 } from '@api/shared';
 import { createFolder, getFolders } from '@api/data';
 const folder = Router();
@@ -62,15 +60,12 @@ folder.post(
       folderKey: body.folderKey,
       ownerId: user.sub,
       parentFolderId: body.parentFolderId,
-    }).catch((v: IError) => {
-      if (v.cause === ErrorCause.NOT_AUTHORIZED) {
-        error = new Error(
-          ErrorCause.NOT_AUTHORIZED,
-          'User is not authorized for this action'
-        ).getError();
+    }).catch((v) => {
+      if (v.cause === "NOT_AUTHORIZED") {
+        error = errorSender({status: 401, cause: "NOT_AUTHORIZED", errors: ["not authorized"]})
       }
     });
-    res.json(error ? error : result);
+    sender(res, error ? error : resultSender({data: [result], status: 200}))
   }
 );
 
