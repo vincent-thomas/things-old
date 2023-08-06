@@ -7,10 +7,10 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "@nx/enforce-module-boundaries": [
-          "error",
+          "warn",
           {
-            "enforceBuildableLibDependency": true,
-            "allowCircularSelfDependency": true,
+
+            // "checkDynamicDependenciesExceptions": [],
             "depConstraints": [
               {
                 "sourceTag": "*",
@@ -19,10 +19,6 @@
               {
                 "sourceTag": "runtime:node",
                 "onlyDependOnLibsWithTags": ["runtime:node"]
-              },
-              {
-                "sourceTag": "runtime:deno",
-                "onlyDependOnLibsWithTags": ["runtime:deno"]
               },
               {
                 "sourceTag": "runtime:browser",

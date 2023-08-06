@@ -2,7 +2,6 @@ import { and, eq } from 'drizzle-orm';
 import { db } from '../../db/clients';
 import { folder } from '../../db/schema';
 import { uid } from 'uid/secure';
-import { Error, ErrorCause } from '@api/shared';
 
 interface Inputs {
   ownerId: string;
@@ -20,7 +19,7 @@ export const createFolder = async ({
       where: and(eq(folder.ownedById, ownerId), eq(folder.id, parentFolderId)),
     });
     if (!parentFolder) {
-      throw new Error(ErrorCause.NOT_AUTHORIZED);
+      throw {cause: "NOT_AUTHORIZED"}
     }
   }
   const data = {
