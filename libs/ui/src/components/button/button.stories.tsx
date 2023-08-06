@@ -4,14 +4,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button as Comp } from '.';
 
 const meta: Meta<typeof Comp> = {
-  component: ({ disabled, ...args }) => (
-    <div className="flex gap-2">
-      <Comp {...args} />
-      <Comp {...args} disabled />
-    </div>
-  ),
+  component: ({ ...args }) => <Comp {...args} />,
   args: {
     children: 'Click Me',
+    disabled: false,
   },
 };
 

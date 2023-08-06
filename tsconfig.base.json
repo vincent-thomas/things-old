@@ -18,6 +18,7 @@
     "skipDefaultLibCheck": true,
     "paths": {
       "@api/app": ["api/api/*"],
+      "@api/auth": ["api/auth/src/index.ts"],
       "@api/data": ["api/data/src/index.ts"],
       "@api/drive": ["api/drive/src/index.ts"],
       "@api/shared": ["api/shared/src/index.ts"],
@@ -25,8 +26,8 @@
       "@drive/*": ["apps/drive/*"],
       "@things/crypto": ["libs/crypto/src/index.ts"],
       "@things/format": ["libs/format/src/index.ts"],
-      "@things/ui": ["libs/ui/src/lib.ts"],
-      "@things/ui/styles": ["libs/ui/src/styles/styles.css"]
+      "@things/ui": ["libs/ui/src/internal.ts"],
+      "@things/ui/styles": ["libs/ui/src/styles/local.css"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist", "out", "cli"]

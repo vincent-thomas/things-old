@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
@@ -17,9 +18,9 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../',
     }),
+    vanillaExtractPlugin(),
   ],
   publicDir: './public',
-
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
@@ -33,7 +34,14 @@ export default defineConfig({
     cssMinify: true,
     minify: true,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@radix-ui/react-slot',
+        '@radix-ui/react-avatar',
+      ],
+      treeshake: 'safest',
     },
   },
 

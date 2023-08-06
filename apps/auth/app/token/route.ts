@@ -4,6 +4,7 @@ import { z } from 'zod';
 import qs from 'qs';
 import { verifyAuthCode } from '@auth/api/auth_code';
 import { cookies } from 'next/headers';
+import { env } from '@auth/env.mjs';
 
 const falseCredentialsAction = () => {
   return NextResponse.json({ error: '401 Unauthorized' }, { status: 401 });
@@ -40,7 +41,7 @@ export const POST = async (req: NextRequest) => {
   );
 
   cookies().set('access_token', authToken, {
-    domain: '.v-thomas.com',
+    domain: env.NODE_ENV === 'production' ? '.v-thomas.com' : 'localhost',
     secure: true,
     maxAge: 86_400_000,
   });

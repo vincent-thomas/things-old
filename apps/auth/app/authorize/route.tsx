@@ -45,7 +45,6 @@ export const GET = async (req: NextRequest) => {
 
   const scope = scopeSchema.parse(unvalidScope) as ('name' | 'email')[];
   const token = await getToken();
-
   if (token === null) {
     const redirectUrl = new URL(`/oauth/login`, env.AUTH_APP_URL);
     redirectUrl.searchParams.set('redirect_uri', callback);

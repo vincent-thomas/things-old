@@ -18,16 +18,19 @@ services:
       - '3306:3306'
     volumes:
       - ./.local/db-data:/var/lib/mysql
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: ./api/api/Dockerfile
-  #   ports:
-  #     - 3333:3333
-  #   expose:
-  #     - '3000'
-  #   env_file:
-  #     - ./.env
+
+  auth-db:
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=dev
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./.local/auth-db-data:/var/lib/mysql
 
 volumes:
   db:

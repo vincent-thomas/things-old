@@ -7,10 +7,19 @@
     ".": {
       "import": "./index.mjs",
       "require": "./index.js"
+    },
+    "./styles": {
+      "import": "./style.css",
+      "reuquire": "./style.css"
     }
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-avatar": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-alert-dialog": "^1.0.4"
   }
 }

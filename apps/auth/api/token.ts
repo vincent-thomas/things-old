@@ -54,6 +54,7 @@ export const saveToken = (accessToken: string) => {
     maxAge: 86_400,
     httpOnly: true,
     sameSite: 'lax',
+    domain: env.NODE_ENV === 'production' ? '.v-thomas.com' : 'localhost',
   });
 };
 

@@ -22,7 +22,7 @@
   },
   "workspaceLayout": {
     "appsDir": "apps",
-    "libsDir": "libs"
+    "libsDir": "."
   },
   "targetDefaults": {
     "build": {
@@ -38,7 +38,6 @@
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
-
     "lint": {
       "inputs": [
         "default",
@@ -60,6 +59,9 @@
         "{projectRoot}/.storybook/**/*",
         "{projectRoot}/tsconfig.storybook.json"
       ]
+    },
+    "e2e": {
+      "inputs": ["default", "^production"]
     }
   },
   "tasksRunnerOptions": {
@@ -72,7 +74,8 @@
           "lint",
           "test",
           "check",
-          "build-storybook"
+          "build-storybook",
+          "server"
         ],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="
       }
@@ -87,7 +90,17 @@
     },
     "@nx/react": {
       "library": {
-        "unitTestRunner": "vitest"
+        "style": "none",
+        "linter": "eslint",
+        "unitTestRunner": "jest"
+      },
+      "application": {
+        "style": "none",
+        "linter": "eslint",
+        "bundler": "vite"
+      },
+      "component": {
+        "style": "none"
       }
     }
   }

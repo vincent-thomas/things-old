@@ -1,8 +1,10 @@
-/** @type {import('tailwindcss').Config} */
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import { join } from 'path';
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
+  corePlugins: {
+    preflight: false,
+  },
   content: [
     join(__dirname, './src/**/*.tsx'),
     join(__dirname, './src/**/*.stories.tsx'),

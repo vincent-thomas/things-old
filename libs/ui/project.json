@@ -13,12 +13,19 @@
       }
     },
     "build": {
+      "dependsOn": ["build-base"],
+      "command": "npx tailwindcss -i ./src/styles/styles.css -o internal.css",
+      "options": {
+        "cwd": "libs/ui"
+      }
+    },
+    "build-base": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/libs/ui",
-        "cssCodeSplit": true
+        "cssCodeSplit": false
       },
       "configurations": {
         "development": {
@@ -87,7 +94,8 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "ui:build-storybook",
-        "staticFilePath": "dist/storybook/ui"
+        "staticFilePath": "dist/storybook/ui",
+        "brotli": true
       },
       "configurations": {
         "ci": {

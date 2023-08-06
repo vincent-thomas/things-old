@@ -2,6 +2,7 @@ import { createUser, getUser } from '@auth/api/user';
 import { redirect } from 'next/navigation';
 import { createSession, saveSession } from '@auth/api/session';
 import { env } from '@auth/env.mjs';
+import { createToken, saveToken } from '@auth/api/token';
 
 const Page = ({ searchParams }: any) => {
   const Post = async (data: FormData) => {
@@ -9,7 +10,7 @@ const Page = ({ searchParams }: any) => {
     const email = data.get('email') as string;
     const name = data.get('name') as string;
     const password = data.get('password') as string;
-
+    console.log(email);
     const checkExisting = await getUser(email);
     if (checkExisting !== null) {
       console.log('user already exists!');
@@ -17,8 +18,8 @@ const Page = ({ searchParams }: any) => {
     }
     const { userId } = await createUser(email, name, password);
     // // console.log('USER', user);
-    const session = await createSession(userId);
-    saveSession(session);
+    const session = createToken(userId, ['email', 'name']);
+    saveToken(session);
     // console.log('RESULT', cookies().get('session'));
     const callback = searchParams.redirect_uri as string;
     const redirectURL = new URL(`${env.AUTH_APP_URL}/oauth/authorize`);

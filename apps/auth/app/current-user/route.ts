@@ -3,10 +3,15 @@ import { user } from '@auth/db/schema';
 import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAuthorizationHeader } from '@auth/api/authorization';
+import { getToken } from '@auth/api/token';
+import { cookies } from 'next/headers';
 export const GET = async (req: NextRequest) => {
   const header = req.headers.get('authorization');
   const isVerifiedUser = verifyAuthorizationHeader(header as string);
-  if (!isVerifiedUser) {
+
+  const token = await getToken();
+  console.log(cookies().getAll());
+  if (!isVerifiedUser || !token) {
     return NextResponse.json(
       { no: 'no' },
       {
