@@ -1,6 +1,5 @@
 import { Response, Router } from 'express';
 import { rateLimit, resultSender, sendPayload, validate } from '@api/shared';
-import { z } from 'zod';
 import qs from 'qs';
 import { validateToken } from '../../lib/token';
 import { getUser } from '@api/data';

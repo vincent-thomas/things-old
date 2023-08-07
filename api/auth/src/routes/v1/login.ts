@@ -10,7 +10,7 @@ loginV1.get('/', rateLimit, checkQueries, async (req, res) => {
 
   const { access_token: token } = req.cookies;
 
-  if (!!token) {
+  if (token) {
     res.status(308).redirect(`/oauth/v1/authorize?${stringify(q)}`);
     return
   }

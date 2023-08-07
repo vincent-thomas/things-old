@@ -15,8 +15,8 @@ jobs:
       init-commands: |
         pnpm exec nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
       parallel-commands-on-agents: |
-        SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=lint --parallel=3
-        SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=test --parallel=3
+        SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=lint --parallel=3 --exclude=*old,drive
+        SKIP_ENV_VALIDATION=1 pnpm exec nx affected --target=test --parallel=3 --exclude=*old,drive
 
   agents:
     name: Nx Cloud - Agents

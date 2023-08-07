@@ -69,7 +69,7 @@ folder.post(
         error = errorSender({status: 500, errors: [{cause: ERROR_TYPE.INTERNAL_SERVER_ERROR, message: "Something went wrong"}]})
       }
     }).then(v => resultSender({data: v, status: 200}))
-    sender(res, !!error ? error : result)
+    sender(res, error ? error : result)
   }
 );
 
