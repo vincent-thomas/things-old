@@ -5,9 +5,11 @@ import {
   getToken,
   validate,
   rateLimit,
+  ERROR_TYPE,SendGenerator,
   errorSender, sender, resultSender
 } from '@api/shared';
 import { createFolder, getFolders } from '@api/data';
+
 const folder = Router();
 
 const { input: getFoldersBalidator, values: getFolderValues } = validate(
@@ -54,7 +56,7 @@ folder.post(
   async (req, res) => {
     const { body } = getFolderInputValues(req);
     const user = getToken(req);
-    let error;
+    let error: SendGenerator | false = false;
 
     const result = await createFolder({
       folderKey: body.folderKey,
@@ -62,10 +64,12 @@ folder.post(
       parentFolderId: body.parentFolderId,
     }).catch((v) => {
       if (v.cause === "NOT_AUTHORIZED") {
-        error = errorSender({status: 401, cause: "NOT_AUTHORIZED", errors: ["not authorized"]})
+        error = errorSender({status: 401,  errors: [{cause: ERROR_TYPE.UNAUTHORIZED_ERROR ,message: "You are not authorized"}]})
+      } else {
+        error = errorSender({status: 500, errors: [{cause: ERROR_TYPE.INTERNAL_SERVER_ERROR, message: "Something went wrong"}]})
       }
-    });
-    sender(res, error ? error : resultSender({data: [result], status: 200}))
+    }).then(v => resultSender({data: v, status: 200}))
+    sender(res, !!error ? error : result)
   }
 );
 

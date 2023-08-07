@@ -3,10 +3,11 @@ import { SendGenerator } from "./globalTypes";
 import { Response } from "express";
 
 export const sender = (res: Response, sender: SendGenerator) => {
-  const {status = 200} = sender._sendMeta
+  const {status} = sender._sendMeta;
+
     res.status(status).json({
       data: sender.data,
-      error: sender.error,
+      errors: sender.errors,
       success: sender.success,
       timestamp: new Date().getTime(),
       requestId: uid(16),

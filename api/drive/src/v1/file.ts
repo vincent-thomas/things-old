@@ -4,6 +4,8 @@ import {
   authorize,
   getToken,
   rateLimit,
+  resultSender,
+  sender,
   toBuffer,
   validate,
 } from '@api/shared';
@@ -27,7 +29,8 @@ file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
     userId: user.sub,
   });
 
-  res.json(file);
+  return sender(res, resultSender({status: 200, data: file}))
+  // res.json(file);
 });
 
 const { input: createFileValidator, values: getFileInput } = validate(

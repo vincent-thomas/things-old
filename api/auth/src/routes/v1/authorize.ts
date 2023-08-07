@@ -4,19 +4,11 @@ import { z } from 'zod';
 import qs from 'qs';
 import { validateToken } from '../../lib/token';
 import { getUser } from '@api/data';
+import { queryAuth } from '../../lib/inputs';
+
 const authorizeV1 = Router();
 
-const { input, values: getFolderValues } = validate(
-  z.object({
-    query: z.object({
-      redirect_uri: z.string().url(),
-      state: z.string().optional(),
-      client_id: z.string(),
-      scope: z.string().regex(/^(email|,name)*$/, 'Invalid scope'),
-      response_type: z.string().regex(/code/).default('code'),
-    }),
-  })
-);
+const { input, values: getFolderValues } = validate(queryAuth);
 
 const redirectToLogin = (res: Response, q: Record<string, unknown>) =>
   res.status(308).redirect(`/oauth/v1/login?${qs.stringify(q)}`);

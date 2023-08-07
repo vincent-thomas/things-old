@@ -1,7 +1,7 @@
 import type { GlobalSenderProps, SendGenerator } from "./globalTypes";
 
 interface resultProps extends GlobalSenderProps {
-  data?: Record<string, any> | Record<string, any>[];
+  data?: unknown;
 }
 
 export const resultSender = <T extends resultProps>(payload: T): SendGenerator => {
@@ -9,7 +9,7 @@ export const resultSender = <T extends resultProps>(payload: T): SendGenerator =
   return {
     success: true,
     data,
-    error: null,
+    errors: null,
     _sendMeta: {
       status
     }

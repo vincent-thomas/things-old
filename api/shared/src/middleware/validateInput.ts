@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError, ZodSchema } from 'zod';
-import {  sender} from '../senders/sender';
-import {  errorSender} from '../senders/error';
+import {  sender} from '../response_handler/senders/sender';
+import {  errorSender} from '../response_handler/senders/error';
 
 const validateZodError = <Input>(error: ZodError<Input>) => {
   if (error.name === 'ZodError') {
     const customErrors = error.issues.map((v) => ({
       type: 'INVALID_INPUT',
-      [`${v.path.join('.')}`]: v.message,
+      [`${v.path[0]}`]: {reason: v.message, where: v.path[1]},
     }));
     return customErrors;
   } else return error;
