@@ -18,7 +18,10 @@
         "webpackConfig": "api/api/webpack.config.js"
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "webpackConfig": "api/api/webpack-hmr.config.js",
+          "sourceMap": false
+        },
         "production": {}
       }
     },

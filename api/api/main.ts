@@ -4,25 +4,39 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import config from 'dotenv';
+import { ap } from 'drizzle-orm/select.types.d-b947a018';
 config.config();
 
-const app = express();
-app.use(
-  helmet(),
-  (_req, res, next) => {
-    res.setHeader('X-Powered-By', 'Things');
-    next();
-  },
-  express.json(),
-  cookieParser()
-);
-app.use('/drive', driveRoute);
-app.use('/oauth', authRoute);
+declare const module: any;
 
-const port = process.env.PORT || 8080;
+async function bootstrap() {
 
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
-});
+  const app = express();
 
-server.on('error', console.error);
+  app.use(
+    helmet(),
+    (_req, res, next) => {
+      res.setHeader('X-Powered-By', 'Things');
+      next();
+    },
+    express.json(),
+    cookieParser()
+  );
+  app.use('/drive', driveRoute);
+  app.use('/oauth', authRoute);
+
+  const port = process.env.PORT || 8080;
+
+  const server = app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`);
+  });
+
+  server.on('error', console.error);
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => server.close());
+  }
+
+}
+
+bootstrap()
