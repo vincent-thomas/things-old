@@ -75,7 +75,7 @@
           "test",
           "check",
           "build-storybook",
-          "server"
+          "!docker-build"
         ],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="
       }

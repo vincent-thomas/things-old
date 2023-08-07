@@ -6,7 +6,8 @@
   "scripts": {
     "build-all": "sh ./scripts/build-all.sh",
     "deps-up": "docker compose up -d",
-    "deps-down": "docker compose down"
+    "deps-down": "docker compose down",
+    "test-all": "jest"
   },
   "devDependencies": {
     "@astrojs/react": "^2.2.1",

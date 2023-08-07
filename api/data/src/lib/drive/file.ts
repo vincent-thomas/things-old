@@ -5,7 +5,8 @@ import { s3 } from '../../clients';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { env } from '../../env';
 import { uid } from 'uid/secure';
-import { decrypt, encrypt, fromBuffer, toBuffer } from '@api/shared';
+import { fromBuffer, toBuffer } from '@things/format';
+import { encrypt, decrypt } from '@things/crypto';
 
 interface uploadFileInput {
   fileKey: string;

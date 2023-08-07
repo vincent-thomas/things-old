@@ -6,9 +6,9 @@ import {
   rateLimit,
   resultSender,
   sender,
-  toBuffer,
   validate,
 } from '@api/shared';
+import { toBuffer } from '@things/format';
 import { getFile, uploadFile } from '@api/data';
 import bodyParser from 'body-parser';
 const file = Router();
@@ -29,7 +29,7 @@ file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
     userId: user.sub,
   });
 
-  return sender(res, resultSender({status: 200, data: file}))
+  return sender(res, resultSender({ status: 200, data: file }));
   // res.json(file);
 });
 

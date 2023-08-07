@@ -8,45 +8,33 @@ const getAuthorizationValues = (authHeaderValue: string) => {
   return [type, token];
 };
 
-export const authorize = async (
+const ifNotAuthorized = (res: Response) => sender(res, errorSender({
+  cause: "",
+  errors: [{
+    cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
+    message: "You are not authorized to berform this action"
+  }],
+  status: 401
+}));
+
+export const authorize = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   if (!req.headers?.authorization) {
-    return sender(res, errorSender({
-      cause: "",
-      errors: [{
-        cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
-        message: "You are not authorized to berform this action"
-      }],
-      status: 401
-    }));
+    return ifNotAuthorized(res)
   }
   const [type, value] = getAuthorizationValues(req.headers?.authorization);
   if (type.toLowerCase() !== 'bearer') {
-    return sender(res, errorSender({
-      cause: "",
-      errors: [{
-        cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
-        message: "You are not authorized to berform this action"
-      }],
-      status: 401
-    }));
+    return ifNotAuthorized(res)
   }
   const validToken = jwt.verify(
     value,
-    process.env['AUTH_SIGN_KEY'] as string
+    process.env.AUTH_SIGN_KEY as string
   ) as jwt.JwtPayload;
   if (validToken?.exp === undefined || validToken?.exp < new Date().getTime()) {
-    return sender(res, errorSender({
-      cause: "",
-      errors: [{
-        cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
-        message: "You are not authorized to berform this action"
-      }],
-      status: 401
-    }));
+    return ifNotAuthorized(res)
   }
   next();
 };
