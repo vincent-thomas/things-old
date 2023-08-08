@@ -1,4 +1,4 @@
-import { toBuffer, fromBuffer } from './buffer';
+import { toBuffer, fromBuffer, formatTo } from './buffer';
 
 describe('Buffer formatting', () => {
   it('Should format string with the utf-8 encoding to a buffer', () => {
@@ -15,5 +15,15 @@ describe('Buffer formatting', () => {
     const CONTROL_TEXT = Buffer.from(TEST_BUFFER).toString('utf-8');
 
     expect(TEXT_TO_TEST).toBe(CONTROL_TEXT);
+  });
+
+  it('Should format buffer to a string with the utf-8 encoding', () => {
+    const TEST_BUFFER = "TEST_STRING";
+    const TEXT_TO_TEST = formatTo(TEST_BUFFER, 'utf-8', "hex");
+    const thisShouldBeSame = Buffer.from(TEST_BUFFER, "utf-8").toString("hex");
+    expect(TEXT_TO_TEST).toBe(thisShouldBeSame);
+
+    const TEXT_TO_TEST_2 = formatTo(thisShouldBeSame, 'hex', "utf-8");
+    expect(TEXT_TO_TEST_2).toBe(TEST_BUFFER);
   });
 });

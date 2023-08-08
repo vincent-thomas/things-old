@@ -13,6 +13,7 @@
     "@astrojs/react": "^2.2.1",
     "@astrojs/tailwind": "^4.0.0",
     "@babel/preset-react": "^7.14.5",
+    "@cypress/vite-dev-server": "^2.2.1",
     "@monodon/rust": "^1.2.0",
     "@nx/cypress": "16.5.4",
     "@nx/esbuild": "^16.5.5",

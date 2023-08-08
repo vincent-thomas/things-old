@@ -9,7 +9,7 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers-contrib/features/nx-npm:1": {}
   },
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "pnpm install && sudo apt-get update && sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb",
   "customizations": {
     "vscode": {
       "extensions": [

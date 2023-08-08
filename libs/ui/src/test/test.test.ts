@@ -1,5 +1,3 @@
-import { test, expect } from 'vitest';
-
 describe('tesing', () => {
   test('test', async () => {
     expect(2).toBe(2);

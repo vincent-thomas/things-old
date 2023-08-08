@@ -4,11 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button as Comp } from '.';
 
 const meta: Meta<typeof Comp> = {
+  title: "Button",
   component: ({ ...args }) => <Comp {...args} />,
   args: {
     children: 'Click Me',
     disabled: false,
   },
+
 };
 
 export default meta;

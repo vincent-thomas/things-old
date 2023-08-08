@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "api-shell",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "api/api",
+  "sourceRoot": "api/shell",
   "projectType": "application",
   "targets": {
     "build": {
@@ -12,14 +12,14 @@
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/api",
-        "main": "api/api/main.ts",
-        "tsConfig": "api/api/tsconfig.app.json",
+        "main": "api/shell/main.ts",
+        "tsConfig": "api/shell/tsconfig.app.json",
         "isolatedConfig": true,
-        "webpackConfig": "api/api/webpack.config.js"
+        "webpackConfig": "api/shell/webpack.config.js"
       },
       "configurations": {
         "development": {
-          "webpackConfig": "api/api/webpack-hmr.config.js",
+          "webpackConfig": "api/shell/webpack-hmr.config.js",
           "sourceMap": false
         },
         "production": {}
@@ -45,13 +45,13 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["api/api/**/*.ts"]
+        "lintFilePatterns": ["api/shell/**/*.ts"]
       }
     },
     "docker-build": {
       "dependsOn": ["build"],
-      "command": "docker build -f api/api/Dockerfile . -t things-api:latest"
+      "command": "docker build -f api/shell/Dockerfile . -t things-api:latest"
     }
   },
-  "tags": ["runtime:node", "app:api"]
+  "tags": ["runtime:node", "scope:api", "type:shell"]
 }

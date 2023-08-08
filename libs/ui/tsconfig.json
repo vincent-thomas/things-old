@@ -5,7 +5,7 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "types": ["vite/client", "vitest"]
+    "types": ["vite/client"]
   },
   "files": [],
   "include": [],
@@ -18,6 +18,9 @@
     },
     {
       "path": "./tsconfig.storybook.json"
+    },
+    {
+      "path": "./cypress/tsconfig.json"
     }
   ],
   "extends": "../../tsconfig.base.json"

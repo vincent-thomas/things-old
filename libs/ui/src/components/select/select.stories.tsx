@@ -12,6 +12,7 @@ import {
 } from '.';
 
 const meta: Meta = {
+  title: "Select",
   component: ({ ...args }) => (
     <Select>
       <SelectTrigger className="w-[180px]">
