@@ -5,6 +5,48 @@ import {stringify} from "qs";
 const { input: checkQueries, values: getInputs } = validate(queryAuth);
 const loginV1 = Router();
 
+
+/**
+ * @swagger
+ * /oauth/v1/login:
+ *   get:
+ *     tags:
+ *       - V1 OAuth2
+ *     description: Logs a user in
+ *     parameters:
+ *      - in: query
+ *        name: redirect_uri
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: https://example.com
+ *      - in: query
+ *        name: state
+ *        schema:
+ *          type: string
+ *          required: false
+ *      - in: query
+ *        name: client_id
+ *        schema:
+ *          type: string
+ *          required: true
+ *      - in: query
+ *        name: scope
+ *        schema:
+ *          type: string
+ *          required: true
+ *          example: name
+ *      - in: query
+ *        name: response_type
+ *        schema:
+ *          type: string
+ *          required: true
+ *          example: code
+ *
+ *     responses:
+ *       302:
+ *       400:
+ */
 loginV1.get('/', rateLimit, checkQueries, async (req, res) => {
   const { query: q } = getInputs(req);
 

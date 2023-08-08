@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from '../../utils';
-import { BaseProps } from '../../types/baseProps';
+import { BaseChildrenProps, BaseProps } from '../../types/baseProps';
 import {
   ButtonHTMLAttributes,
   forwardRef,
@@ -22,7 +22,7 @@ interface StyleProps {
   size?: 'default' | 'lg' | 'sm';
 }
 
-export interface ButtonProps extends BaseProps, StyleProps {
+export interface ButtonProps extends BaseChildrenProps, StyleProps {
   asChild?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLElement>;

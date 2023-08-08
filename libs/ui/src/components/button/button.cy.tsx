@@ -1,7 +1,7 @@
 import { Button } from '.';
 
 describe("Button", () => {
-  it('renders', () => {
+  it('Renders', () => {
     cy.mount(<Button />);
   });
   it("Displays children correctly", () => {
@@ -15,6 +15,7 @@ describe("Button", () => {
     cy.mount(<Button disabled>child</Button>);
     const element = cy.get("[disabled]");
     element.should("exist")
+    element.should("not.be.enabled")
     element.should("contain", "child");
   })
 

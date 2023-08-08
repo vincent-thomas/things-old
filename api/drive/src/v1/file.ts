@@ -30,7 +30,6 @@ file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
   });
 
   return sender(res, resultSender({ status: 200, data: file }));
-  // res.json(file);
 });
 
 const { input: createFileValidator, values: getFileInput } = validate(

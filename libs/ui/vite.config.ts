@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import { VitePluginStyles, VitePluginTs } from '../build-config';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ui',
@@ -15,12 +15,9 @@ export default defineConfig({
       skipDiagnostics: true,
     }),
     react(),
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-    vanillaExtractPlugin(),
+    VitePluginTs("../.."),
+    VitePluginStyles()
   ],
-  publicDir: './public',
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
@@ -43,17 +40,5 @@ export default defineConfig({
       ],
       treeshake: 'safest',
     },
-  },
-
-  test: {
-    reporters: 'dot',
-    globals: true,
-    coverage: {
-      provider: 'v8',
-      reporter: 'html-spa',
-      reportsDirectory: '../../coverage/libs/ui',
-    },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });

@@ -17,3 +17,25 @@ test("errorSender Result", () => {
   expect(error).toHaveProperty("cause", ERROR);
   expect(error).toHaveProperty("message", "testing");
 })
+
+test("errorSender error codes under 4001", () => {
+  const result = errorSender.bind(this, { cause: "testing", errors: [{
+    cause: ERROR,
+    message: "testing"
+  }], status: 200})
+  expect(result).toThrowError()
+  const another_result = errorSender.bind(this, { cause: "testing", errors: [{
+    cause: ERROR,
+    message: "testing"
+  }], status: 399})
+  expect(another_result).toThrowError()
+})
+
+
+test("errorSender error codes over 511", () => {
+  const result = errorSender.bind(this, { cause: "testing", errors: [{
+    cause: ERROR,
+    message: "testing"
+  }], status: 512})
+  expect(result).toThrowError()
+})

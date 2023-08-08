@@ -1,9 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-
+import { ViteWebEss } from '../../libs/build-config';
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/drive-new',
 
@@ -17,22 +14,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [
-    react(),
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-    vanillaExtractPlugin(),
-  ],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
+  plugins: ViteWebEss("../.."),
 
   test: {
     globals: true,

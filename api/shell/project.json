@@ -29,15 +29,15 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "api-shell:build",
         "debounce": 0
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api-shell:build:development"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "api-shell:build:production"
         }
       }
     },

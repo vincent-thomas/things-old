@@ -4,7 +4,11 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import config from 'dotenv';
-import { ap } from 'drizzle-orm/select.types.d-b947a018';
+import {
+  swaggerDocs
+} from "./swagger";
+
+
 config.config();
 
 declare const module: any;
@@ -29,6 +33,8 @@ async function bootstrap() {
 
   const server = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
+
+    swaggerDocs(app, port)
   });
 
   server.on('error', console.error);

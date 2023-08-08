@@ -5,11 +5,12 @@ interface resultProps extends Omit<GlobalSenderProps, "status"> {
   status?: number;
 }
 
-export const resultSender = <T extends resultProps>(payload: T): SendGenerator => {
-  const {status = 200,...data} = payload;
+export const resultSender = (payload: resultProps): SendGenerator => {
+  const {status = 200, data} = payload;
+
   return {
     success: true,
-    data,
+    data: data,
     errors: null,
     _sendMeta: {
       status
