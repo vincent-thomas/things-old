@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import {Navbar} from "../components/navbar"
-import { Button } from '@things/ui';
+import { Button, Title } from '@things/ui';
 ---
 
 
@@ -9,17 +9,17 @@ import { Button } from '@things/ui';
 <Layout title="thingsSuite | Home">
   <Navbar />
 	<main>
-    <div class="py-72 w-full">
-      <section class="flex flex-col 2xl:flex-row text-center 2xl:text-left justify-between px-6">
+    <section class="py-72 w-full">
+      <div class="flex flex-col 2xl:flex-row text-center 2xl:text-left justify-between px-6">
         <div class="mt-4 flex flex-col justify-start gap-4">
-          <h1 class="font-semibold sm:text-7xl text-5xl">
+          <Title class="font-semibold sm:text-7xl text-5xl">
             Designed to get <span role="button" onclick='testing()' class="text-primary-accent line relative 2xl:hover:text-primary-foreground  hover:z-50"><Button asChild>things</Button></span> done
-          </h1>
+          </Title>
           <span class="2xl:ml-1 text-lg">But what are <span class="font-semibold text-primary-accent">things</span>? I'm not done with it :(</span>
         </div>
-      </section>
-    </div>
-    <div class="h-[100vh]"></div>
+      </div>
+    </section>
+    <section class="h-[100vh]"></section>
     <div id="to-scroll"></div>
     <div class="h-[200vh]"></div>
 	</main>

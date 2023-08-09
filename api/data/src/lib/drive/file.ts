@@ -76,6 +76,5 @@ export const getFile = async ({ fileId, userId }: getFileInput) => {
     return null;
   }
   const body = decrypt(encryptedBody, toBuffer(encryptionKey, 'utf-8'));
-
   return { ...fileRecord, body };
 };

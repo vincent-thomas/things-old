@@ -9,8 +9,6 @@
         "@nx/enforce-module-boundaries": [
           "warn",
           {
-
-            // "checkDynamicDependenciesExceptions": [],
             "depConstraints": [
               {
                 "sourceTag": "*",

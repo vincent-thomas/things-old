@@ -38,7 +38,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/things/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/things/src/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "e2e": {

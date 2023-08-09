@@ -1,37 +1,38 @@
 import { Response, Router } from 'express';
-import { errorSender, rateLimit, resultSender, sendPayload } from '@api/shared';
+import { rateLimit } from '@api/shared';
 import { validateToken } from '../../lib/token';
 import { getUser } from '@api/data';
-import { ERROR_TYPE } from 'api/shared/src/response_handler/errorTypes';
+import { ERROR_TYPE,resultSender,errorSender, sender, STATUS_CODE } from '@things/express-func';
 const currentUserV1 = Router();
 
 const ifNotLoggeed = (res: Response) =>
-  sendPayload(res, errorSender({ errors: [{cause: ERROR_TYPE.UNAUTHORIZED_ERROR, message: "NOT authed"}], status: 401 }));
+  sender(res, errorSender({ errors: [{cause: ERROR_TYPE.UNAUTHORIZED_ERROR, message: "NOT authed"}], status: 401 }));
 
 currentUserV1.get('/', rateLimit, async (req, res) => {
 
-  const { access_token: token } = req.cookies;
-
+  // Get value of Bearer token
+  const token = req.headers.authorization?.split(" ")[1];
   if (token === undefined) return ifNotLoggeed(res);
+  let value
 
-  const validated = validateToken(token);
 
-  if (validated) return ifNotLoggeed(res);
-
-  const userData = validateToken(token);
-
-  const user = await getUser(userData.sub as string);
-
-  if (!user) {
-    res.clearCookie('access_token', {
-      path: '/',
-    });
-    return ifNotLoggeed(res)
+  try {
+    value = validateToken(token)
   }
+  catch(e) {
+    sender(res, errorSender({status: STATUS_CODE.INTERNAL_SERVER_ERROR,errors: [{cause: ERROR_TYPE.INTERNAL_SERVER_ERROR, message: "unknown"}]}))
+    return;
+  }
+  if (!value) return ifNotLoggeed(res);
+  const scopes = value.scope.split(",");
+  const user = await getUser(value.sub as string, {
+    name: scopes.includes("name"),
+    email: scopes.includes("email")
+  });
 
-  return sendPayload(res, resultSender({
+  return sender(res, resultSender({
     status: 200,
-    data: user
+    data: user 
   }));
 });
 

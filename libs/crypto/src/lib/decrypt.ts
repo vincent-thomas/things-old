@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { toBuffer } from '@things/format';
 import { createDecipheriv } from 'crypto';
 import { ALGORITHM, IV_PROTOCOL } from '../config';

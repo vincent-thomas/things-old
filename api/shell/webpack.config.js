@@ -5,8 +5,13 @@ module.exports = composePlugins(withNx(), (config, webpack) => {
   config.externals = [];
   config.ignoreWarnings = [
     {
-      module: /express|aws-crt/,
+      module: /express|aws-crt|@node-rs\/argon2/,
     },
   ];
+
+  config.module.rules.push({
+    test: /\.node$/,
+    use: 'node-loader',
+  })
   return config;
 });

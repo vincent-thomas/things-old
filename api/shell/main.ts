@@ -3,6 +3,7 @@ import authRoute from '@api/auth';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import cors from 'cors';
 import config from 'dotenv';
 import { logger } from '@things/logger';
 
@@ -17,12 +18,13 @@ async function bootstrap() {
 
   app.use(
     helmet(),
+    cors(),
+    cookieParser(),
     (_req, res, next) => {
       res.setHeader('X-Powered-By', 'Things');
       next();
     },
     express.json(),
-    cookieParser()
   );
   app.use('/drive', driveRoute);
   app.use('/oauth', authRoute);
@@ -30,7 +32,7 @@ async function bootstrap() {
   const port = process.env.PORT || 8080;
 
   const server = app.listen(port, () => {
-    logger.info(`Api  started at:  http://localhost:${port}`)
+    logger.info(`Api started at: http://localhost:${port}`)
   });
 
   server.on('error', console.error);

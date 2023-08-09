@@ -1,11 +1,15 @@
-import {hash, argon2id, verify} from 'argon2'
+import {hash, Algorithm, verify} from '@node-rs/argon2'
+
+
+const ALGORITHM = Algorithm.Argon2id
+
 
 export const createPasswordHash = (password: string) =>
   hash(password, {
-    type: argon2id,
+    algorithm: ALGORITHM
   })
 
 export const verifyPasswordHash = (hash: string, password: string) =>
   verify(hash, password, {
-    type: argon2id
+    algorithm: ALGORITHM
   })

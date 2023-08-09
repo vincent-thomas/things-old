@@ -5,10 +5,12 @@ import {
   getToken,
   validate,
   rateLimit,
-  ERROR_TYPE,SendGenerator,
-  errorSender, sender, resultSender
+  ERROR_TYPE,
 } from '@api/shared';
+import {SendGenerator,
+  errorSender, sender, resultSender, STATUS_CODE} from "@things/express-func"
 import { createFolder, getFolders } from '@api/data';
+import { logger } from '@things/logger';
 
 const folder = Router();
 
@@ -33,7 +35,7 @@ folder.get('/', rateLimit, authorize, getFoldersBalidator, async (req, res) => {
     query.files === '',
     query.folders === ''
   );
-  res.json(result);
+  sender(res, resultSender({data: result, status: 200}));
 });
 
 const { input: createFolderValidator, values: getFolderInputValues } = validate(
@@ -50,8 +52,8 @@ const { input: createFolderValidator, values: getFolderInputValues } = validate(
 
 folder.post(
   '/',
-  authorize,
   rateLimit,
+  authorize,
   createFolderValidator,
   async (req, res) => {
     const { body } = getFolderInputValues(req);
@@ -63,8 +65,9 @@ folder.post(
       ownerId: user.sub,
       parentFolderId: body.parentFolderId,
     }).catch((v) => {
-      if (v.cause === "NOT_AUTHORIZED") {
-        error = errorSender({status: 401,  errors: [{cause: ERROR_TYPE.UNAUTHORIZED_ERROR ,message: "You are not authorized"}]})
+      if (v.cause === ERROR_TYPE.CONFLICT) {
+        error = errorSender({status: STATUS_CODE.CONFLICT,  errors: [{cause: ERROR_TYPE.CONFLICT ,message: "Folder already exists"}]})
+        logger.error("Folder already exists", v)
       } else {
         error = errorSender({status: 500, errors: [{cause: ERROR_TYPE.INTERNAL_SERVER_ERROR, message: "Something went wrong"}]})
       }

@@ -92,7 +92,8 @@
     "@nx/next": {
       "application": {
         "style": "none",
-        "linter": "eslint"
+        "linter": "eslint",
+        "tags": "runtime:node,runtime:browser,type:app"
       }
     },
     "@nx/react": {
@@ -104,7 +105,8 @@
       "application": {
         "style": "none",
         "linter": "eslint",
-        "bundler": "vite"
+        "bundler": "vite",
+        "babel": true
       },
       "component": {
         "style": "none"

@@ -4,6 +4,8 @@ import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../utils';
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from 'react';
 import {
+  SelectItemIcon,
+  SelectItemInner,
   selectIcon,
   selectItem,
   selectLabel,
@@ -24,7 +26,8 @@ const SelectTrigger = forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'border-input ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+      'border-input ring-offset-background placeholder:text-muted-foreground focus:ring-ring px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2',
+      SelectTrigger,
       className
     )}
     {...props}
@@ -84,9 +87,9 @@ const SelectItem = forwardRef<
     className={cn(selectItem, className)}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span className={SelectItemInner}>
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Check className={SelectItemIcon} />
       </SelectPrimitive.ItemIndicator>
     </span>
 

@@ -23,14 +23,14 @@
       "@api/drive": ["api/drive/src/index.ts"],
       "@api/shared": ["api/shared/src/index.ts"],
       "@auth/*": ["apps/auth/*"],
-      "@drive/*": ["apps/drive/*"],
       "@things/build-config/*": ["libs/build-config/src/*"],
       "@things/crypto": ["libs/crypto/src/index.ts"],
+      "@things/express-func": ["libs/express-func/src/index.ts"],
       "@things/format": ["libs/format/src/index.ts"],
       "@things/logger": ["libs/logger/src/index.ts"],
       "@things/ui": ["libs/ui/src/internal.ts"],
       "@things/ui/styles": ["libs/ui/src/styles/local.css"]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "out", "cli"]
+  "exclude": ["node_modules", "tmp", "dist", "cli"]
 }

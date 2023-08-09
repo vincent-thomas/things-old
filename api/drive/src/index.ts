@@ -10,6 +10,6 @@ driveRouter.use('/v1/file', file);
 driveRouter.get('/ping', (req, res) => {
   res.send('Drive api is up');
 });
-logger.info(`Drive  api loading...`)
+logger.debug(`Drive  api loading...`)
 
 export default driveRouter;

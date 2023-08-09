@@ -4,10 +4,11 @@ import {
   authorize,
   getToken,
   rateLimit,
-  resultSender,
-  sender,
+
   validate,
 } from '@api/shared';
+import {  ERROR_TYPE, STATUS_CODE, errorSender, resultSender,
+  sender,} from "@things/express-func"
 import { toBuffer } from '@things/format';
 import { getFile, uploadFile } from '@api/data';
 import bodyParser from 'body-parser';
@@ -28,6 +29,10 @@ file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
     fileId: body.fileId,
     userId: user.sub,
   });
+
+  if (file === null) {
+    return sender(res, errorSender({ status: STATUS_CODE.NOT_FOUND, errors: [{ message: "File not found", cause: ERROR_TYPE.NOT_FOUND_ERROR }] }))
+  }
 
   return sender(res, resultSender({ status: 200, data: file }));
 });
