@@ -1,11 +1,11 @@
 {
   "name": "drive",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/drive",
+  "sourceRoot": "apps/drive/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/next:build",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
@@ -13,64 +13,60 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/drive"
+          "mode": "development"
         },
-        "production": {}
+        "production": {
+          "mode": "production"
+        }
       }
     },
     "serve": {
-      "executor": "@nx/next:server",
+      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "drive:build",
-        "dev": true,
-        "port": 8000
+        "buildTarget": "drive:build"
       },
       "configurations": {
         "development": {
           "buildTarget": "drive:build:development",
-          "dev": true
+          "hmr": true
         },
         "production": {
           "buildTarget": "drive:build:production",
-          "dev": false
+          "hmr": false
         }
       }
     },
-    "export": {
-      "executor": "@nx/next:export",
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "drive:build:production"
+        "buildTarget": "drive:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "drive:build:development"
+        },
+        "production": {
+          "buildTarget": "drive:build:production"
+        }
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/apps/drive"],
       "options": {
-        "jestConfig": "apps/drive/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/apps/drive"
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/drive/**/*.{ts,tsx,js,jsx}"]
-      }
-    },
-    "serve:bg": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "prisma studio",
-        "cwd": "apps/drive"
+        "lintFilePatterns": ["apps/drive/src/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
-  "tags": ["runtime:ssr"]
+  "tags": ["runtime:browser"]
 }

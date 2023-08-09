@@ -1,4 +1,4 @@
-import { Button } from '@things/ui';
+import { Button, Title } from '@things/ui';
 import type { FC } from 'react';
 
 export type NavbarProps = Omit<
@@ -15,8 +15,8 @@ const Navbar: FC<NavbarProps> = ({ className = '' }) => {
         asChild
       >
         <a href="/">
-          <h1 className="text-primary-accent text-3xl font-semibold">things</h1>
-          <h1 className="text-3xl font-semibold text-[white]">Suite</h1>
+          <Title className="text-primary-accent text-3xl font-semibold">things</Title>
+          <Title className="text-3xl font-semibold text-[black]">Suite</Title>
         </a>
       </Button>
       <div className="flex items-center">

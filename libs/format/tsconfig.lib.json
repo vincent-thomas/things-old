@@ -4,9 +4,9 @@
     "module": "commonjs",
     "outDir": "../../dist/out-tsc",
     "declaration": true,
+    "composite": true,
     "types": ["node"]
   },
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"],
-  "references": [{ "path": "../cryptography/tsconfig.lib.json" }]
+  "include": ["src/**/*.ts"]
 }

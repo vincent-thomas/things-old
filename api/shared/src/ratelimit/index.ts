@@ -1,4 +1,4 @@
-import { redis } from '../redis';
+import { redis } from '@api/data';
 import type { NextFunction, Request, Response } from 'express';
 import rl from 'express-rate-limit';
 import RedisStore from 'rate-limit-redis';

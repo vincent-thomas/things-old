@@ -1,11 +1,8 @@
 import { type StyleRule, style, createVar } from '@vanilla-extract/css';
 import { themeClass, vars } from '../../theme.css';
+import { setBorder } from '../../helpers';
 
 const borderThick = createVar();
-
-const setBorder = (color: string, thickNess: string): StyleRule => ({
-  border: thickNess + ' solid ' + color,
-});
 
 const base = style([
   themeClass,
@@ -23,7 +20,7 @@ const base = style([
     paddingInline: `calc(${vars.spacing.buttonY} - ${borderThick})`,
     justifyContent: 'center',
     borderRadius: vars.border.md,
-    fontWeight: vars.fontWeight.normal,
+    fontWeight: vars.font.weight.normal,
     fontSize: '1rem',
     transition: 'all 0.25s ease-out',
     cursor: 'pointer',

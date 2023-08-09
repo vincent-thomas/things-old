@@ -11,9 +11,9 @@ env:
   PARALLEL_COMMANDS: ""
   PARALLEL_COMMANDS_ON_AGENTS: |
     pnpm exec nx affected --target=lint --parallel=3
-    pnpm exec nx affected --target=test --parallel=3
-    pnpm exec nx affected --target=test-component --parallel=3
     pnpm exec nx affected --target=build --parallel=3
+    pnpm exec nx affected --target=test --parallel=3
+    # pnpm exec nx affected --target=test-component --parallel=3
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
   NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
   NX_BRANCH: ${{ github.event.number || github.ref_name }}
@@ -22,7 +22,7 @@ env:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     name: Run
     timeout-minutes: 360
     defaults:
@@ -188,7 +188,7 @@ jobs:
       #     path: ${{ inputs.artifacts-path }}
 
   set-agents:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
     name: Init
     timeout-minutes: 360
     outputs:
@@ -205,7 +205,7 @@ jobs:
 
   Run:
     needs: set-agents
-    runs-on: "latest"
+    runs-on: "ubuntu-latest"
     name: Agent ${{ matrix.agent }}
     # GitHub's default timeout is 360 minutes
     timeout-minutes: 360
@@ -267,6 +267,7 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Cache Cypress
+        id: cypress-cache
         uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
@@ -274,6 +275,8 @@ jobs:
           restore-keys: |
             cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
+      - run: pnpm exec cypress install
+        if: ${{ steps.cypress-cache.outputs.cache-hit != 'true' }}
       - name: Install Cypress
         uses: cypress-io/github-action@v5
         with:

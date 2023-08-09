@@ -1,8 +1,0 @@
-{
-  "name": "tdrive",
-  "version": "1.0.0-now",
-  "private": true,
-  "scripts": {
-    "pre": "dotenv -v VERCEL_URL=localhost:3000 -v SKIP_ENV_VALIDATION=1 -- prisma generate"
-  }
-}

@@ -2,7 +2,7 @@ import { and, eq } from 'drizzle-orm';
 import { db } from '../../db/clients';
 import { folder } from '../../db/schema';
 import { uid } from 'uid/secure';
-
+import {ERROR_TYPE} from "@things/express-func";
 interface Inputs {
   ownerId: string;
   folderKey: string;
@@ -14,14 +14,18 @@ export const createFolder = async ({
   parentFolderId,
   ownerId,
 }: Inputs) => {
-  if (parentFolderId) {
-    const parentFolder = await db.query.folder.findFirst({
-      where: and(eq(folder.ownedById, ownerId), eq(folder.id, parentFolderId)),
-    });
-    if (!parentFolder) {
-      throw {cause: "NOT_AUTHORIZED"}
-    }
+  const rootFolder = await db.query.folder.findMany({
+    where: and(
+      eq(folder.folderName, folderKey),
+      eq(folder.ownedById, ownerId),
+      parentFolderId ? eq(folder.parentFolderId, parentFolderId) : undefined,
+    ),
+  });
+  const duplicates = rootFolder.filter(v => v.parentFolderId === null)
+  if (duplicates.length > 0) {
+    throw { cause: ERROR_TYPE.CONFLICT };
   }
+
   const data = {
     id: uid(6),
     folderName: folderKey,
@@ -53,10 +57,11 @@ export const getFolders = async (
   files = false,
   folders = false
 ) => {
+  const isRootFolder = parentFolderId === null;
   const f = await db.query.folder.findMany({
     where: and(
       eq(folder.ownedById, userId),
-      parentFolderId === null ? undefined : eq(folder.id, parentFolderId)
+      isRootFolder ? undefined : eq(folder.id, parentFolderId)
     ),
     with: {
       files: files

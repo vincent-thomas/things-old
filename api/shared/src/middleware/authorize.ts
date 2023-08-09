@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { errorSender, sender } from '../response_handler/senders';
-import { ERROR_TYPE } from '../response_handler/errorTypes';
+import { errorSender, sender, ERROR_TYPE } from '@things/express-func';
 
 const getAuthorizationValues = (authHeaderValue: string) => {
   const [type, token] = authHeaderValue.split(' ');

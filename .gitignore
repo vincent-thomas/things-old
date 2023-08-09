@@ -41,10 +41,10 @@ Thumbs.db
 
 # Next.js
 .next
-.env*
-!/.env.default
+.env.local*
 **/prisma/out
 .astro
 *.exe
 .local
 drizzle-output
+**/*.log

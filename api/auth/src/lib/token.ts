@@ -3,7 +3,7 @@ import jwt, { type JwtPayload } from 'jsonwebtoken';
 import {randomUUID} from "crypto"
 
 export const validateToken = (token: string) =>
-  jwt.verify(token, process.env['AUTH_SIGN_KEY'] as string) as JwtPayload;
+  jwt.verify(token, process.env['AUTH_SIGN_KEY'] as string) as JwtPayload & {scope: string};
 
 type Scope = "email" | "name";
 
@@ -17,7 +17,7 @@ export const createToken = (userId: string, scope: Scope[], key: string) => {
     exp: date + 86_400_000,
     scope: scope.join(","),
   };
-  return jwt.sign(payload, key, { algorithm: 'HS512' });
+  return jwt.sign(payload, key, { algorithm: 'HS512', noTimestamp: false });
 };
 
 

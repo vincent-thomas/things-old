@@ -87,7 +87,7 @@ fn main() {
     let reigstered = vec![testing_command];
 
     let if_is = get_command(&reigstered, &commands);
-    let mut command_string: String = String::from("");
+    // let mut command_string: String = String::from("");
 
     if if_is.is_err() {
         println!("none :(");

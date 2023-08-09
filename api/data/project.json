@@ -14,9 +14,6 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "push",
       "configurations": {
-        "push": {
-          "command": "pnpm drizzle-kit push:mysql --config=api/data/drizzle.config.ts"
-        },
         "generate": {
           "command": "pnpm drizzle-kit generate:mysql --config=api/data/drizzle.config.ts"
         },

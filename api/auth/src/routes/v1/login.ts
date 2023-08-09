@@ -1,13 +1,19 @@
-import { ERROR_TYPE, errorSender, getToken, rateLimit, resultSender, sender, validate } from "@api/shared";
+import { ERROR_TYPE, rateLimit, validate } from "@api/shared";
 import { Router } from "express";
+import { errorSender, resultSender, sender} from "@things/express-func"
+
 import {z} from "zod";
 import { formatTo } from "@things/format";
 import { getUserByCredentials } from "@api/data";
-import { createToken } from "../../lib/token";
+import { createToken, saveToken } from "../../lib/token";
 
 const schema = z.object({
-  headers: z.object({
-    authorization: z.string()
+  body: z.object({
+   email: z.string().email(),
+   password: z.string(),
+  }),
+  query: z.object({
+    cookie: z.string().optional()
   })
 })
 
@@ -15,23 +21,18 @@ const schema = z.object({
 const { input: checkQueries, values: getInputs } = validate(schema);
 const loginV1 = Router();
 
-loginV1.get('/', rateLimit, checkQueries, async (req, res) => {
+loginV1.post('/', rateLimit, checkQueries, async (req, res) => {
   const {
-    headers: {
-      authorization
-    }
+    body: {
+      email,
+      password
+    },
+    query: {
+      cookie
+    },
+
   } = getInputs(req);
-
-  const [type, base64Value] = authorization.split(" ");
-
-  if (type.toLowerCase() !== "basic") {
-    sender(res, resultSender({data: "invalid authorization type", status: 400}));
-    return
-  }
-
-  const value = formatTo(base64Value, "base64", "utf-8");
-
-  const [email, password] = value.split(":");
+  const shouldSendCookie = cookie === "";
 
   const user = await getUserByCredentials(email, password)
 
@@ -43,10 +44,12 @@ loginV1.get('/', rateLimit, checkQueries, async (req, res) => {
   }
 
   const token = createToken(user.id, ["email", "name"], process.env["AUTH_SIGN_KEY"] as string)
+  if (shouldSendCookie) {
+    saveToken(res, token)
+  }
   sender(res, resultSender({data: {
     access_token: token
   }, status: 200}));
 });
-
 
 export {loginV1}

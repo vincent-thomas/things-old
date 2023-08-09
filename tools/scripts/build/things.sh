@@ -5,3 +5,6 @@ rm -rf ./.astro
 rm -rf  ../../dist/apps/things/*
 
 astro build
+
+
+cp ./netlify.toml ../../dist/apps/things/netlify.toml

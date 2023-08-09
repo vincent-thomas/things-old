@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError, ZodSchema } from 'zod';
-import {  sender} from '../response_handler/senders/sender';
-import {  errorSender} from '../response_handler/senders/error';
+import {  errorSender, sender } from '@things/express-func';
 
 const validateZodError = <Input>(error: ZodError<Input>) => {
   if (error.name === 'ZodError') {

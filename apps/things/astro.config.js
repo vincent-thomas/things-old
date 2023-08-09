@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import prefetch from '@astrojs/prefetch';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
-import { VitePluginStyles } from '../../libs/build-config';
+import { VitePluginStyles } from '../../libs/build-config/src';
 
 // https://astro.build/config
 export default defineConfig({
