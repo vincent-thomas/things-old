@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from '../../utils';
-import { BaseChildrenProps, BaseProps } from '../../types/baseProps';
+import { BaseChildrenProps } from '../../types/baseProps';
 import {
   ButtonHTMLAttributes,
   forwardRef,

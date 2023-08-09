@@ -82,7 +82,7 @@
           "check",
           "build-storybook",
           "!docker-build",
-          "component-test"
+          "test-component"
         ],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="
       }
