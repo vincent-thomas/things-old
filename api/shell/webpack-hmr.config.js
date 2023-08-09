@@ -12,12 +12,13 @@ module.exports = composePlugins(withNx(), (config, wp) => {
       allowlist: ['webpack/hot/poll?100'],
     }),
   ],
+  config.stats = "summary"
   config.plugins = [
     ...config.plugins,
     new webpack.HotModuleReplacementPlugin(),
-      new webpack.WatchIgnorePlugin({
-        paths: [/\.js$/, /\.d\.ts$/],
-      }),
+    new webpack.WatchIgnorePlugin({
+      paths: [/\.js$/, /\.d\.ts$/],
+    }),
   ]
   return config;
 });

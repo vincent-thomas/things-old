@@ -4,9 +4,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import config from 'dotenv';
-import {
-  swaggerDocs
-} from "./swagger";
+import { logger } from '@things/logger';
 
 
 config.config();
@@ -32,9 +30,7 @@ async function bootstrap() {
   const port = process.env.PORT || 8080;
 
   const server = app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`);
-
-    swaggerDocs(app, port)
+    logger.info(`Api  started at:  http://localhost:${port}`)
   });
 
   server.on('error', console.error);

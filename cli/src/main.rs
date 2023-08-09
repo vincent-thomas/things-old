@@ -11,7 +11,6 @@ struct Command {
     name: String,
     short: Option<String>,
     children: Option<Vec<Command>>,
-    run: fn(),
 }
 
 fn is_flag(maybe_flag: &str) -> bool {
@@ -25,6 +24,7 @@ fn is_short(command: &str) -> bool {
 fn get_command(registered_commands: &[Command], test_args: &[String]) -> Result<Command, ()> {
     let mut root_command: Option<String> = None;
     let mut root_command_index: Option<usize> = None;
+
     for (_, value) in test_args.iter().enumerate() {
         for (index, command_r) in registered_commands.iter().enumerate() {
             let command_name = command_r.name.clone();
@@ -51,10 +51,7 @@ fn get_command(registered_commands: &[Command], test_args: &[String]) -> Result<
 
     let root_command = &registered_commands[index];
 
-    let command_to_send = root_command.clone();
-    command_to_send.run;
-
-    Ok(command_to_send)
+    Ok(root_command.clone())
 }
 
 fn main() {
@@ -81,9 +78,7 @@ fn main() {
             name: String::from("test"),
             short: Some(String::from("f")),
             children: None,
-            run: || -> () { println!("t") },
         }]),
-        run: || -> () { println!("testing") },
 
         name: String::from("testing"),
         short: Some(String::from("t")),
@@ -100,19 +95,6 @@ fn main() {
     }
 
     let the_command = if_is.unwrap();
-    command_string.push_str(the_command.name.as_str());
-    if let Some(children) = the_command.children {
-        let _ = &commands.remove(0);
-        match get_command(&children, &commands) {
-            Ok(sub_command) => {
-                command_string.push('.');
-                command_string.push_str(sub_command.name.as_str());
-            }
-            Err(_) => {
-                println!("{:?}", "nooo")
-            }
-        }
-    }
 
-    println!("{command_string}")
+    println!("{:?}", the_command)
 }

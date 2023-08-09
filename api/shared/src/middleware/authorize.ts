@@ -9,7 +9,6 @@ const getAuthorizationValues = (authHeaderValue: string) => {
 };
 
 const ifNotAuthorized = (res: Response) => sender(res, errorSender({
-  cause: "",
   errors: [{
     cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
     message: "You are not authorized to berform this action"

@@ -1,66 +1,51 @@
-import { rateLimit, resultSender, sender, validate } from "@api/shared";
-import { queryAuth } from "../../lib/inputs";
+import { ERROR_TYPE, errorSender, getToken, rateLimit, resultSender, sender, validate } from "@api/shared";
 import { Router } from "express";
-import {stringify} from "qs";
-const { input: checkQueries, values: getInputs } = validate(queryAuth);
+import {z} from "zod";
+import { formatTo } from "@things/format";
+import { getUserByCredentials } from "@api/data";
+import { createToken } from "../../lib/token";
+
+const schema = z.object({
+  headers: z.object({
+    authorization: z.string()
+  })
+})
+
+
+const { input: checkQueries, values: getInputs } = validate(schema);
 const loginV1 = Router();
 
-
-/**
- * @swagger
- * /oauth/v1/login:
- *   get:
- *     tags:
- *       - V1 OAuth2
- *     description: Logs a user in
- *     parameters:
- *      - in: query
- *        name: redirect_uri
- *        required: true
- *        schema:
- *          type: string
- *          example: https://example.com
- *      - in: query
- *        name: state
- *        schema:
- *          type: string
- *          required: false
- *      - in: query
- *        name: client_id
- *        schema:
- *          type: string
- *          required: true
- *      - in: query
- *        name: scope
- *        schema:
- *          type: string
- *          required: true
- *          example: name
- *      - in: query
- *        name: response_type
- *        schema:
- *          type: string
- *          required: true
- *          example: code
- *
- *     responses:
- *       302:
- *       400:
- */
 loginV1.get('/', rateLimit, checkQueries, async (req, res) => {
-  const { query: q } = getInputs(req);
+  const {
+    headers: {
+      authorization
+    }
+  } = getInputs(req);
 
-  const { access_token: token } = req.cookies;
+  const [type, base64Value] = authorization.split(" ");
 
-  if (token) {
-    res.status(308).redirect(`/oauth/v1/authorize?${stringify(q)}`);
+  if (type.toLowerCase() !== "basic") {
+    sender(res, resultSender({data: "invalid authorization type", status: 400}));
     return
   }
 
-  sender(res, resultSender({data: token, status: 200}));
+  const value = formatTo(base64Value, "base64", "utf-8");
 
+  const [email, password] = value.split(":");
 
-  // TODO: How to handle this?
+  const user = await getUserByCredentials(email, password)
+
+  if (!user) {
+    return sender(res, errorSender({errors: [{
+      cause: ERROR_TYPE.UNAUTHORIZED_ERROR,
+      message: "invalid email or password"
+    }], status: 400}))
+  }
+
+  const token = createToken(user.id, ["email", "name"], process.env["AUTH_SIGN_KEY"] as string)
+  sender(res, resultSender({data: {
+    access_token: token
+  }, status: 200}));
 });
 
 

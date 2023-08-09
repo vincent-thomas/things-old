@@ -1,4 +1,4 @@
-import { GlobalSenderProps, RequestError, SendGenerator } from "./globalTypes";
+import { GlobalSenderProps, SendGenerator } from "./globalTypes";
 
 interface ErrorProps extends GlobalSenderProps {
   errors: SendGenerator["errors"];
@@ -7,10 +7,10 @@ interface ErrorProps extends GlobalSenderProps {
 
 
 
-export const errorSender = <T extends ErrorProps>({
+export const errorSender = ({
   errors,
   status
-}: T): SendGenerator => {
+}: ErrorProps): SendGenerator => {
 
   if (status > 451 && status < 500 || status > 511) {
     throw new Error("Error code doesn't exist")

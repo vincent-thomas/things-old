@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { authorizeV1 } from './routes/v1/authorize';
 import { currentUserV1 } from './routes/v1/current-user';
 import { loginV1 } from './routes/v1/login';
+import { logger } from '@things/logger';
 
 export default Router()
   .use('/v1/authorize', authorizeV1)
@@ -10,3 +11,5 @@ export default Router()
   .get('/ping', (req, res) => {
     res.send('OAuth 2.0 server is up!');
   });
+
+logger.info(`Oauth2 api loading...`)

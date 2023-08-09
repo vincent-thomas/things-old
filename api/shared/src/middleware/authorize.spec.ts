@@ -4,6 +4,9 @@ import { sign } from 'jsonwebtoken';
 const res: any = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn().mockReturnThis(),
+  req: {
+    baseUrl: "/oauth/v1/authorize"
+  }
 };
 
 test('Not calling next function if unauthorized', () => {

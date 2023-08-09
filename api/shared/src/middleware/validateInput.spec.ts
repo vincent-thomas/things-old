@@ -12,7 +12,10 @@ const schema = z.object({
 
 const res: any = {
   status: jest.fn().mockReturnThis(),
-  json: jest.fn().mockReturnThis()
+  json: jest.fn().mockReturnThis(),
+  req: {
+    baseUrl: "/oauth/v1/authorize"
+  }
 }
 
 
