@@ -42,7 +42,7 @@ export const uploadFile = async ({
   const usableKey = toBuffer(encryptionKey, 'utf-8');
 
   const sendCommand = new PutObjectCommand({
-    Bucket: env.API_S3_BUCKET,
+    Bucket: env.getEnv("s3Bucket"),
     Key: getFilePath(userId, fileId),
     Body: encrypt(fromBuffer(content, 'utf-8'), usableKey),
   });
@@ -68,7 +68,7 @@ export const getFile = async ({ fileId, userId }: getFileInput) => {
   const { encryptionKey, ...fileRecord } = fileR;
   const getFileCommand = new GetObjectCommand({
     Key: `${userId}/drive/${fileRecord.id}`,
-    Bucket: env.API_S3_BUCKET,
+    Bucket: env.getEnv("s3Bucket"),
   });
   const result = await s3.send(getFileCommand);
   const encryptedBody = await result?.Body?.transformToString();

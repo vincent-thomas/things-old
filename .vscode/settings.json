@@ -1,4 +1,8 @@
 {
-  "typescript.tsdk": "node_modules\\typescript\\lib",
-  "todo-tree.highlights.enabled": false
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "todo-tree.highlights.enabled": false,
+  "rust-analyzer.linkedProjects": [
+    "./cli/app/Cargo.toml",
+    "./cli/framework/Cargo.toml",
+  ]
 }

@@ -1,18 +1,18 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { env } from './env';
+import {env} from "./env";
 import { createClient, type RedisClientType } from 'redis';
 
 const s3 = new S3Client({
-  region: env.API_S3_REGION,
-  endpoint: `https://${env.API_S3_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  region: env.getEnv("s3Region"),
+  endpoint: `https://${env.getEnv("s3AccountId")}.r2.cloudflarestorage.com`,
   credentials: {
-    accessKeyId: env.API_S3_KEY,
-    secretAccessKey: env.API_S3_SECRET,
+    accessKeyId: env.getEnv("s3Key"),
+    secretAccessKey: env.getEnv("s3Secret"),
   },
 });
 
 const redis = createClient({
-  url: env.API_REDIS_URL,
+  url: env.getEnv("redisUrl"),
 }) as RedisClientType;
 
 await redis.connect();

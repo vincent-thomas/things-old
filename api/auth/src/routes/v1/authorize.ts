@@ -23,6 +23,9 @@ authorizeV1.get('/', rateLimit, input, async (req, res) => {
   if (!token) return redirectToLogin(res, q);
 
   const userData = validateToken(token);
+  if (userData === null) {
+    return redirectToLogin(res, q)
+  }
   const scopes = userData.scope.split(",")
   const user = await getUser(userData.sub as string, {
     name: scopes.includes("name"),

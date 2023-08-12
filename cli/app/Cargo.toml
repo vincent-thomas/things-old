@@ -1,0 +1,12 @@
+[package]
+name = "things"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ctrlc = "3.4.0"
+framework = { path = "../framework" }
+inquire = "0.6.2"
+reqwest = { version = "0.11.6", features = ["blocking", "json"] }
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = "1.0.68"

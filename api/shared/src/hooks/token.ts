@@ -1,21 +1,27 @@
 import { Request } from 'express';
-import { verify } from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
+import { env } from '../env';
 
 interface Token {
   sub: string;
   jti: string;
   iat: number;
   exp: number;
-  scope: ('name' | 'email')[];
+  scope: string;
 }
 
-export const getToken = (req: Request, signKey?: string): Token => {
+export const getToken = (req: Request): Token => {
   const authHeader = req.headers?.authorization;
 
   const token = authHeader?.split(' ')[1];
-
-  return verify(
-    token as string,
-    signKey || (process.env['AUTH_SIGN_KEY'] as string)
-  ) as Token;
+  return validateToken(token as string) as Token; 
 };
+export const validateToken = (token: string) => {
+  try {
+    const value = verify(token, env.getEnv("signKey")) as Token;
+    return value;
+  } catch (e) {
+    console.log(e)
+    return null;
+  }
+}

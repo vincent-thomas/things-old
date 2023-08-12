@@ -10,7 +10,7 @@ test("errorSender Result", () => {
     message: "testing"
   }], status: 400});
   expect(result.success).toEqual(false);
-  expect(result.data).toEqual(null);
+  expect(result.data).toEqual([]);
   expect(result._sendMeta).toEqual({status: 400});
   expect(result.errors).toHaveLength(1);
   const error = result.errors?.[0] as RequestError;

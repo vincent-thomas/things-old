@@ -1,49 +1,31 @@
-name: CI Main
+name: CI
 
 on:
   pull_request:
     branches: [main]
-  
-
 
 env:
   PNPM_VERSION: "latest"
-  PARALLEL_COMMANDS: ""
-  PARALLEL_COMMANDS_ON_AGENTS: |
-    pnpm exec nx affected --target=lint --parallel=3
-    pnpm exec nx affected --target=build --parallel=3
-    pnpm exec nx affected --target=test --parallel=3
-    # pnpm exec nx affected --target=test-component --parallel=3
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
-  NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
   NX_BRANCH: ${{ github.event.number || github.ref_name }}
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
-  main:
-    runs-on: "ubuntu-latest"
+  run:
     name: Run
-    timeout-minutes: 360
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
-        shell: bash
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: 
+          - lint
+          - build
+          - test
+          - test-component
     steps:
       - uses: actions/checkout@v3
-        name: Checkout [Pull Request]
-        if: ${{ github.event_name == 'pull_request' }}
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-
-      - uses: actions/checkout@v3
-        name: Checkout [Default Branch]
-        if: ${{ github.event_name != 'pull_request' }}
-        with:
-          fetch-depth: 0
-
-
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v3
         with:
@@ -71,6 +53,85 @@ jobs:
 
           echo "node_version=${node_ver:1}" >> $GITHUB_OUTPUT
 
+      - name: Get pnpm cache directory path
+        id: pnpm-cache-dir-path
+        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Use the node_modules cache if available [pnpm]
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+      - name: Install dependencies
+        run: |
+          echo "Running pnpm install --frozen-lockfile"
+          pnpm install --frozen-lockfile
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: stable
+
+      - name: Cache Cypress
+        id: cypress-cache
+        if: ${{ matrix.target == 'test-component' }}
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - run: pnpm exec cypress install
+        if: ${{ matrix.target == 'test-component' && steps.cypress-cache.outputs.cache-hit != 'true' }}
+
+      - name: Run affected target '${{ matrix.target }}'
+        run: pnpm exec nx affected --target=${{matrix.target}}
+        env:
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+          NETLIFY_INFO_SITE_ID: ${{ secrets.NETLIFY_INFO_SITE_ID }}
+          NETLIFY_UI_STORYBOOK_SITE_ID: ${{ secrets.NETLIFY_UI_STORYBOOK_SITE_ID }}
+
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    environment:
+      name: Things Preview
+      url: ${{ steps.deploy_preview.outputs.NETLIFY_PREVIEW_URL }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "main"
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+
+      - name: Print node/npm versions
+        id: versions
+        run: |
+          node_ver=$( node --version )
+          pnpm_ver=$( pnpm --version || true )
+
+          echo "Node: ${node_ver:1}"
+          echo "NPM: $( npm --version )"
+          if [[ $pnpm_ver != '' ]]; then echo "PNPM: $pnpm_ver"; fi
+
+          echo "node_version=${node_ver:1}" >> $GITHUB_OUTPUT
 
       - name: Get pnpm cache directory path
         id: pnpm-cache-dir-path
@@ -84,272 +145,290 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
 
-      # - name: Run any configured install-commands
-      #   if: ${{ inputs.install-commands != '' }}
-      #   run: |
-      #     ${{ inputs.install-commands }}
-
       - name: Install dependencies
         run: |
           echo "Running pnpm install --frozen-lockfile"
           pnpm install --frozen-lockfile
 
+      - run: pnpm exec nx build things --configuration=production
 
-
-
-      - name: Create command utils
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { writeFileSync } = require('fs');
-            const runCommandsInParallelScript = `
-              # Extract the provided commands from the stringified JSON array.
-              IFS=$'\n' read -d '' -a userCommands < <((jq -c -r '.[]') <<<"$1")
-
-              # Invoke the provided commands in parallel and collect their exit codes.
-              pids=()
-              for userCommand in "\${userCommands[@]}"; do
-                eval "$userCommand" & pids+=($!)
-              done
-
-              # If any one of the invoked commands exited with a non-zero exit code, exit the whole thing with code 1.
-              for pid in \${pids[*]}; do
-                if ! wait $pid; then
-                  exit 1
-                fi
-              done
-
-              # All the invoked commands must have exited with code zero.
-              exit 0
-            `;
-            writeFileSync('./.github/workflows/run-commands-in-parallel.sh', runCommandsInParallelScript);
-
-      - name: Prepare command utils
-        run: chmod +x ${GITHUB_WORKSPACE//\\//}/.github/workflows/run-commands-in-parallel.sh
-
-      - name: Initialize the Nx Cloud distributed CI run
-        run: npx nx-cloud start-ci-run
-
-
-      - name: Process parallel commands configuration
-        uses: actions/github-script@v6
-        id: parallel_commands_config
+      - name: deploy to preview mode
+        id: deploy_preview
         env:
-          PARALLEL_COMMANDS: ${{ env.PARALLEL_COMMANDS }}
-          PARALLEL_COMMANDS_ON_AGENTS: ${{ ENV.PARALLEL_COMMANDS_ON_AGENTS }}
-        with:
-          # For the ones configured for main, explicitly set NX_CLOUD_DISTRIBUTED_EXECUTION to false, taking into account commands chained with &&
-          # within the strings. In order to properly escape single quotes we need to do some manual replacing and escaping so that the commands
-          # are forwarded onto the run-commands-in-parallel.sh script appropriately.
-          script: |
-            const parallelCommandsOnMainStr = process.env.PARALLEL_COMMANDS || '';
-            const parallelCommandsOnAgentsStr = process.env.PARALLEL_COMMANDS_ON_AGENTS || '';
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN}}
+          NETLIFY_INFO_SITE_ID: ${{ secrets.NETLIFY_INFO_SITE_ID }}
+        run: |
+          COMMAND="sh ${{ github.workspace}}/tools/scripts/deploy-preview/things.sh"
+          OUTPUT=$(sh -c "$COMMAND")
+          NETLIFY_OUTPUT=$(echo "$OUTPUT")
+          NETLIFY_PREVIEW_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://[a-zA-Z0-9./?=_-]*(--)[a-zA-Z0-9./?=_-]*')
+          NETLIFY_LOGS_URL=$(echo "$OUTPUT" | grep -Eo '(http|https)://app.netlify.com/[a-zA-Z0-9./?=_-]*')
+          echo "::set-output name=NETLIFY_PREVIEW_URL::$NETLIFY_PREVIEW_URL"
+          echo "::set-output name=NETLIFY_LOGS_URL::$NETLIFY_LOGS_URL"
 
-            const parallelCommandsOnMain = parallelCommandsOnMainStr
-              .split('\n')
-              .map(command => command.trim())
-              .filter(command => command.length > 0)
-              .map(s => s.replace(/'/g, '%27'));
-            const parallelCommandsOnAgents = parallelCommandsOnAgentsStr
-              .split('\n')
-              .map(command => command.trim())
-              .filter(command => command.length > 0)
-              .map(s => s.replace(/'/g, '%27'));
+  # main:
+  #   runs-on: "ubuntu-latest"
+  #   name: Run
+  #   timeout-minutes: 360
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ github.workspace }}
+  #       shell: bash
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       name: Checkout [Pull Request]
+  #       if: ${{ github.event_name == 'pull_request' }}
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #         fetch-depth: 0
 
-            const formattedArrayOfCommands = [
-              ...parallelCommandsOnMain.map(s => s
-                .split(' && ')
-                .map(s => `NX_CLOUD_DISTRIBUTED_EXECUTION=false ${s}`)
-                .join(' && ')
-              ),
-              ...parallelCommandsOnAgents,
-            ];
+  #     - uses: actions/checkout@v3
+  #       name: Checkout [Default Branch]
+  #       if: ${{ github.event_name != 'pull_request' }}
+  #       with:
+  #         fetch-depth: 0
 
-            const stringifiedEncodedArrayOfCommands = JSON.stringify(formattedArrayOfCommands)
-              .replace(/%27/g, "'\\''");
 
-            return stringifiedEncodedArrayOfCommands
-          result-encoding: string
+  #     - name: Derive appropriate SHAs for base and head for `nx affected` commands
+  #       uses: nrwl/nx-set-shas@v3
+  #       with:
+  #         main-branch-name: "main"
 
-      - name: Run any configured parallel commands on main and agent jobs
-        # We need to escape the workspace path to be consistent cross-platform: https://github.com/actions/runner/issues/1066
-        run: ${GITHUB_WORKSPACE//\\//}/.github/workflows/run-commands-in-parallel.sh '${{ steps.parallel_commands_config.outputs.result }}'
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version-file: .nvmrc
+
+  #     - name: Install PNPM
+  #       uses: pnpm/action-setup@v2
+  #       with:
+  #         version: ${{ env.PNPM_VERSION }}
+
+
+  #     - name: Print node/npm versions
+  #       id: versions
+  #       run: |
+  #         node_ver=$( node --version )
+  #         pnpm_ver=$( pnpm --version || true )
+
+  #         echo "Node: ${node_ver:1}"
+  #         echo "NPM: $( npm --version )"
+  #         if [[ $pnpm_ver != '' ]]; then echo "PNPM: $pnpm_ver"; fi
+
+  #         echo "node_version=${node_ver:1}" >> $GITHUB_OUTPUT
+
+
+  #     - name: Get pnpm cache directory path
+  #       id: pnpm-cache-dir-path
+  #       run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+  #     - name: Use the node_modules cache if available [pnpm]
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+  #         key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+  #     # - name: Run any configured install-commands
+  #     #   if: ${{ inputs.install-commands != '' }}
+  #     #   run: |
+  #     #     ${{ inputs.install-commands }}
+
+  #     - name: Install dependencies
+  #       run: |
+  #         echo "Running pnpm install --frozen-lockfile"
+  #         pnpm install --frozen-lockfile
+
+
+
+
+  #     - name: Create command utils
+  #       uses: actions/github-script@v6
+  #       with:
+  #         script: |
+  #           const { writeFileSync } = require('fs');
+  #           const runCommandsInParallelScript = `
+  #             # Extract the provided commands from the stringified JSON array.
+  #             IFS=$'\n' read -d '' -a userCommands < <((jq -c -r '.[]') <<<"$1")
+
+  #             # Invoke the provided commands in parallel and collect their exit codes.
+  #             pids=()
+  #             for userCommand in "\${userCommands[@]}"; do
+  #               eval "$userCommand" & pids+=($!)
+  #             done
+
+  #             # If any one of the invoked commands exited with a non-zero exit code, exit the whole thing with code 1.
+  #             for pid in \${pids[*]}; do
+  #               if ! wait $pid; then
+  #                 exit 1
+  #               fi
+  #             done
+
+  #             # All the invoked commands must have exited with code zero.
+  #             exit 0
+  #           `;
+  #           writeFileSync('./.github/workflows/run-commands-in-parallel.sh', runCommandsInParallelScript);
+
+  #     - name: Prepare command utils
+  #       run: chmod +x ${GITHUB_WORKSPACE//\\//}/.github/workflows/run-commands-in-parallel.sh
+
+  #     - name: Initialize the Nx Cloud distributed CI run
+  #       run: npx nx-cloud start-ci-run
+
+
+  #     - name: Process parallel commands configuration
+  #       uses: actions/github-script@v6
+  #       id: parallel_commands_config
+  #       env:
+  #         PARALLEL_COMMANDS: ${{ env.PARALLEL_COMMANDS }}
+  #         PARALLEL_COMMANDS_ON_AGENTS: ${{ ENV.PARALLEL_COMMANDS_ON_AGENTS }}
+  #       with:
+  #         # For the ones configured for main, explicitly set NX_CLOUD_DISTRIBUTED_EXECUTION to false, taking into account commands chained with &&
+  #         # within the strings. In order to properly escape single quotes we need to do some manual replacing and escaping so that the commands
+  #         # are forwarded onto the run-commands-in-parallel.sh script appropriately.
+  #         script: |
+  #           const parallelCommandsOnMainStr = process.env.PARALLEL_COMMANDS || '';
+  #           const parallelCommandsOnAgentsStr = process.env.PARALLEL_COMMANDS_ON_AGENTS || '';
+
+  #           const parallelCommandsOnMain = parallelCommandsOnMainStr
+  #             .split('\n')
+  #             .map(command => command.trim())
+  #             .filter(command => command.length > 0)
+  #             .map(s => s.replace(/'/g, '%27'));
+  #           const parallelCommandsOnAgents = parallelCommandsOnAgentsStr
+  #             .split('\n')
+  #             .map(command => command.trim())
+  #             .filter(command => command.length > 0)
+  #             .map(s => s.replace(/'/g, '%27'));
+
+  #           const formattedArrayOfCommands = [
+  #             ...parallelCommandsOnMain.map(s => s
+  #               .split(' && ')
+  #               .map(s => `NX_CLOUD_DISTRIBUTED_EXECUTION=false ${s}`)
+  #               .join(' && ')
+  #             ),
+  #             ...parallelCommandsOnAgents,
+  #           ];
+
+  #           const stringifiedEncodedArrayOfCommands = JSON.stringify(formattedArrayOfCommands)
+  #             .replace(/%27/g, "'\\''");
+
+  #           return stringifiedEncodedArrayOfCommands
+  #         result-encoding: string
+
+  #     - name: Run any configured parallel commands on main and agent jobs
+  #       # We need to escape the workspace path to be consistent cross-platform: https://github.com/actions/runner/issues/1066
+  #       run: ${GITHUB_WORKSPACE//\\//}/.github/workflows/run-commands-in-parallel.sh '${{ steps.parallel_commands_config.outputs.result }}'
   
-      - name: Stop all running agents for this CI run
-        # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
-        if: ${{ always() }}
-        run: npx nx-cloud stop-all-agents
+  #     - name: Stop all running agents for this CI run
+  #       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
+  #       if: ${{ always() }}
+  #       run: npx nx-cloud stop-all-agents
 
-      # - name: Uploading artifacts
-      #   uses: actions/upload-artifact@v3
-      #   if: ${{ inputs.artifacts-path != '' }}
-      #   with:
-      #     name: ${{ inputs.artifacts-name }}
-      #     path: ${{ inputs.artifacts-path }}
+  #     # - name: Uploading artifacts
+  #     #   uses: actions/upload-artifact@v3
+  #     #   if: ${{ inputs.artifacts-path != '' }}
+  #     #   with:
+  #     #     name: ${{ inputs.artifacts-name }}
+  #     #     path: ${{ inputs.artifacts-path }}
 
-  set-agents:
-    runs-on: "ubuntu-latest"
-    name: Init
-    timeout-minutes: 360
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - id: set-matrix
-        shell: bash
-        # Turn the number-of-agents input into a JSON structure which is compatible with a Github job matrix strategy
-        run: |
-          AGENTS_JSON_ARRAY=$(node -e "console.log(JSON.stringify(Array.from(new Array(${{ env.NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT }})).map((_, i) => i + 1)));")
-          echo $AGENTS_JSON_ARRAY
-          echo "matrix=$AGENTS_JSON_ARRAY" >> $GITHUB_OUTPUT
-
-
-  Run:
-    needs: set-agents
-    runs-on: "ubuntu-latest"
-    name: Agent ${{ matrix.agent }}
-    # GitHub's default timeout is 360 minutes
-    timeout-minutes: 360
-    strategy:
-      matrix:
-        agent:
-          - ${{fromJson(needs.set-agents.outputs.matrix)}}
-    defaults:
-      run:
-        working-directory: ${{ github.workspace }}
-        shell: bash
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: .nvmrc
-
-      # Install pnpm with exact version provided by consumer or fallback to latest
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
-      - name: Print node/npm/yarn versions
-        id: versions
-        run: |
-          node_ver=$( node --version )
-          pnpm_ver=$( pnpm --version || true )
-
-          echo "Node: ${node_ver:1}"
-          echo "NPM: $( npm --version )"
-          if [[ $pnpm_ver != '' ]]; then echo "PNPM: $pnpm_ver"; fi
-
-          echo "node_version=${node_ver:1}" >> $GITHUB_OUTPUT
+  # set-agents:
+  #   runs-on: "ubuntu-latest"
+  #   name: Init
+  #   timeout-minutes: 360
+  #   outputs:
+  #     matrix: ${{ steps.set-matrix.outputs.matrix }}
+  #   steps:
+  #     - id: set-matrix
+  #       shell: bash
+  #       # Turn the number-of-agents input into a JSON structure which is compatible with a Github job matrix strategy
+  #       run: |
+  #         AGENTS_JSON_ARRAY=$(node -e "console.log(JSON.stringify(Array.from(new Array(${{ env.NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT }})).map((_, i) => i + 1)));")
+  #         echo $AGENTS_JSON_ARRAY
+  #         echo "matrix=$AGENTS_JSON_ARRAY" >> $GITHUB_OUTPUT
 
 
-      - name: Get pnpm cache directory path
-        id: pnpm-cache-dir-path
-        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+  # Run:
+  #   needs: set-agents
+  #   runs-on: "ubuntu-latest"
+  #   name: Agent ${{ matrix.agent }}
+  #   # GitHub's default timeout is 360 minutes
+  #   timeout-minutes: 360
+  #   strategy:
+  #     matrix:
+  #       agent:
+  #         - ${{fromJson(needs.set-agents.outputs.matrix)}}
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ github.workspace }}
+  #       shell: bash
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Use the node_modules cache if available
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version-file: .nvmrc
+
+  #     # Install pnpm with exact version provided by consumer or fallback to latest
+  #     - name: Install PNPM
+  #       uses: pnpm/action-setup@v2
+  #       with:
+  #         version: ${{ env.PNPM_VERSION }}
+
+  #     - name: Print node/npm/yarn versions
+  #       id: versions
+  #       run: |
+  #         node_ver=$( node --version )
+  #         pnpm_ver=$( pnpm --version || true )
+
+  #         echo "Node: ${node_ver:1}"
+  #         echo "NPM: $( npm --version )"
+  #         if [[ $pnpm_ver != '' ]]; then echo "PNPM: $pnpm_ver"; fi
+
+  #         echo "node_version=${node_ver:1}" >> $GITHUB_OUTPUT
 
 
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-            toolchain: stable
+  #     - name: Get pnpm cache directory path
+  #       id: pnpm-cache-dir-path
+  #       run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: Install dependencies
-        run: |
-          echo "Running pnpm install --frozen-lockfile"
-          pnpm install --frozen-lockfile
+  #     - name: Use the node_modules cache if available
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+  #         key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
 
-      - name: Cache Cypress
-        id: cypress-cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - run: pnpm exec cypress install
-        if: ${{ steps.cypress-cache.outputs.cache-hit != 'true' }}
-      - name: Install Cypress
-        uses: cypress-io/github-action@v5
-        with:
-          # just perform install
-          runTests: false
+  #     - name: Install Rust
+  #       uses: actions-rs/toolchain@v1
+  #       with:
+  #           toolchain: stable
 
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
-        env:
-          NX_AGENT_NAME: ${{matrix.agent}}
+  #     - name: Install dependencies
+  #       run: |
+  #         echo "Running pnpm install --frozen-lockfile"
+  #         pnpm install --frozen-lockfile
 
-#     name: Nx Cloud - Main Job
-#     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-#     with:
-#       main-branch-name: main
-#       number-of-agents: 3
-#       init-commands: |
-#         pnpm exec nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
-#       parallel-commands-on-agents: |
-#         pnpm exec nx affected --target=lint --parallel=3
-#         pnpm exec nx affected --target=test --parallel=3
-#         pnpm exec nx affected --target=test-component --parallel=3
-#         pnpm exec nx affected --target=build --parallel=3
+  #     - name: Cache Cypress
+  #       id: cypress-cache
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ~/.cache/Cypress
+  #         key: cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+  #         restore-keys: |
+  #           cypress-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-#   agents:
-#     name: Nx Cloud - Agents
-#     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
-#     with:
-#       number-of-agents: 3
-#   deploy:
-#     name: Deploy Affected
-#     needs: [main]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#         with:
-#           fetch-depth: 0
-#       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-#         uses: nrwl/nx-set-shas@v3
+  #     - run: pnpm exec cypress install
+  #       if: ${{ steps.cypress-cache.outputs.cache-hit != 'true' }}
+  #     - name: Install Cypress
+  #       uses: cypress-io/github-action@v5
+  #       with:
+  #         # just perform install
+  #         runTests: false
 
-#       - run: |
-#           echo "BASE: ${{ env.NX_BASE }}"
-#           echo "HEAD: ${{ env.NX_HEAD }}"
-#       - name: Install latest rust toolchain
-#         uses: actions-rs/toolchain@v1
-#         with:
-#           toolchain: stable
-#           default: true
-#           override: true
-#       - uses: pnpm/action-setup@v2
-#         with:
-#           version: 8
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 20
-#       - name: Cache pnpm modules
-#         uses: actions/cache@v3
-#         with:
-#           path: ~/.pnpm-store
-#           key: ${{ runner.os }}-node-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-#           restore-keys: |
-#             ${{ runner.os }}-node-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-#       - name: Cache Cypress binary
-#         uses: actions/cache@v3
-#         with:
-#           path: ~/.cache/Cypress
-#           key: cypress-${{ runner.os }}-cypress-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-#           restore-keys: |
-#             cypress-${{ runner.os }}-cypress-${{ github.ref }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-#       - run: pnpm install
-#       - run: pnpm exec nx affected -t test,e2e --configuration=ci --base=${{ env.NX_BASE }} --head=${{env.NX_HEAD}}
-#       - run: pnpm exec nx affected -t deploy,deploy-storybook --base=${{ env.NX_BASE }} --head=${{env.NX_HEAD}}
-#         env:
-#           NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-#           NETLIFY_INFO_SITE_ID: ${{ secrets.NETLIFY_INFO_SITE_ID }}
-#           NETLIFY_UI_STORYBOOK_SITE_ID: ${{ secrets.NETLIFY_UI_STORYBOOK_SITE_ID }}
+  #     - name: Start Nx Agent ${{ matrix.agent }}
+  #       run: npx nx-cloud start-agent
+  #       env:
+  #         NX_AGENT_NAME: ${{matrix.agent}}

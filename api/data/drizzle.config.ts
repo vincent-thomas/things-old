@@ -1,12 +1,18 @@
 import type { Config } from 'drizzle-kit';
-import 'dotenv/config';
-import { env } from './src/env';
+import {config} from 'dotenv';
+import { configDotenv } from 'dotenv';
+import { resolve } from 'path';
 
+configDotenv({path: resolve(".env"), debug: true})
+
+if (process.env.NODE_ENV === 'development') {
+  configDotenv({path: resolve("api/shell/.env"), debug: true})
+}
 export default {
   schema: './api/data/src/db/schema/index.ts',
   out: './api/data/src/db/drizzle-output',
   driver: 'mysql2',
   dbCredentials: {
-    connectionString: env.API_DATABASE_URL,
+    connectionString: process.env.API_DATABASE_URL as string,
   },
 } satisfies Config;

@@ -1,15 +1,11 @@
 import { Router } from 'express';
-import { folder } from './v1/folder';
-import { file } from './v1/file';
+import driveV1Router from './v1';
+
 import { logger } from '@things/logger';
 
 const driveRouter = Router();
 
-driveRouter.use('/v1/folder', folder);
-driveRouter.use('/v1/file', file);
-driveRouter.get('/ping', (req, res) => {
-  res.send('Drive api is up');
-});
-logger.debug(`Drive  api loading...`)
+driveRouter.use('/v1', driveV1Router);
+logger.debug(`Drive  api loading...`);
 
 export default driveRouter;

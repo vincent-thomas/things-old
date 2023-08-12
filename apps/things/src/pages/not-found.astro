@@ -4,8 +4,6 @@ import {Navbar} from "../components/navbar"
 import { Button, Title } from '@things/ui';
 ---
 
-
-
 <Layout title="thingsSuite | Home">
   <Navbar />
 	<main>
@@ -15,32 +13,3 @@ import { Button, Title } from '@things/ui';
     </a>
 	</main>
 </Layout>
-<script is:inline>
-    var scrollDiv = document.getElementById("to-scroll").offsetTop;
-
-  function testing(){
-  window.scrollTo({ top: scrollDiv, behavior: 'smooth'});
-  }
-
-
-</script>
-
-<style>
-
-  /* .line::before {
-    content: "Hover over me";
-    @apply absolute text-primary-muted text-base font-normal;
-    transform: translate(120px, -20px) rotate(5deg);
-
-  } */
-
-  .line::after {
-    content: "";
-    transition: all 0.3s ease;
-    @apply bg-primary-ghost absolute h-[5px] w-full left-0 bottom-[5px] ;
-  }
-  .line:hover::after {
-      @apply  2xl:bg-primary 2xl:left-[-10px] 2xl:bottom-[-10px] 2xl:-z-10 2xl:h-[100px] 2xl:w-[calc(100%+20px)];
-  }
-</style>
-

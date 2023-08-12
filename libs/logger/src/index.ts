@@ -1,5 +1,5 @@
 import {createLogger, format, transports} from "winston";
-// import {dim, green, white, bgBlue} from "chalk";
+import 'setimmediate'
 
 const {printf, combine, timestamp} = format;
 
