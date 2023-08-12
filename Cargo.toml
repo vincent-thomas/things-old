@@ -1,8 +1,10 @@
 
 [workspace]
 members = [
-	'./cli',
+	'./cli/app',
+	'./cli/framework',
 ]
 
 [profile.release]
 lto = true
+strip = true

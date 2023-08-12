@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import { type ReactNode } from "react"
 import {create} from "zustand"
 
 
@@ -36,7 +35,7 @@ export const UserProvider = ({children}: {children: JSX.Element}) => {
       queryKey: ["fetching-user"],
       queryFn: async () => {
         return axios.get("http://localhost:8080/oauth/v1/current-user", {headers: {
-          Authorization: "Bearer " + localStorage.getItem("access-token")
+          Authorization: "Bearer " + sessionStorage.getItem("access-token")
         }}).catch(e => {
           user.setLoading(false)
           user.setError(e.response.data.errors);
@@ -44,7 +43,6 @@ export const UserProvider = ({children}: {children: JSX.Element}) => {
           user.setUser(null);
           return false;
         }).then((v: any) => {
-          console.log(v)
           user.setAuthed(v.data.success);
           user.setError(null);
           user.setUser(v.data.data);

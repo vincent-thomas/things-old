@@ -16,17 +16,17 @@ const file = Router();
 
 const { input: getFileValidator, values: getFileValues } = validate(
   z.object({
-    body: z.object({
+    query: z.object({
       fileId: z.string(),
     }),
   })
 );
 
 file.get('/', rateLimit, authorize, getFileValidator, async (req, res) => {
-  const { body } = getFileValues(req);
+  const { query } = getFileValues(req);
   const user = getToken(req);
   const file = await getFile({
-    fileId: body.fileId,
+    fileId: query.fileId,
     userId: user.sub,
   });
 

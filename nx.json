@@ -21,7 +21,8 @@
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": [],
+    "rust": ["{projectRoot}/src/**/*.rs", "{workspaceRoot}/Cargo.toml", "{projectRoot}/Cargo.toml"]
   },
   "workspaceLayout": {
     "appsDir": "apps",
@@ -30,7 +31,7 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["prebuild"],
-      "inputs": ["production", "^production", "scripts"]
+      "inputs": ["production", "^production", "scripts", "rust"]
     },
     "deploy": {
       "dependsOn": ["build"]
@@ -81,7 +82,6 @@
           "test",
           "check",
           "build-storybook",
-          "!docker-build",
           "test-component"
         ],
         "accessToken": "MWJlZDc5NWUtYWQwYy00OGNiLTk1NGYtMTQ2MzQ3YTJhMWUwfHJlYWQtd3JpdGU="

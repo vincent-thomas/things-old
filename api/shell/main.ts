@@ -4,16 +4,12 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import cors from 'cors';
-import config from 'dotenv';
+import 'dotenv/config';
 import { logger } from '@things/logger';
-
-
-config.config();
-
+import { EnvValidator } from '@api/env';
 declare const module: any;
 
 async function bootstrap() {
-
   const app = express();
 
   app.use(
@@ -24,15 +20,18 @@ async function bootstrap() {
       res.setHeader('X-Powered-By', 'Things');
       next();
     },
-    express.json(),
+    express.json()
   );
+  app.get('/healthcheck', (req, res) => {
+    res.status(200).send({ status: 'up', code: 200 });
+  });
   app.use('/drive', driveRoute);
   app.use('/oauth', authRoute);
 
   const port = process.env.PORT || 8080;
 
   const server = app.listen(port, () => {
-    logger.info(`Api started at: http://localhost:${port}`)
+    logger.info(`Api started at: http://localhost:${port}`);
   });
 
   server.on('error', console.error);
@@ -40,7 +39,8 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => server.close());
   }
-
 }
 
-bootstrap()
+new EnvValidator(process.env).validate();
+
+bootstrap();

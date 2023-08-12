@@ -16,10 +16,8 @@ const folder = Router();
 
 const { input: getFoldersBalidator, values: getFolderValues } = validate(
   z.object({
-    body: z.object({
-      folderId: z.string().optional(),
-    }),
     query: z.object({
+      folderId: z.string().optional(),
       folders: z.string().optional().default('false'),
       files: z.string().optional().default('false'),
     }),
@@ -27,11 +25,11 @@ const { input: getFoldersBalidator, values: getFolderValues } = validate(
 );
 
 folder.get('/', rateLimit, authorize, getFoldersBalidator, async (req, res) => {
-  const { body, query } = getFolderValues(req);
+  const { query } = getFolderValues(req);
   const token = getToken(req);
   const result = await getFolders(
     token.sub,
-    body.folderId === undefined ? null : body.folderId,
+    query.folderId === undefined ? null : query.folderId,
     query.files === '',
     query.folders === ''
   );
