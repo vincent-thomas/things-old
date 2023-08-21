@@ -5,8 +5,8 @@ const res: any = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn().mockReturnThis(),
   req: {
-    baseUrl: "/oauth/v1/authorize"
-  }
+    baseUrl: '/oauth/v1/authorize',
+  },
 };
 
 test('Not calling next function if unauthorized', () => {
@@ -40,7 +40,7 @@ test('Showing error message correctly', () => {
 
   // * Sidoeffekter of 'authorize'
   const params = res.json.mock.calls[0][0];
-  expect(params.data).toBe(null);
+  expect(params.data).toStrictEqual([]);
   expect(params.errors).toHaveLength(1);
 });
 
@@ -48,7 +48,7 @@ test('Showing error message correctly', () => {
 
 // // test("Everything should work correctly", async () => {
 // //   const nextFunction = jest.fn() as NextFunction;
-// //   const token = sign({}, process.env.AUTH_SIGN_KEY as string);
+// //   const token = sign({}, process.env.API_SIGN_KEY as string);
 // //   const req = {
 // //     headers: {
 // //       authorization: `Bearer ${token}`

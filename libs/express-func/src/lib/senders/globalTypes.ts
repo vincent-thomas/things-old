@@ -10,9 +10,9 @@ export interface RequestError {
   message: string
 }
 
-export interface SendGenerator {
+export interface SendGenerator<T = unknown> {
   success: boolean;
-  data: any;
+  data: T;
   errors: RequestError[] | null;
-_sendMeta: GlobalSenderProps
+  _sendMeta: GlobalSenderProps
 }

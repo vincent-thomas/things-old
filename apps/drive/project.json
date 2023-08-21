@@ -13,33 +13,17 @@
       },
       "configurations": {
         "development": {
-          "mode": "development"
+          "mode": "development",
+          "sourcemap": true
         },
         "production": {
           "mode": "production"
         }
       }
     },
-    "serve": {
-      "executor": "@nx/vite:dev-server",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "drive:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "drive:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "drive:build:production",
-          "hmr": false
-        }
-      }
-    },
     "preview": {
       "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
       "options": {
         "buildTarget": "drive:build"
       },
@@ -65,6 +49,23 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/drive/src/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "drive:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "drive:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "drive:build:production",
+          "hmr": false
+        }
       }
     }
   },

@@ -9,11 +9,8 @@ import { tokenV1 } from './routes/v1/token';
 export default Router()
   .use('/v1/authorize', authorizeV1)
   .use('/v1/current-user', currentUserV1)
-  .use("/v1/login", loginV1)
-  .use("/v1/create-user", createUserV1)
-  .use("/v1/token", tokenV1)
-  .get('/ping', (req, res) => {
-    res.send('OAuth 2.0 server is up!');
-  });
+  .use('/v1/login', loginV1)
+  .use('/v1/create-user', createUserV1)
+  .use('/v1/token', tokenV1);
 
-logger.debug(`Oauth2 api loading...`)
+logger.debug(`Oauth2 api loading...`);

@@ -21,5 +21,5 @@ export default defineConfig({
     cacheDir: '../../.local/vite-cache/things',
     plugins: [VitePluginStyles()],
   },
-  srcDir: './src',
+  srcDir: './src'
 });

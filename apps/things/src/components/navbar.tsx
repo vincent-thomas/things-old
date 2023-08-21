@@ -6,20 +6,20 @@ export type NavbarProps = Omit<
   'children'
 >;
 
-const Navbar: FC<NavbarProps> = ({ className = '' }) => {
+export const Navbar: FC<NavbarProps> = () => {
   return (
-    <nav className={`flex justify-between px-6 py-2 ${className}`}>
+    <nav className="flex justify-between px-6 py-2">
       <Button
         UNSAFE_className="flex gap-[2px] px-2 pb-6 pt-5"
         variant="ghost"
         asChild
       >
         <a href="/">
-          <Title className="text-primary-accent text-3xl font-semibold">things</Title>
-          <Title className="text-3xl font-semibold text-[black]">Suite</Title>
+          <Title removeStyles UNSAFE_className="text-3xl font-semibold">things</Title>
+          <Title removeStyles UNSAFE_className="text-3xl font-semibold text-[black]">Suite</Title>
         </a>
       </Button>
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <Button variant="link" asChild>
           <a href="/blog">Go to blog</a>
         </Button>
@@ -33,4 +33,3 @@ const Navbar: FC<NavbarProps> = ({ className = '' }) => {
     </nav>
   );
 };
-export { Navbar };

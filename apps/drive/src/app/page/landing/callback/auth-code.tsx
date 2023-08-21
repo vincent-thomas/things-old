@@ -1,24 +1,12 @@
-import { Button } from '@things/ui';
-import {useMutation} from '@tanstack/react-query'
-import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query'
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import qs from 'qs';
 import axios from "axios";
-/* eslint-disable-next-line */
-export interface LandingProps {}
+import { Routes } from '../../../routes';
 
-const checkIsLoggedIn = async () => {
-  try {
-    const result = await fetch('http://localhost:5000/oauth/current-user');
-    const data = await result.json();
-    return !(data?.no === 'no');
-  } catch {
-    console.log('eeror');
-    return false;
-  }
-};
 
-export function AuthCodeCallback(props: LandingProps) {
+function AuthCodeCallback() {
 const [p] = useSearchParams();
 const navigate = useNavigate();
 
@@ -34,25 +22,21 @@ const navigate = useNavigate();
         result = e.response.data;
       }
       if (result.success) {
+        console.log(result)
         sessionStorage.setItem("access-token", result.data.access_token);
-        navigate("/protected")
-        
+        navigate(Routes.browse())
       }
-      // const data = await result.jso();
-      // return !(data?.no === 'no');
+      else {
+        throw {ERROR: "ERROR"}
+      }
     }
   })
 
-useEffect(() => {
-mutate();
-}, [])
+  useEffect(() => {
+    mutate();
+  }, [])
 
-
-
-
-
-  return <>testing</>;
-
+  return <>loading...</>;
 }
 
-
+export default AuthCodeCallback

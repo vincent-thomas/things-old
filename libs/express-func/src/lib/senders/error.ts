@@ -19,7 +19,7 @@ export const errorSender = ({
   }
   return {
     success: false,
-    data: null,
+    data: [],
     errors,
     _sendMeta: {
       status

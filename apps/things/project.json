@@ -34,6 +34,9 @@
     "deploy": {
       "command": "sh ./tools/scripts/deploy/things.sh"
     },
+     "deploy-preview": {
+      "command": "sh ./tools/scripts/deploy-preview/things.sh"
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
