@@ -1,0 +1,31 @@
+{
+  "name": "things-cli",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "./apps/things-cli/src",
+  "implicitDependencies": ["clier"],
+  "tags": ["runtime:rust", "type:app", "scope:things-cli"],
+  "targets": {
+    "build": {
+      "command": "cargo build --target-dir dist/apps/things-cli -p things",
+      "defaultConfiguration": "production",
+      "outputs": ["dist/apps/things-cli"],
+      "configurations": {
+        "production": {
+          "command": "cargo build --release --target-dir dist/apps/things-cli -p things"
+        },
+        "development": {
+          "command": "cargo build --target-dir dist/apps/things-cli -p things"
+        }
+      }
+    },
+    "test": {
+      "command": "cargo test --target-dir dist/apps/things-cli -p things --color always",
+      "outputs": ["dist/apps/things-cli"]
+    },
+    "lint": {
+      "command": "cargo clippy --target-dir dist/apps/things-cli -p things",
+      "outputs": ["dist/apps/things-cli"]
+    }
+  }
+}

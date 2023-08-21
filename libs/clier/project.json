@@ -1,0 +1,30 @@
+{
+  "name": "clier",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "./libs/clier/src",
+  "tags": ["type:lib", "runtime:rust"],
+  "targets": {
+    "build": {
+      "command": "cargo build --target-dir dist/libs/clier -p clier",
+      "defaultConfiguration": "production",
+      "outputs": ["dist/libs/clier"],
+      "configurations": {
+        "production": {
+          "command": "cargo build --release --target-dir dist/libs/clier -p clier"
+        },
+        "development": {
+          "command": "cargo build --target-dir dist/libs/clier -p clier"
+        }
+      }
+    },
+    "test": {
+      "command": "cargo test --target-dir dist/libs/clier -p clier --color always",
+      "outputs": ["dist/libs/clier"]
+    },
+    "lint": {
+      "command": "cargo clippy --target-dir dist/libs/clier -p clier",
+      "outputs": ["dist/libs/clier"]
+    }
+  }
+}

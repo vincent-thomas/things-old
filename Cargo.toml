@@ -1,7 +1,12 @@
 
 [workspace]
 members = [
+<<<<<<< Updated upstream
 	'./cli',
+=======
+	'./apps/things-cli',
+	'./libs/clier'
+>>>>>>> Stashed changes
 ]
 
 [profile.release]
