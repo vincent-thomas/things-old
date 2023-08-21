@@ -1,7 +1,7 @@
 mod commands;
 
 use commands::{auth_command, ping_command};
-use clier::conf;
+use clier::conf::{Spacing, ProgramOptions};
 use clier::builder::{CliBuilder, CommandBuilder};
 
 use std::env;
@@ -11,19 +11,19 @@ const DESCRIPTION: &'static str = env!("CARGO_PKG_DESCRIPTION");
 const NAME: &'static str = env!("CARGO_PKG_NAME");
 
 fn main() {
-  let _args: Vec<String> = env::args().collect();
+  let args: Vec<String> = env::args().collect();
 
-  let options = conf::ProgramOptions {
+  let options = ProgramOptions {
     name: NAME,
     version: VERSION,
     description: DESCRIPTION,
     usage: Some("<command>[:subcommand] [flags]")
   };
-  let app = CliBuilder::new(_args)
+  let app = CliBuilder::new(args)
     .program_options(options)
     .command(auth_command())
     .command(ping_command())
     .build();
 
-  app.spacing(conf::Spacing::Dots).run();
+  app.spacing(Spacing::Dots).run();
 }

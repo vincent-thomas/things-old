@@ -22,7 +22,7 @@ fn command(_: Vec<String>, args: Vec<(String, String)>) {
     println!("You are not authenticated");
     process::exit(1);
   }
-  println!("{auth_token}");
+  todo!()
 }
 
 pub fn auth_command() -> Command {

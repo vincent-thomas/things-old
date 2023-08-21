@@ -1,15 +1,14 @@
 pub mod builder;
 pub mod conf;
-pub mod help;
 pub mod command;
+mod core;
 
-use help::use_help;
+use crate::core::hooks::{core_use_flag, core_use_help};
 
 use command::Command;
 use conf::{ProgramOptions, Spacing};
 #[cfg(feature = "hooks")]
 pub mod hooks;
-
 
 
 
@@ -23,7 +22,7 @@ pub struct CliApp {
 
 impl CliApp {
   pub fn spacing(mut self, spacing: Spacing) -> Self {
-    self.spacing = spacing; 
+    self.spacing = spacing;
     self
   }
 }
@@ -83,36 +82,10 @@ impl CliApp {
     }).collect::<Vec<(String, String)>>()
   }
 
-  fn internal_use_flag(self, name: &'static str, args: &[(String, String)]) -> Option<String> {
-    let mut flag_keys = vec![];
-
-    for item in args.clone() {
-      flag_keys.push(item.0.clone());
-    };
-
-    let is_there = flag_keys.contains(&name.to_string());
-
-    if !is_there {
-      return None;
-    }
-
-    let mut index_name: Option<usize> = None;
-
-    for (index, item) in flag_keys.iter().enumerate() {
-      if item == name {
-        index_name = Some(index);
-      }
-    }
-
-    let selected_flag = args.get(index_name.unwrap()).unwrap().to_owned();
-
-    Some(selected_flag.1)
-  }
-
   pub fn run(self) {
     let commands = self.clone().format_commands().unwrap();
     let flags = self.clone().format_flags();
-    let is_help = self.clone().internal_use_flag("help", &flags).unwrap_or("false".to_string());
+    let is_help = core_use_flag("help", &flags).unwrap_or("false".to_string());
     let mut the_command: Option<Command> = None;
     self.clone().commands.iter().for_each(|command| {
       if commands.get(0).unwrap() == command.name {
@@ -120,7 +93,7 @@ impl CliApp {
       }
     });
     if is_help == "true" || the_command.is_none() {
-      use_help(self.clone().commands, self.clone().app_options);
+      core_use_help(self.clone().commands, self.clone().app_options);
     }
     (the_command.unwrap().handler)(commands.clone(), flags.clone());
   }
