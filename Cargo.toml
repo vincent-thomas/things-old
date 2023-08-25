@@ -1,8 +1,7 @@
 
 [workspace]
 members = [
-	'./apps/things-cli',
-	'./libs/clier'
+	'apps/things-cli'
 ]
 
 [profile.release]

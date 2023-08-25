@@ -1,9 +1,10 @@
 use std::{collections::HashMap, process};
-use clier::command::{Command, CliCommand};
 use inquire::Text;
 use reqwest;
 use serde::Serialize;
 use serde_json::Value;
+use clier::{Command, Args};
+
 
 fn _get_values(message: &str) -> String {
 
@@ -37,7 +38,8 @@ impl<'a> serde::de::Deserialize<'a> for ResponseField {
   }
 }
 
-fn command(_commands: Vec<String>, _args: Vec<(String,String)>) {
+fn command(_options: Args) {
+  println!("{:?}", _options);
   let response = reqwest::blocking::get("http://localhost:8080/healthcheck").unwrap_or_else(
         |e| {
           println!("Error: {:?}", e);
@@ -56,9 +58,11 @@ fn command(_commands: Vec<String>, _args: Vec<(String,String)>) {
 }
 
 pub fn ping_command() -> Command {
-  CliCommand::new("ping", command)
-    .description("To check if api is up")
-    .usage("tesind")
-    .help_string("flags: --token, --name")
-    .build()
+  Command {
+    name: "ping",
+    description: "To check if api is up",
+    handler: command,
+    help_string: Some("--token=[value]"),
+    usage: None
+  }
 }

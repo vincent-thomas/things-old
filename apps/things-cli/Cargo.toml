@@ -5,10 +5,9 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
-ctrlc = "3.4.0"
-clier = { path = "../../libs/clier", features = ["hooks"] }
+# TODO: Funkar inte när inte använder .exe på windows
+clier = { version = "0.0.3", features = ["hooks"] }
 inquire = "0.6.2"
 reqwest = { version = "0.11.6", features = ["blocking", "json"] }
 serde = { version = "1.0.130", features = ["derive"] }
 serde_json = "1.0.68"
-colored = "2.0.4"

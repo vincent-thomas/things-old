@@ -1,5 +1,5 @@
 mod ping;
-mod auth;
+// mod auth;
 
-pub use auth::auth_command;
+// pub use auth::auth_command;
 pub use ping::ping_command;

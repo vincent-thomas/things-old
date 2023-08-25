@@ -3,7 +3,6 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "./apps/things-cli/src",
-  "implicitDependencies": ["clier"],
   "tags": ["runtime:rust", "type:app", "scope:things-cli"],
   "targets": {
     "build": {
