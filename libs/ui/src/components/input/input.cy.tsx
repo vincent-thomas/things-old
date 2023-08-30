@@ -1,7 +1,7 @@
-import { Input } from '.';
+import { Input } from ".";
 
 describe("Input", () => {
-  it('Renders', () => {
+  it("Renders", () => {
     cy.mount(<Input />);
   });
 });

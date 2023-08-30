@@ -22,7 +22,11 @@
       "!{projectRoot}/cypress.config.[jt]s"
     ],
     "sharedGlobals": [],
-    "rust": ["{projectRoot}/src/**/*.rs", "{workspaceRoot}/Cargo.toml", "{projectRoot}/Cargo.toml"]
+    "rust": [
+      "{projectRoot}/src/**/*.rs",
+      "{workspaceRoot}/Cargo.toml",
+      "{projectRoot}/Cargo.toml"
+    ]
   },
   "workspaceLayout": {
     "appsDir": "apps",

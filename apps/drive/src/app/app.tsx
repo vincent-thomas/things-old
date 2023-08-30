@@ -1,8 +1,7 @@
-import { RouterProvider } from 'react-router-dom';
-import { Provider } from './providers';
-import { Router } from './routes';
-import { StrictMode } from 'react';
-
+import { RouterProvider } from "react-router-dom";
+import { Provider } from "./providers";
+import { Router } from "./routes";
+import { StrictMode } from "react";
 
 export function App() {
   return (
@@ -11,5 +10,5 @@ export function App() {
         <RouterProvider router={Router} />
       </Provider>
     </StrictMode>
-  )
+  );
 }

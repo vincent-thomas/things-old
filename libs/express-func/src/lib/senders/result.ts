@@ -6,7 +6,7 @@ interface resultProps extends Omit<GlobalSenderProps, "status"> {
 }
 
 export const resultSender = (payload: resultProps): SendGenerator => {
-  const {status = 200, data} = payload;
+  const { status = 200, data } = payload;
 
   return {
     success: true,
@@ -15,5 +15,5 @@ export const resultSender = (payload: resultProps): SendGenerator => {
     _sendMeta: {
       status
     }
-  }
-}
+  };
+};

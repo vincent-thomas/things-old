@@ -1,4 +1,4 @@
-import { mount } from 'cypress/react18';
+import { mount } from "cypress/react18";
 // ***********************************************************
 // This example support/component.ts is processed and
 // loaded automatically before your test files.
@@ -15,7 +15,7 @@ import { mount } from 'cypress/react18';
 // ***********************************************************
 
 // Import commands.ts using ES2015 syntax:
-import './commands';
+import "./commands";
 
 // add component testing only related command here, such as mount
 declare global {
@@ -28,4 +28,4 @@ declare global {
   }
 }
 
-Cypress.Commands.add('mount', mount);
+Cypress.Commands.add("mount", mount);

@@ -1,14 +1,12 @@
-import { UserProvider } from "./user"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { UserProvider } from "./user";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient();
 
-export const Provider = ({children}: {children: JSX.Element}) => {
+export const Provider = ({ children }: { children: JSX.Element }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        {children}
-      </UserProvider>
+      <UserProvider>{children}</UserProvider>
     </QueryClientProvider>
-  )
-}
+  );
+};

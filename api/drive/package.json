@@ -1,8 +1,0 @@
-{
-  "name": "@api/drive",
-  "version": "0.0.0",
-  "dependencies": {
-    "@swc/helpers": "~0.5.0"
-  },
-  "devDependencies": {}
-}

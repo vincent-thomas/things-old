@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Input as Comp } from '.';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Input as Comp } from ".";
 
 const meta: Meta<typeof Comp> = {
   component: Comp,
   args: {
-    placeholder: 'Skriv här...',
-  },
+    placeholder: "Skriv här..."
+  }
 };
 
 export default meta;
@@ -19,5 +19,5 @@ type Story = StoryObj<typeof Comp>;
  */
 
 export const Input: Story = {
-  name: Comp.displayName,
+  name: Comp.displayName
 };

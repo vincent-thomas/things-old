@@ -1,0 +1,32 @@
+{
+  "$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always",
+      "trailingComma": "none",
+      "quoteStyle": "double"
+    }
+  },
+  "files": {
+    "ignore": [
+      "dist/**",
+      "node_modules",
+      ".local/**",
+      ".vscode",
+      ".devcontainer"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentSize": 2,
+    "indentStyle": "space",
+    "formatWithErrors": false,
+    "lineWidth": 80
+  },
+  "linter": {
+    "enabled": false
+  }
+}

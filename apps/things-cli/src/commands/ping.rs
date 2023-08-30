@@ -39,21 +39,21 @@ impl<'a> serde::de::Deserialize<'a> for ResponseField {
 }
 
 fn command(_options: Args) {
-  println!("{:?}", _options);
+  println!("1. loading...");
   let response = reqwest::blocking::get("http://localhost:8080/healthcheck").unwrap_or_else(
         |e| {
-          println!("Error: {:?}", e);
+          println!("2. Error: {:#?}", e);
           process::exit(1);
         }
       )
       .json::<HashMap<String, ResponseField>>().unwrap_or_else(
         |e| {
-          println!("Error: {:?}", e);
+          println!("2. Error: {:#?}", e);
           process::exit(1);
         }
       );
   if *response.get("status").unwrap() == Text("up".to_string()) {
-    println!("Things is up!");
+    println!("2. Things is up!");
   }
 }
 

@@ -1,4 +1,4 @@
-var path = require('path');
+var path = require("path");
 
 // Note: If you use library-specific PostCSS/Tailwind configuration then you should remove the `postcssConfig` build
 // option from your application's configuration (i.e. project.json).
@@ -7,11 +7,11 @@ var path = require('path');
 
 module.exports = {
   plugins: {
-    'tailwindcss/nesting': {},
+    "tailwindcss/nesting": {},
     tailwindcss: {
-      config: path.join(__dirname, 'tailwind.config.js'),
+      config: path.join(__dirname, "tailwind.config.js")
     },
     autoprefixer: {},
-    cssnano: {},
-  },
+    cssnano: {}
+  }
 };

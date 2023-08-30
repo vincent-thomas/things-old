@@ -1,8 +1,5 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "todo-tree.highlights.enabled": false,
-  "rust-analyzer.linkedProjects": [
-    "./cli/app/Cargo.toml",
-    "./cli/framework/Cargo.toml",
-  ]
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"todo-tree.highlights.enabled": false,
+	"editor.defaultFormatter": "rome.rome"
 }

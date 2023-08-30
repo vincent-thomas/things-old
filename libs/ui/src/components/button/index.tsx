@@ -1,45 +1,45 @@
-import { Slot } from '@radix-ui/react-slot';
-import { cn } from '../../utils';
-import { BaseChildrenProps } from '../../types/baseProps';
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "../../utils";
+import { BaseChildrenProps } from "../../types/baseProps";
 import {
   ButtonHTMLAttributes,
   forwardRef,
-  type MouseEventHandler,
-} from 'react';
+  type MouseEventHandler
+} from "react";
 
-import Default, { destructive, ghost, link, outline } from './button.css';
+import Default, { destructive, ghost, link, outline } from "./button.css";
 
 const variantStyle = {
   default: Default,
   destructive,
   ghost,
   link,
-  outline,
+  outline
 };
 
 interface StyleProps {
-  variant?: 'default' | 'destructive' | 'outline' | 'ghost' | 'link';
-  size?: 'default' | 'lg' | 'sm';
+  variant?: "default" | "destructive" | "outline" | "ghost" | "link";
+  size?: "default" | "lg" | "sm";
 }
 
 export interface ButtonProps extends BaseChildrenProps, StyleProps {
   asChild?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLElement>;
-  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { UNSAFE_className, variant = 'default', size, asChild = false, ...props },
+    { UNSAFE_className, variant = "default", size, asChild = false, ...props },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'button';
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(variantStyle[variant], {
           size,
-          className: UNSAFE_className,
+          className: UNSAFE_className
         })}
         ref={ref}
         {...props}
@@ -47,6 +47,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
-Button.displayName = 'Button';
+Button.displayName = "Button";
 
 export { Button };

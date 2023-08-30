@@ -1,4 +1,4 @@
-import { SendGenerator } from "@things/express-func";
+import type { SendGenerator } from "@things/express-func";
 import { stringify } from "qs";
 interface Folder {
   id: string;
@@ -7,31 +7,40 @@ interface Folder {
   parentFolderId: string;
   createdAt: string;
   folders: Folder[];
-  files: any
+  files: any;
 }
-export const foldersFetcher = async (token: string, parentFolderId: string | undefined, {files, folder}: {files: boolean, folder: boolean}) => {
-  const result = await fetch(`http://localhost:8080/drive/v1/folder?${stringify({folderId: parentFolderId})}${files ? `${parentFolderId !== undefined ? "&" : ""}files` : ''}${folder ? "&folders" : ""}`, {
-    headers: {
-      authorization: `Bearer ${token}`
+export const foldersFetcher = async (
+  token: string,
+  parentFolderId: string | undefined,
+  { files, folder }: { files: boolean; folder: boolean }
+) => {
+  const result = await fetch(
+    `http://localhost:8080/drive/folder?${stringify({
+      folderId: parentFolderId
+    })}${files ? `${parentFolderId !== undefined ? "&" : ""}files` : ""}${
+      folder ? "&folders" : ""
+    }`,
+    {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
     }
-  });
-  const data = await result.json() as SendGenerator<Folder[]>;
+  );
+  const data = (await result.json()) as SendGenerator<Folder[]>;
   if (data.success) {
     const returns = data.data;
     const files: any[] = [];
     const folders = [];
-  
-    for (const item of returns) {
-      // files.push(...item.files)
-      if (!parentFolderId) {
 
-      folders.push(item)
+    for (const item of returns) {
+      if (parentFolderId) {
+        files.push(...item.files);
+        folders.push(...item.folders);
       } else {
-        files.push(...item.files)
-      folders.push(...item.folders)
+        folders.push(item);
       }
     }
 
-    return {files, folders}
+    return { files, folders };
   }
-}
+};

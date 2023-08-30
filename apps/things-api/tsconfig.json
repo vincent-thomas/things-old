@@ -1,0 +1,28 @@
+{
+  "files": [],
+  "exclude": ["node_modules"],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@core/data": ["src/data/public_api.ts"],
+      "@core/http": ["src/core/http/public_api.ts"],
+      "@core/middleware": ["src/core/middleware/public_api.ts"],
+      "@core/hooks": ["src/core/hooks/index.ts"],
+      "@e2e/*": ["e2e/*"]
+    }
+  }
+}

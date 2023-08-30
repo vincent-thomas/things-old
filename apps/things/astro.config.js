@@ -1,25 +1,25 @@
-import { defineConfig } from 'astro/config';
-import prefetch from '@astrojs/prefetch';
-import react from '@astrojs/react';
-import tailwind from '@astrojs/tailwind';
-import { VitePluginStyles } from '../../libs/build-config/src';
+import { defineConfig } from "astro/config";
+import prefetch from "@astrojs/prefetch";
+import react from "@astrojs/react";
+import tailwind from "@astrojs/tailwind";
+import { VitePluginStyles } from "../../libs/build-config/src";
 
 // https://astro.build/config
 export default defineConfig({
-  outDir: '../../dist/apps/things',
+  outDir: "../../dist/apps/things",
   build: {
-    format: 'file',
+    format: "file"
   },
   integrations: [
     prefetch({
-      intentSelector: 'a',
+      intentSelector: "a"
     }),
     react(),
-    tailwind(),
+    tailwind()
   ],
   vite: {
-    cacheDir: '../../.local/vite-cache/things',
-    plugins: [VitePluginStyles()],
+    cacheDir: "../../.local/vite-cache/things",
+    plugins: [VitePluginStyles()]
   },
-  srcDir: './src'
+  srcDir: "./src"
 });

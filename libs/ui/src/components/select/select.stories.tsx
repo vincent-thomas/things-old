@@ -1,6 +1,6 @@
 // Button.stories.ts|tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Select,
   SelectTrigger,
@@ -8,8 +8,8 @@ import {
   SelectContent,
   SelectGroup,
   SelectLabel,
-  SelectItem,
-} from '.';
+  SelectItem
+} from ".";
 
 const meta: Meta = {
   title: "Select",
@@ -31,9 +31,9 @@ const meta: Meta = {
     </Select>
   ),
   args: {
-    children: 'Click Me',
-    disabled: false,
-  },
+    children: "Click Me",
+    disabled: false
+  }
 };
 
 export default meta;

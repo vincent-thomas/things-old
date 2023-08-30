@@ -1,17 +1,21 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
-import { ViteWebEss } from '../../libs/build-config/src';
+import { defineConfig, searchForWorkspaceRoot } from "vite";
+import { ViteWebEss } from "../../libs/build-config/src";
+import { resolve } from "path";
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/drive-new',
+  cacheDir: "../../node_modules/.vite/drive-new",
 
   server: {
     port: 4200,
-    host: 'localhost',
+    host: "localhost",
+    fs: {
+      allow: [searchForWorkspaceRoot(process.cwd())]
+    }
   },
 
   preview: {
     port: 4200,
-    host: 'localhost',
+    host: "localhost"
   },
 
   plugins: ViteWebEss("../.."),
@@ -19,10 +23,10 @@ export default defineConfig({
   test: {
     globals: true,
     cache: {
-      dir: '../../node_modules/.vitest',
+      dir: "../../node_modules/.vitest"
     },
-    environment: 'jsdom',
+    environment: "jsdom",
     watch: true,
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-  },
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"]
+  }
 });

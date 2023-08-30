@@ -1,9 +1,9 @@
-import { Button, Title } from '@things/ui';
-import type { FC } from 'react';
+import { Button, Title } from "@things/ui";
+import type { FC } from "react";
 
 export type NavbarProps = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
-  'children'
+  "children"
 >;
 
 export const Navbar: FC<NavbarProps> = () => {
@@ -15,8 +15,15 @@ export const Navbar: FC<NavbarProps> = () => {
         asChild
       >
         <a href="/">
-          <Title removeStyles UNSAFE_className="text-3xl font-semibold">things</Title>
-          <Title removeStyles UNSAFE_className="text-3xl font-semibold text-[black]">Suite</Title>
+          <Title removeStyles UNSAFE_className="text-3xl font-semibold">
+            things
+          </Title>
+          <Title
+            removeStyles
+            UNSAFE_className="text-3xl font-semibold text-[black]"
+          >
+            Suite
+          </Title>
         </a>
       </Button>
       <div className="flex items-center gap-2">

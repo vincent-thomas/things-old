@@ -34,7 +34,7 @@
     "deploy": {
       "command": "sh ./tools/scripts/deploy/things.sh"
     },
-     "deploy-preview": {
+    "deploy-preview": {
       "command": "sh ./tools/scripts/deploy-preview/things.sh"
     },
     "lint": {

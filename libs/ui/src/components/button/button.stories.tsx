@@ -1,16 +1,15 @@
 // Button.stories.ts|tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button as Comp } from '.';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button as Comp } from ".";
 
 const meta: Meta<typeof Comp> = {
   title: "Button",
   component: ({ ...args }) => <Comp {...args} />,
   args: {
-    children: 'Click Me',
-    disabled: false,
-  },
-
+    children: "Click Me",
+    disabled: false
+  }
 };
 
 export default meta;
@@ -25,30 +24,30 @@ type Story = StoryObj<typeof Comp>;
 
 export const Default: Story = {
   args: {
-    variant: 'default',
-  },
+    variant: "default"
+  }
 };
 
 export const Destructive: Story = {
   args: {
-    variant: 'destructive',
-  },
+    variant: "destructive"
+  }
 };
 
 export const Ghost: Story = {
   args: {
-    variant: 'ghost',
-  },
+    variant: "ghost"
+  }
 };
 
 export const Link: Story = {
   args: {
-    variant: 'link',
-  },
+    variant: "link"
+  }
 };
 
 export const Outline: Story = {
   args: {
-    variant: 'outline',
-  },
+    variant: "outline"
+  }
 };

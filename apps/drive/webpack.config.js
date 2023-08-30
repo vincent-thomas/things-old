@@ -1,7 +1,7 @@
-const { composePlugins, withNx } = require('@nx/webpack');
+const { composePlugins, withNx } = require("@nx/webpack");
 
 module.exports = composePlugins(withNx(), (config, webpack) => {
-  config.mode = "production"
+  config.mode = "production";
   // config.externals = [];
   // config.ignoreWarnings = [
   //   {

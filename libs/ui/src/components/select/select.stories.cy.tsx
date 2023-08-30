@@ -1,7 +1,7 @@
-import meta from './select.stories';
+import meta from "./select.stories";
 
 describe(meta.title as string, () => {
-  it('renders', () => {
+  it("renders", () => {
     cy.mount(<meta />);
   });
 });

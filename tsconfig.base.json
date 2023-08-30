@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "sourceMap": true,
     "declaration": false,
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "strict": true,
@@ -25,10 +26,8 @@
       "@api/shared": ["api/shared/src/index.ts"],
       "@auth/*": ["apps/auth/*"],
       "@things/build-config/*": ["libs/build-config/src/*"],
-      "@things/crypto": ["libs/crypto/src/index.ts"],
       "@things/drive-queries": ["libs/drive-queries/src/index.ts"],
       "@things/express-func": ["libs/express-func/src/index.ts"],
-      "@things/format": ["libs/format/src/index.ts"],
       "@things/logger": ["libs/logger/src/index.ts"],
       "@things/ui": ["libs/ui/src/internal.ts"],
       "@things/ui/styles": ["libs/ui/src/styles/local.css"]
