@@ -11,7 +11,7 @@
       "defaultConfiguration": "development",
       "options": {
         "target": "node",
-        "compiler": "swc",
+        "compiler": "tsc",
         "outputPath": "dist/apps/things-api",
         "main": "apps/things-api/src/main.ts",
         "tsConfig": "apps/things-api/tsconfig.app.json",

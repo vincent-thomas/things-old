@@ -10,7 +10,7 @@ module.exports = composePlugins((config, wp) => {
   config.context = __dirname;
   config.mode = "development";
   config.watch = true;
-  config.entry = ["webpack/hot/poll?100", resolve("./src/main.ts")];
+  config.entry = ["webpack/hot/poll?100", "./src/main.ts"];
   config.target = "node";
   config.node = false;
   config.externals = [
@@ -18,16 +18,28 @@ module.exports = composePlugins((config, wp) => {
       allowlist: ["webpack/hot/poll?100"]
     })
   ];
-  // config.resolve = {
-  //   extensions: [ '.ts', '.tsx', '.mjs', '.js', '.jsx' ],
-  //   alias: {},
-  //   plugins: [ [new TsconfigPathsPlugin()] ],
-  //   mainFields: [ 'module', 'main' ]
-  // },
-  config.stats = "detailed";
+
+  config.module = {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: "ts-loader",
+        exclude: /node_module|e2e/
+      }
+    ]
+  };
+  config.resolve = {
+    extensions: [".ts", ".mjs", ".js"],
+    alias: {},
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: resolve(__dirname, "./tsconfig.app.json")
+      })
+    ],
+    mainFields: ["module", "main"]
+  };
+  config.stats = "minimal";
   config.plugins = [
-    // ...config.plugins,
-    new TsconfigPathsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.WatchIgnorePlugin({
       paths: [/\.js$/, /\.d\.ts$/]
