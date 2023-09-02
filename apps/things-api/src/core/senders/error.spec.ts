@@ -1,4 +1,4 @@
-import { ERROR_TYPE } from "../enums/errorTypes";
+import { ERROR_TYPE } from "../http/enum";
 import { errorSender } from "./error";
 import type { RequestError } from "./globalTypes";
 

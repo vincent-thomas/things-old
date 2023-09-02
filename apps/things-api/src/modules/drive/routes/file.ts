@@ -52,7 +52,7 @@ file.post("/", authorize, createFileValidator, async (req, res) => {
   sendResult(
     res,
     {
-      url: env.getEnv("appUrl") + "/drive/object/objectUpload/" + payload,
+      url: `${env.getEnv("appUrl")}/drive/object/objectUpload/${payload}`,
       expires: "5m"
     },
     STATUS_CODE.CREATED
@@ -69,7 +69,7 @@ const { input: validatorThis, values: theValues } = validate(
 
 const readBodyAsBuffer = (req: Request): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
-    let body: Buffer[] = [];
+    const body: Buffer[] = [];
     req.on("data", (chunk) => {
       body.push(chunk);
     });

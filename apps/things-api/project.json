@@ -5,42 +5,12 @@
   "projectType": "application",
   "tags": [],
   "targets": {
-    "build-dev": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "development",
-      "options": {
-        "target": "node",
-        "compiler": "tsc",
-        "outputPath": "dist/apps/things-api",
-        "main": "apps/things-api/src/main.ts",
-        "tsConfig": "apps/things-api/tsconfig.app.json",
-        "isolatedConfig": true,
-        "sourceMap": true,
-        "webpackConfig": "apps/things-api/webpack-hmr.config.js"
-      }
-    },
-    "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "things-api:build-dev",
-        "debounce": 0
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["api/shell/**/*.ts"]
+        "lintFilePatterns": ["apps/things-api/**/*.ts"]
       }
-    },
-    "docker-build": {
-      "dependsOn": ["build"],
-      "options": {
-        "cwd": "apps/things-api"
-      },
-      "command": "docker build . -t things-api:latest"
     }
   }
 }

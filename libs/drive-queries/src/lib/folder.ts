@@ -29,7 +29,7 @@ export const foldersFetcher = async (
   const data = (await result.json()) as SendGenerator<Folder[]>;
   if (data.success) {
     const returns = data.data;
-    const files: any[] = [];
+    const files = [];
     const folders = [];
 
     for (const item of returns) {

@@ -9,12 +9,17 @@ import { createToken } from "src/core/hooks";
 
 const googleAuthCallback = Router();
 
+interface Shit {
+  src: "web" | "terminal";
+  redirect_uri: string;
+}
+
 const validator = validate(
   z.object({
     query: z.object({
       code: z.string(),
       state: z.preprocess(
-        (string: any): any => JSON.parse(string),
+        (string: unknown): Shit => JSON.parse(string as string) as Shit,
         z.object({
           src: z.enum(["web", "terminal"]).optional().default("web"),
           redirect_uri: z.string()
@@ -79,7 +84,7 @@ export async function getGoogleUser(input: GetGoogleUserInput) {
       }
     );
     return res.data;
-  } catch (error: any) {
+  } catch (error) {
     console.trace(error);
     return null;
   }
@@ -107,15 +112,14 @@ googleAuthCallback.get("/", validator.input, async (req, res) => {
 
   const result = createToken(user.id);
   // TODO
-  if ((query.state as any).src === "terminal") {
-    return res.send("Copy this into the terminal!: " + result);
+  const state = query.state as Shit;
+  const { redirect_uri, src } = state;
+  if (src === "terminal") {
+    return res.send(`Copy this into the terminal!: ${result}`);
   }
-  const { redirect_uri } = query.state as any;
 
   const url = new URL(redirect_uri);
-
   url.searchParams.set("access_token", result);
-
   res.redirect(url.toString());
 });
 

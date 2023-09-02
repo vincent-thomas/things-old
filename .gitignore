@@ -1,4 +1,3 @@
-dist
 tmp
 /out-tsc
 
@@ -43,7 +42,5 @@ Thumbs.db
 .astro
 *.exe
 .local
-drizzle-output
 **/*.log
-apps/things-site-new
-target
+.things

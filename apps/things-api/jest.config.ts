@@ -5,7 +5,7 @@ import { compilerOptions } from "./tsconfig.json";
 const config: Config = {
   displayName: "things-api",
   transform: {
-    "^.+\\.[tj]s$": ["ts-jest", { tsconfig: "<rootDir>/tsconfig.spec.json" }]
+    "^.+\\.[tj]s$": ["ts-jest", { tsconfig: "<rootDir>/tsconfig.e2e.json" }]
   },
   preset: "../../jest.preset.js",
   roots: ["<rootDir>"],

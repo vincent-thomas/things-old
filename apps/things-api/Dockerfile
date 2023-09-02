@@ -8,7 +8,7 @@ WORKDIR /app
 RUN addgroup --system api && \
           adduser --system -G api api
 
-COPY dist /app
+COPY . /app
 RUN chown -R api:api .
 
 RUN npx pnpm install

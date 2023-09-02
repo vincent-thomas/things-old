@@ -1,28 +1,28 @@
 import { authorize } from "./authorize";
-import { NextFunction, Request } from "express";
-const res: any = {
+import { NextFunction, Request, Response } from "express";
+const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn().mockReturnThis(),
   req: {
     baseUrl: "/oauth/v1/authorize"
   }
-};
+} as unknown as Response;
 
 test("Not calling next function if unauthorized", () => {
   const nextFunction = jest.fn() as NextFunction;
-  const req: any = {};
-  authorize(req, res, nextFunction);
+  const req = {};
+  authorize(req as Request, res, nextFunction);
   expect(nextFunction).not.toHaveBeenCalled();
 });
 
 test("Not calling next function if not parsed correctly", () => {
   const nextFunction = jest.fn() as NextFunction;
-  const req: any = {
+  const req = {
     headers: {
       authorization: "nonbearer testing"
     }
   };
-  authorize(req, res, nextFunction);
+  authorize(req as Request, res, nextFunction);
   expect(nextFunction).not.toHaveBeenCalled();
 });
 

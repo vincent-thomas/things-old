@@ -22,7 +22,7 @@ const MainPage = () => {
         <br />
       </Button>
       <br />
-      <pre></pre>
+      <pre />
       <Title>Files</Title>
       <ul>
         {data?.files.map((v) => (

@@ -5,14 +5,14 @@ import { Router, Routes } from "../../routes";
 
 const Page = () => {
   const { fileId } = useParams();
-  const [file, setFile] = useState<any>("loading...");
+  const [file, setFile] = useState("loading...");
 
   useEffect(() => {
     const result = fetch(
-      "http://localhost:8080/drive/v1/file?fileId=" + fileId,
+      `http://localhost:8080/drive/v1/file?fileId=${fileId}`,
       {
         headers: {
-          authorization: "Bearer " + sessionStorage.getItem("access-token")
+          authorization: `Bearer ${sessionStorage.getItem("access-token")}`
         }
       }
     )

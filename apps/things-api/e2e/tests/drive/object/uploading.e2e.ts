@@ -23,7 +23,7 @@ afterAll(async () => {
 test("Uploading to the presigned Url", async () => {
   const res = await request(app)
     .post(presignedUrl)
-    .set("Authorization", "Bearer " + authToken)
+    .set("Authorization", `Bearer ${authToken}`)
     .send(Buffer.from("Hello world"));
   console.log(res.body, presignedUrl);
   expect(res.status).toBe(201);

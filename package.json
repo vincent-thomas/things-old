@@ -11,7 +11,8 @@
     "serve:api": "sh ./tools/scripts/serve/api.sh",
     "studio:api": "nx run api-data:drizzle:studio",
     "serve:drive": "sh ./tools/scripts/serve/drive.sh",
-    "lint": "sh ./tools/scripts/lint.sh"
+    "lint": "sh ./tools/scripts/lint.sh",
+    "postinstall": "docker compose up -d"
   },
   "devDependencies": {
     "@astrojs/react": "^2.2.1",
@@ -153,9 +154,5 @@
     "winston": "^3.10.0",
     "zod": "^3.21.4",
     "zustand": "^4.4.1"
-  },
-  "nx": {
-    "includedScripts": [],
-    "ignore": true
   }
 }

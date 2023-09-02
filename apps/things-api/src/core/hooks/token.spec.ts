@@ -7,7 +7,7 @@ it("Gets and validates token", () => {
   const TEST_KEY = sign("1234", KEY);
   const req = {
     headers: {
-      authorization: "Bearer " + TEST_KEY
+      authorization: `Bearer ${TEST_KEY}`
     }
   } as Request;
   const result = getToken(req);

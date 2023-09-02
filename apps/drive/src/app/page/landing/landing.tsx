@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "../../providers/user";
 import { Routes } from "../../routes";
 
-/* eslint-disable-next-line */
-interface LandingProps {}
-
-function Landing(props: LandingProps) {
+function Landing(props: {}) {
   const user = useUser();
   if (user.loading) {
     return <>loading...</>;

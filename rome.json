@@ -23,6 +23,13 @@
     "lineWidth": 80
   },
   "linter": {
-    "enabled": false
+    "enabled": true,
+    "ignore": [".things", "dist"],
+    "rules": {
+      "suspicious": {
+        "noRedeclare": "warn",
+        "noExplicitAny": "warn"
+      }
+    }
   }
 }

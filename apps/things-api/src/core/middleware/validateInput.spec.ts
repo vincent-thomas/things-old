@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { validate } from "./validateInput";
-import { NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 const schema = z.object({
   body: z.object({
@@ -8,23 +8,23 @@ const schema = z.object({
   })
 });
 
-const res: any = {
+const res = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn().mockReturnThis(),
   req: {
     baseUrl: "/oauth/v1/authorize"
   }
-};
+} as unknown as Response;
 
 describe("validateInput", () => {
   test("Input-middleware validating with correct input", () => {
     const nextFunction = jest.fn() as NextFunction;
-    const req: any = {
+    const req = {
       body: {
         test: "test"
       }
     };
-    validate(schema).input(req, res, nextFunction);
+    validate(schema).input(req as Request, res, nextFunction);
     expect(res.status).not.toHaveBeenCalledWith(400);
     expect(nextFunction).toHaveBeenCalled();
   });
@@ -32,35 +32,35 @@ describe("validateInput", () => {
   test("Input-middleware validating with incorrect input", () => {
     const nextFunction = jest.fn() as NextFunction;
 
-    const req: any = {
+    const req = {
       body: {
         testno: "test"
       }
     };
-    validate(schema).input(req, res, nextFunction);
+    validate(schema).input(req as Request, res, nextFunction);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(nextFunction).not.toHaveBeenCalled();
   });
 
   test("Values validating with correct input", () => {
-    const req: any = {
+    const req = {
       body: {
         test: "test"
       }
     };
 
-    const result = validate(schema).values(req);
+    const result = validate(schema).values(req as Request);
     expect(result).toEqual({ body: { test: "test" } });
   });
 
   test("Values validating with incorrect input", () => {
-    const req: any = {
+    const req = {
       body: {
         testno: "test"
       }
     };
 
-    const result = validate(schema).values.bind(this, req);
+    const result = validate(schema).values.bind(this, req as Request);
     expect(result).toThrowError();
   });
 });

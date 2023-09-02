@@ -3,7 +3,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
 import * as path from "path";
-import { VitePluginStyles, VitePluginTs } from "../build-config/src";
+import tsConfig from "vite-tsconfig-paths";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 
 export default defineConfig({
   cacheDir: "../../node_modules/.vite/ui",
@@ -14,8 +15,10 @@ export default defineConfig({
       skipDiagnostics: true
     }),
     react(),
-    VitePluginTs("../.."),
-    VitePluginStyles()
+    tsConfig({
+      root: "../../"
+    }),
+    vanillaExtractPlugin()
   ],
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode

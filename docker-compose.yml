@@ -1,4 +1,5 @@
 version: '3.3'
+
 services:
   redis-stack:
     container_name: redis-stack
@@ -17,7 +18,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - ./.local/db-data:/var/lib/mysql
+      - ./.things/db-data:/var/lib/mysql
 
 volumes:
   db:

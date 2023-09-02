@@ -1,5 +1,7 @@
 {
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"todo-tree.highlights.enabled": false,
-	"editor.defaultFormatter": "rome.rome"
+	"editor.defaultFormatter": "rome.rome",
+	"[jsonc]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	}
 }

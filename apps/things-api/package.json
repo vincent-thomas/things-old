@@ -3,12 +3,24 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [".things/things-api"]
+      },
+      "build:docker": {
+        "dependsOn": ["build"],
+        "inputs": ["{projectRoot}/Dockerfile"]
+      }
+    }
+  },
   "scripts": {
     "db:push": "drizzle-kit push:mysql",
     "db:studio": "drizzle-kit studio",
-    "e2e": "jest",
-    "dev": "webpack",
-    "build": "tsup src/main.ts"
+    "e2e": "tsc -p tsconfig.e2e.json && jest",
+    "serve": "webpack",
+    "build": "tsc -p tsconfig.app.json && tsup src/main.ts",
+    "build:docker": "docker build -f ./Dockerfile ../../ -t things-api:latest"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.362.0",

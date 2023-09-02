@@ -28,7 +28,7 @@ export const getDBObject = async (userId: string, objectId: string) => {
   if (
     !result ||
     result?.parentFolder === null ||
-    result.parentFolder.ownedById != userId
+    result.parentFolder.ownedById !== userId
   ) {
     return { success: false, data: null };
   }
@@ -99,6 +99,10 @@ interface UpdateDBObject {
   fileKey?: string;
 }
 
+interface Error {
+  message: string;
+}
+
 export const updateDBObject = async (
   objectId: string,
   { fileKey }: UpdateDBObject
@@ -111,8 +115,9 @@ export const updateDBObject = async (
       })
       .where(eq(file.id, objectId));
     return { success: true };
-  } catch (e: any) {
-    if (e.message === "No values to set") {
+  } catch (e) {
+    const error = e as Error;
+    if (error.message === "No values to set") {
       return { success: false, error: "NO_VALUES_TO_SET" };
     }
 

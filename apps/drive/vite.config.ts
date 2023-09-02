@@ -1,6 +1,5 @@
 /// <reference types="vitest" />
 import { defineConfig, searchForWorkspaceRoot } from "vite";
-import { resolve } from "path";
 import react from "@vitejs/plugin-react-swc";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import viteTsConfigPaths from "vite-tsconfig-paths";

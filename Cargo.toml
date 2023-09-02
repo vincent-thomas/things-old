@@ -3,7 +3,6 @@
 members = [
 	'apps/things-cli'
 ]
-
 [profile.release]
 lto = true
 strip = true

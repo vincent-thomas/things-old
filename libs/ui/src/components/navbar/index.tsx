@@ -11,7 +11,7 @@ const Navbar: FC<NavbarProps> = ({ className, left, right }) => {
   return (
     <nav className={cn("text-start", className)}>
       <div>{left}</div>
-      <div></div>
+      <div />
       <div>{right}</div>
     </nav>
   );

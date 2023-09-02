@@ -9,7 +9,9 @@ interface AvatarProps {
 export const Avatar = (props: AvatarProps) => (
   <A.Root
     {...props}
-    className={`inline-flex items-center justify-center align-middle overflow-hidden select-none w-[45px] height-[45px] rounded-[100%] bg-gray-600`}
+    className={
+      "inline-flex items-center justify-center align-middle overflow-hidden select-none w-[45px] height-[45px] rounded-[100%] bg-gray-600"
+    }
   >
     <A.Image
       src={props.src}

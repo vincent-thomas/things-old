@@ -1,16 +1,17 @@
 import { Options } from "tsup";
 import packageJson from "./package.json";
-import { writeFileSync } from "fs";
+import { copyFileSync, writeFileSync } from "fs";
+import { resolve } from "path";
+
+const OUTPUT_PATH = resolve("../../.things/things-api");
+
 export default {
-  dts: false,
   tsconfig: "tsconfig.app.json",
   clean: true,
-  bundle: true,
   noExternal: ["@things/format", "@things/crypto"],
   treeshake: true,
   format: ["cjs"],
-  outDir: "./dist",
-  name: "things-api",
+  outDir: OUTPUT_PATH,
   onSuccess: () => {
     const withOut = { ...packageJson, dependencies: {} };
     for (const dep in packageJson.dependencies) {
@@ -18,6 +19,10 @@ export default {
         withOut.dependencies[dep] = packageJson.dependencies[dep];
       }
     }
-    writeFileSync("./dist/package.json", JSON.stringify(withOut, null, 2));
+    writeFileSync(
+      `${OUTPUT_PATH}/package.json`,
+      JSON.stringify(withOut, null, 2)
+    );
+    copyFileSync("./Dockerfile", `${OUTPUT_PATH}/Dockerfile`);
   }
 } as Options;

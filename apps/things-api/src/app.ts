@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Express } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import driveRouter from "./modules/drive";
 import authRouter from "./modules/auth";
 
-const app = express();
+const app: Express = express();
 
 app.use(
   helmet(),

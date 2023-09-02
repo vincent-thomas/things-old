@@ -33,7 +33,7 @@ export const UserProvider = ({ children }: { children: JSX.Element }) => {
       return axios
         .get("http://localhost:8080/auth/user", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`
           }
         })
         .catch((e) => {
@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: { children: JSX.Element }) => {
           user.setUser(null);
           return false;
         })
-        .then((v: any) => {
+        .then((v: unknown) => {
           user.setAuthed(v.data.success);
           user.setError(null);
           user.setUser(v.data.data);

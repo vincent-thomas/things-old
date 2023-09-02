@@ -20,7 +20,7 @@ export const validate = <Schema>(schema: ZodSchema<Schema>) => ({
     const isValid = schema.safeParse({ body, params, query, headers });
     if (!isValid.success) {
       res.status(400).json({
-        error: validateZodError((isValid as any).error)
+        error: validateZodError(isValid.error)
       });
     } else next();
   },

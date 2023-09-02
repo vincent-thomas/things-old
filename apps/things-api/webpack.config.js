@@ -25,7 +25,7 @@ module.exports = {
   output: {
     libraryTarget: "commonjs",
 
-    path: resolve("./dist"),
+    path: resolve("../../.things/things-api"),
     filename: "[name].dev.js",
     pathinfo: false,
     scriptType: undefined
