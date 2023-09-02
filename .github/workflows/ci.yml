@@ -46,7 +46,7 @@ jobs:
         with:
             toolchain: stable
 
-      - run: pnpm lint
+      - run: sh ./tools/scripts/lint.sh
   # run:
   #   name: Run
   #   runs-on: ubuntu-latest

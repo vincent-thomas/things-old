@@ -1,1 +1,0 @@
-nx run-many -t build --all

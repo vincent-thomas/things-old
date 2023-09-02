@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Router } from "express";
 import { z } from "zod";
 import { authorize, validate } from "src/core/middleware/public_api";
 import { getToken } from "src/core/hooks";
@@ -6,6 +6,8 @@ import { STATUS_CODE, sendResult } from "@core/http";
 import { createDBObject, getDBObject, updateDBObject } from "@core/data";
 import { env } from "src/env";
 import { presigned } from "../lib/presign";
+import { createObject } from "../lib/object";
+import { resultSender } from "src/core/senders";
 const file = Router();
 
 const { input: getFileValidator, values: getFileValues } = validate(
@@ -65,6 +67,21 @@ const { input: validatorThis, values: theValues } = validate(
   })
 );
 
+const readBodyAsBuffer = (req: Request): Promise<Buffer> => {
+  return new Promise((resolve, reject) => {
+    let body: Buffer[] = [];
+    req.on("data", (chunk) => {
+      body.push(chunk);
+    });
+    req.on("end", () => {
+      resolve(Buffer.concat(body));
+    });
+    req.on("error", (err) => {
+      reject(err);
+    });
+  });
+};
+
 file.post("/objectUpload/:data", validatorThis, async (req, res) => {
   const {
     params: { data: values }
@@ -74,12 +91,23 @@ file.post("/objectUpload/:data", validatorThis, async (req, res) => {
     return res.json({ error: "Link not valid" });
   }
   const user = getToken(req, true);
-  // TODO
-  // const result = await createDBObject({
-  //   folderId: fileMeta.folderId,
-  //   userId: user.sub
-  // }, {fileType: fileMeta.fileType, filename: fileMeta.fileKey})
-  res.json({ user });
+
+  const theBody = await readBodyAsBuffer(req);
+
+  const result = await createObject(
+    fileMeta.folderId,
+    user.sub,
+    {
+      filename: fileMeta.fileKey,
+      fileType: fileMeta.fileType
+    },
+    theBody
+  );
+  if (result) {
+    sendResult(res, undefined, STATUS_CODE.CREATED);
+  } else {
+    res.status(500).json({ error: "Something went wrong" });
+  }
 });
 
 const { input: updateFileInput, values: updateFileValues } = validate(

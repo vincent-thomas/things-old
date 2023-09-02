@@ -1,7 +1,9 @@
 /// <reference types="vitest" />
 import { defineConfig, searchForWorkspaceRoot } from "vite";
-import { ViteWebEss } from "../../libs/build-config/src";
 import { resolve } from "path";
+import react from "@vitejs/plugin-react-swc";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   cacheDir: "../../node_modules/.vite/drive-new",
 
@@ -18,7 +20,13 @@ export default defineConfig({
     host: "localhost"
   },
 
-  plugins: ViteWebEss("../.."),
+  plugins: [
+    react(),
+    vanillaExtractPlugin(),
+    viteTsConfigPaths({
+      root: "../../"
+    })
+  ],
 
   test: {
     globals: true,

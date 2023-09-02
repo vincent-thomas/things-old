@@ -10,14 +10,10 @@
       "quoteStyle": "double"
     }
   },
-  "files": {
-    "ignore": [
-      "dist/**",
-      "node_modules",
-      ".local/**",
-      ".vscode",
-      ".devcontainer"
-    ]
+  "vcs": {
+    "useIgnoreFile": true,
+    "enabled": true,
+    "clientKind": "git"
   },
   "formatter": {
     "enabled": true,

@@ -11,7 +11,7 @@
     "serve:api": "sh ./tools/scripts/serve/api.sh",
     "studio:api": "nx run api-data:drizzle:studio",
     "serve:drive": "sh ./tools/scripts/serve/drive.sh",
-    "lint": "rome ci . && cargo check"
+    "lint": "sh ./tools/scripts/lint.sh"
   },
   "devDependencies": {
     "@astrojs/react": "^2.2.1",

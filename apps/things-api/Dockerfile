@@ -8,8 +8,10 @@ WORKDIR /app
 RUN addgroup --system api && \
           adduser --system -G api api
 
-COPY dist/api /app
+COPY dist /app
 RUN chown -R api:api .
+
+RUN npx pnpm install
 
 EXPOSE 8080
 

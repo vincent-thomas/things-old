@@ -1,8 +1,6 @@
 import { Options } from "tsup";
 import packageJson from "./package.json";
-import getLatest from "latest-version";
-import { copyFileSync, writeFileSync } from "fs";
-
+import { writeFileSync } from "fs";
 export default {
   dts: false,
   tsconfig: "tsconfig.app.json",
@@ -13,7 +11,7 @@ export default {
   format: ["cjs"],
   outDir: "./dist",
   name: "things-api",
-  onSuccess() {
+  onSuccess: () => {
     const withOut = { ...packageJson, dependencies: {} };
     for (const dep in packageJson.dependencies) {
       if (packageJson.dependencies[dep] !== "workspace:*") {

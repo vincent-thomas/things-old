@@ -4,7 +4,7 @@ import { file, folder } from "../schema";
 import { randomUUID } from "crypto";
 import { env } from "src/env";
 import { pbkdf2Sync } from "crypto";
-import { toBuffer } from "@things/format";
+import { fromBuffer, toBuffer } from "@things/format";
 import { uid } from "uid/secure";
 
 export const getFolder = async (userId: string, folderId: string) => {
@@ -70,19 +70,22 @@ export const createDBObject = async (
 
   const id = randomUUID();
 
-  const result = pbkdf2Sync(
-    toBuffer(`${env.getEnv("masterEncKey")}${meta.userId}`, "utf-8"),
+  const encryptionKey = pbkdf2Sync(
+    toBuffer(`${env.getEnv("masterEncKey")}${meta.userId}${id}`, "utf-8"),
     toBuffer(uid(16), "utf-8"),
     100_000,
     32,
-    "sha1"
+    "sha512"
   );
-  console.log(result);
+  const storableEncKey = fromBuffer(encryptionKey);
+
   // const encryptionKey = env.getEnv("masterEncKey");
-  await db
-    .insert(file)
-    .values({ ...data, parentFolderId: meta.folderId, encryptionKey: "TEST" });
-  return { success: true };
+  await db.insert(file).values({
+    ...data,
+    parentFolderId: meta.folderId,
+    encryptionKey: storableEncKey
+  });
+  return { success: true, data: { objectId: id, encryptionKey } };
 };
 
 /**

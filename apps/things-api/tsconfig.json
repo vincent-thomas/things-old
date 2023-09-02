@@ -13,7 +13,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,

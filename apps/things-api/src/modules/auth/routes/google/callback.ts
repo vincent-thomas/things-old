@@ -16,6 +16,7 @@ const validator = validate(
       state: z.preprocess(
         (string: any): any => JSON.parse(string),
         z.object({
+          src: z.enum(["web", "terminal"]).optional().default("web"),
           redirect_uri: z.string()
         })
       )
@@ -105,13 +106,15 @@ googleAuthCallback.get("/", validator.input, async (req, res) => {
   }
 
   const result = createToken(user.id);
-
+  // TODO
+  if ((query.state as any).src === "terminal") {
+    return res.send("Copy this into the terminal!: " + result);
+  }
   const { redirect_uri } = query.state as any;
 
   const url = new URL(redirect_uri);
 
   url.searchParams.set("access_token", result);
-  // res.setHeader("X-Access-Token", result);
 
   res.redirect(url.toString());
 });

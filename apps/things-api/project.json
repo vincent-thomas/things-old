@@ -37,7 +37,10 @@
     },
     "docker-build": {
       "dependsOn": ["build"],
-      "command": "docker build -f api/shell/Dockerfile . -t things-api:latest"
+      "options": {
+        "cwd": "apps/things-api"
+      },
+      "command": "docker build . -t things-api:latest"
     }
   }
 }

@@ -11,6 +11,7 @@ const validator = validate(
   z.object({
     query: z.object({
       redirect_uri: z.string(),
+      src: z.enum(["web", "terminal"]).optional().default("web"),
       cookie: z.enum(["true", "false"]).optional()
     })
   })
