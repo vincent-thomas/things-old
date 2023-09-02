@@ -37,7 +37,7 @@ authorizeV1.get("/", validator.input, async (req, res) => {
   const token = getToken(req, true);
   if (token === null) {
     // @ts-ignore
-    options["state"] = JSON.stringify(query);
+    options.state = JSON.stringify(query);
     const qs = new URLSearchParams(options);
     return res.redirect(`${googleAuthUrl}?${qs.toString()}`);
   }

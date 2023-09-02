@@ -20,11 +20,12 @@
     "indentSize": 2,
     "indentStyle": "space",
     "formatWithErrors": false,
-    "lineWidth": 80
+    "lineWidth": 80,
+    "ignore": [".eslintrc.json"]
   },
   "linter": {
     "enabled": true,
-    "ignore": [".things", "dist"],
+    "ignore": [".things"],
     "rules": {
       "suspicious": {
         "noRedeclare": "warn",

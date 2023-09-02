@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "Running pnpm install --frozen-lockfile"
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
