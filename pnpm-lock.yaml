@@ -515,8 +515,6 @@ importers:
 
   libs/format: {}
 
-  libs/logger: {}
-
   libs/ui:
     dependencies:
       '@radix-ui/react-alert-dialog':
@@ -528,9 +526,6 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.2.14)(react@18.2.0)
-      clsx:
-        specifier: ^2.0.0
-        version: 2.0.0
       react:
         specifier: ^18.2.0
         version: 18.2.0

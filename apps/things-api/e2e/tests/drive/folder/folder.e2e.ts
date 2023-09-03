@@ -17,7 +17,8 @@ beforeAll(async () => {
   authToken = createToken("TEST");
 });
 
-test.todo("Getting object that doesn't exist", (done) => {
+// Jobbar på denna
+test.skip("[WIP] Getting folder", (done) => {
   async function toTest() {
     const res = await request(app)
       .get("/drive/folder")
