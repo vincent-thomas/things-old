@@ -11,27 +11,25 @@ interface Folder {
 }
 export const foldersFetcher = async (
   token: string,
-  parentFolderId: string | undefined,
+  parentFolderId: string,
   { files, folder }: { files: boolean; folder: boolean }
 ) => {
   const result = await fetch(
-    `http://localhost:8080/drive/folder?${stringify({
-      folderId: parentFolderId
-    })}${files ? `${parentFolderId !== undefined ? "&" : ""}files` : ""}${
-      folder ? "&folders" : ""
-    }`,
+    `http://localhost:8080/drive/folder/${parentFolderId}?${stringify({
+      files,
+      folder
+    })}`,
     {
       headers: {
         authorization: `Bearer ${token}`
       }
     }
   );
-  const data = (await result.json()) as SendGenerator<Folder[]>;
-  if (data.success) {
+  const data = await result.json();
+  if (!data.error) {
     const returns = data.data;
     const files = [];
     const folders = [];
-
     for (const item of returns) {
       if (parentFolderId) {
         files.push(...item.files);
@@ -42,5 +40,5 @@ export const foldersFetcher = async (
     }
 
     return { files, folders };
-  }
+  } else return null;
 };

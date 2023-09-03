@@ -1,5 +1,5 @@
 {
-  "name": "drive",
+  "name": "things-drive",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/drive/src",
   "projectType": "application",
@@ -25,14 +25,14 @@
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "production",
       "options": {
-        "buildTarget": "drive:build"
+        "buildTarget": "things-drive:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "drive:build:development"
+          "buildTarget": "things-drive:build:development"
         },
         "production": {
-          "buildTarget": "drive:build:production"
+          "buildTarget": "things-drive:build:production"
         }
       }
     },
@@ -55,15 +55,15 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "drive:build"
+        "buildTarget": "things-drive:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "drive:build:development",
+          "buildTarget": "things-drive:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "drive:build:production",
+          "buildTarget": "things-drive:build:production",
           "hmr": false
         }
       }

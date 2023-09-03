@@ -1,40 +1,39 @@
 import { Router } from "express";
 import { z } from "zod";
-import { authorize, validate } from "../../../core/middleware/public_api";
+import { authorize, validate } from "@core/middleware";
 import { getToken } from "src/core/hooks";
 import { SendGenerator, resultSender, sender } from "../../../core/senders";
-// import {
-//   getToken,
-//   ERROR_TYPE,
-// } from '@api/shared';
-// import {SendGenerator,
-//   errorSender, sender, resultSender, STATUS_CODE} from "@things/express-func"
-// import { createFolder, getFolders } from '@api/data';
-// import { logger } from '@things/logger';
+import { getFolder } from "@core/data";
+import { STATUS_CODE, sendResult } from "@core/http";
 
-const folder = Router();
+const folder: Router = Router();
 
 const { input: getFoldersBalidator, values: getFolderValues } = validate(
   z.object({
     query: z.object({
-      folderId: z.string().optional(),
       folders: z.string().optional().default("false"),
       files: z.string().optional().default("false")
+    }),
+    params: z.object({
+      folderId: z.string().optional()
     })
   })
 );
 
-folder.get("/", authorize, getFoldersBalidator, async (req, res) => {
-  const { query } = getFolderValues(req);
+folder.get("/:folderId?", authorize, getFoldersBalidator, async (req, res) => {
+  const { query, params } = getFolderValues(req);
   const token = getToken(req);
   // TODO
-  // const result = await getFolders(
-  //   token.sub,
-  //   query.folderId === undefined ? null : query.folderId,
-  //   query.files === '',
-  //   query.folders === ''
-  // );
-  sender(res, resultSender({ data: token, status: 200 }));
+
+  const result = await getFolder(token.sub, params.folderId);
+  if (result === null) {
+    return sendResult(
+      res,
+      { error: "Folder not found" },
+      STATUS_CODE.NOT_FOUND
+    );
+  }
+  sendResult(res, result, STATUS_CODE.OK);
 });
 
 const { input: createFolderValidator, values: getFolderInputValues } = validate(

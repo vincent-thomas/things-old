@@ -2,6 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { create } from "zustand";
 
+interface User {
+  id: string;
+  email: string;
+  verified_email: boolean;
+  name: string;
+  picture: string;
+  locale: string;
+  createdAt: string;
+}
+
 interface UserStore {
   authed: boolean | null;
   loading: boolean;
@@ -44,9 +54,9 @@ export const UserProvider = ({ children }: { children: JSX.Element }) => {
           return false;
         })
         .then((v: unknown) => {
-          user.setAuthed(v.data.success);
+          user.setAuthed(!!v.data.id);
           user.setError(null);
-          user.setUser(v.data.data);
+          user.setUser(v.data);
           user.setLoading(false);
           return true;
         });

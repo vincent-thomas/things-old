@@ -6,7 +6,8 @@ const res = {
   req: {
     baseUrl: "/oauth/v1/authorize"
   }
-} as unknown as Response;
+  // rome-ignore lint/suspicious/noExplicitAny: Tests, måste kvala för authorize och jest
+} as any;
 
 test("Not calling next function if unauthorized", () => {
   const nextFunction = jest.fn() as NextFunction;

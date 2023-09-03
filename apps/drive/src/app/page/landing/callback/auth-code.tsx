@@ -12,7 +12,7 @@ function AuthCodeCallback() {
   const { mutate } = useMutation({
     mutationFn: async () => {
       localStorage.setItem("access_token", p.get("access_token") as string);
-      navigate("/drive");
+      navigate("/drive/b");
     }
   });
 

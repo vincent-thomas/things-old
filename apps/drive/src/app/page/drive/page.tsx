@@ -13,12 +13,16 @@ const MainPage = () => {
   );
   if (value.loading) return <>loading..</>;
   if (!value.authed) return <>not authed</>;
+
+  if (status === "loading") return <>loading...</>;
+  if (data === null) return <>folder doesn't exist</>;
+
   return (
     <>
       <Button variant="ghost">
         Hello {value.user.fullName}
         <br />
-        {JSON.stringify(value.user)}
+        {JSON.stringify(value)}
         <br />
       </Button>
       <br />

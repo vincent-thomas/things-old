@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { db } from "../client";
 import { file, folder } from "../schema";
 import { randomUUID } from "crypto";
@@ -7,10 +7,26 @@ import { pbkdf2Sync } from "crypto";
 import { fromBuffer, toBuffer } from "@things/format";
 import { uid } from "uid/secure";
 
-export const getFolder = async (userId: string, folderId: string) => {
-  return await db.query.folder.findFirst({
-    where: and(eq(folder.id, folderId), eq(folder.ownedById, userId))
-  });
+export const getFolder = async (userId: string, folderId?: string) => {
+  let theFolderId: string;
+
+  if (folderId === undefined) {
+    const result = await db.query.folder.findFirst({
+      where: and(eq(folder.ownedById, userId), isNull(folder.parentFolderId))
+    });
+    if (!result) {
+      return null;
+    }
+    theFolderId = result.id;
+  } else {
+    theFolderId = folderId;
+  }
+
+  return (
+    (await db.query.folder.findFirst({
+      where: and(eq(folder.id, theFolderId), eq(folder.ownedById, userId))
+    })) || null
+  );
 };
 
 export const getDBObject = async (userId: string, objectId: string) => {
