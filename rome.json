@@ -21,7 +21,7 @@
     "indentStyle": "space",
     "formatWithErrors": false,
     "lineWidth": 80,
-    "ignore": [".eslintrc.json"]
+    "ignore": ["*.json"]
   },
   "linter": {
     "enabled": true,
