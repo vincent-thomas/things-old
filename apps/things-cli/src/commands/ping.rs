@@ -36,7 +36,7 @@ impl<'a> serde::de::Deserialize<'a> for ResponseField {
     }
 }
 
-fn command(_options: Args) {
+fn command(_options: Args) -> i32 {
     println!("1. loading...");
     let response = reqwest::blocking::get("http://localhost:8080/healthcheck")
         .unwrap_or_else(|e| {
@@ -51,14 +51,9 @@ fn command(_options: Args) {
     if *response.get("status").unwrap() == Text("up".to_string()) {
         println!("2. Things is up!");
     }
+    0
 }
 
 pub fn ping_command() -> Command {
-    Command {
-        name: "ping",
-        description: "To check if api is up",
-        handler: command,
-        help_string: Some("--token=value"),
-        usage: None,
-    }
+    Command::new("ping", "To check if api is up", None, command)
 }

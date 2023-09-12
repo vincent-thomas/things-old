@@ -1,0 +1,30 @@
+{
+  "name": "bformat",
+  "version": "0.0.1",
+  "license": "MIT",
+  "homepage": "https://github.com/vincent-thomas/things",
+  "module": "./index.js",
+  "author": {
+    "name": "Vincent Thomas",
+    "url": "https://things.v-thomas.com"
+  },
+  "preview": true,
+  "scripts": {
+    "build": "tsup ./index.ts"
+  },
+  "devDependencies": {
+    "tsup": "^7.2.0"
+  },
+  "dependencies": {
+    "tsup": "7.2.0"
+  },
+  "peerDependencies": {
+    "@swc/helpers": "0.5.0"
+  },
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "require": "./src/index.js"
+    }
+  }
+}

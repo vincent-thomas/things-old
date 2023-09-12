@@ -8,18 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@astrojs/prefetch':
-        specifier: ^0.3.0
-        version: 0.3.0
-      '@neondatabase/serverless':
-        specifier: ^0.5.2
-        version: 0.5.2
       '@next/bundle-analyzer':
         specifier: ^13.4.7
         version: 13.4.7
-      '@node-rs/argon2':
-        specifier: ^1.5.2
-        version: 1.5.2
       '@radix-ui/react-alert-dialog':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
@@ -62,9 +53,6 @@ importers:
       lucide-react:
         specifier: ^0.263.1
         version: 0.263.1(react@18.2.0)
-      mysql2:
-        specifier: ^3.5.2
-        version: 3.5.2
       next:
         specifier: ^13.4.10
         version: 13.4.10(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
@@ -80,9 +68,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      react-dropzone:
-        specifier: ^14.2.3
-        version: 14.2.3(react@18.2.0)
       react-hook-form:
         specifier: ^7.45.1
         version: 7.45.1(react@18.2.0)
@@ -438,7 +423,7 @@ importers:
         version: 16.3.1
       drizzle-orm:
         specifier: ^0.28.5
-        version: 0.28.5(@neondatabase/serverless@0.5.2)(@opentelemetry/api@1.4.1)(mysql2@3.5.2)
+        version: 0.28.5(@opentelemetry/api@1.4.1)(mysql2@3.5.2)
       express:
         specifier: ~4.18.2
         version: 4.18.2
@@ -509,11 +494,18 @@ importers:
 
   libs/crypto:
     dependencies:
-      '@things/format':
+      '@node-rs/argon2':
+        specifier: 1.5.2
+        version: 1.5.2
+      bformat:
         specifier: workspace:*
         version: link:../format
 
-  libs/format: {}
+  libs/format:
+    devDependencies:
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(@swc/core@1.3.70)(postcss@8.4.21)(ts-node@10.9.1)(typescript@5.0.4)
 
   libs/ui:
     dependencies:
@@ -600,12 +592,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@astrojs/prefetch@0.3.0:
-    resolution: {integrity: sha512-LPKpbcnTwonkgNeLvVEQ1SXEyjkjsCm/o77Leg6/9725Cpn+rAIHiWMwFwigqf366VuvdvEYsG86nH8d1kSoNA==}
-    dependencies:
-      throttles: 1.0.1
-    dev: false
 
   /@astrojs/prism@2.1.2:
     resolution: {integrity: sha512-3antim1gb34689GHRQFJ88JEo93HuZKQBnmxDT5W/nxiNz1p/iRxnCTEhIbJhqMOTRbbo5h2ldm5qSxx+TMFQA==}
@@ -6393,12 +6379,6 @@ packages:
       os-filter-obj: 2.0.0
     dev: true
 
-  /@neondatabase/serverless@0.5.2:
-    resolution: {integrity: sha512-BPzXCfSPUACtvp53zuX4ZaLqAbrZMN2BDNx29iJLqDb2R50HL30/K4W9CG/DvgSSLjUutQqCm4qOAk8OG5Hdjw==}
-    dependencies:
-      '@types/pg': 8.6.6
-    dev: false
-
   /@netlify/binary-info@1.0.0:
     resolution: {integrity: sha512-4wMPu9iN3/HL97QblBsBay3E1etIciR84izI3U+4iALY+JHCrI+a2jO0qbAZ/nxKoegypYEaiiqWXylm+/zfrw==}
     dev: true
@@ -12028,14 +12008,6 @@ packages:
     resolution: {integrity: sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g==}
     dev: true
 
-  /@types/pg@8.6.6:
-    resolution: {integrity: sha512-O2xNmXebtwVekJDD+02udOncjVcMZQuTEQEMpKJ0ZRf5E7/9JJX3izhKUcUifBkyKpljyUM6BTgy2trmviKlpw==}
-    dependencies:
-      '@types/node': 18.14.2
-      pg-protocol: 1.6.0
-      pg-types: 2.2.0
-    dev: false
-
   /@types/prettier@2.7.2:
     resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
     dev: true
@@ -13837,11 +13809,6 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: true
 
-  /attr-accept@2.2.2:
-    resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
-    engines: {node: '>=4'}
-    dev: false
-
   /autoprefixer@10.4.14(postcss@8.4.21):
     resolution: {integrity: sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==}
     engines: {node: ^10 || ^12 || >=14}
@@ -13922,12 +13889,21 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /axios@0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
+    dependencies:
+      follow-redirects: 1.15.2(debug@4.3.4)
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /axios@0.21.4(debug@4.3.4):
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
       follow-redirects: 1.15.2(debug@4.3.4)
     transitivePeerDependencies:
       - debug
+    dev: false
 
   /axios@0.24.0:
     resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
@@ -16881,7 +16857,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.5(@neondatabase/serverless@0.5.2)(@opentelemetry/api@1.4.1)(mysql2@3.5.2):
+  /drizzle-orm@0.28.5(@opentelemetry/api@1.4.1)(mysql2@3.5.2):
     resolution: {integrity: sha512-6r6Iw4c38NAmW6TiKH3TUpGUQ1YdlEoLJOQptn8XPx3Z63+vFNKfAiANqrIiYZiMjKR9+NYAL219nFrmo1duXA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -16943,7 +16919,6 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@neondatabase/serverless': 0.5.2
       '@opentelemetry/api': 1.4.1
       mysql2: 3.5.2
     dev: false
@@ -18404,13 +18379,6 @@ packages:
       schema-utils: 3.3.0
       webpack: 5.88.2(@swc/core@1.3.70)(esbuild@0.17.19)
     dev: true
-
-  /file-selector@0.6.0:
-    resolution: {integrity: sha512-QlZ5yJC0VxHxQQsQhXvBaC7VRJ2uaxTf+Tfpu4Z/OcVQJVpZO+DGU0rkoVW5ce2SccxugvpBJoMvUs59iILYdw==}
-    engines: {node: '>= 12'}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
 
   /file-system-cache@1.1.0:
     resolution: {integrity: sha512-IzF5MBq+5CR0jXx5RxPe4BICl/oEhBSXKaL9fLhAXrIfIUS77Hr4vzrYyqYMHN6uTt+BOqi3fDCTjjEBCjERKw==}
@@ -25309,26 +25277,6 @@ packages:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
     dev: true
 
-  /pg-int8@1.0.1:
-    resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
-    engines: {node: '>=4.0.0'}
-    dev: false
-
-  /pg-protocol@1.6.0:
-    resolution: {integrity: sha512-M+PDm637OY5WM307051+bsDia5Xej6d9IR4GwJse1qA1DIhiKlksvrneZOYQq42OM+spubpcNYEo2FcKQrDk+Q==}
-    dev: false
-
-  /pg-types@2.2.0:
-    resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
-    engines: {node: '>=4'}
-    dependencies:
-      pg-int8: 1.0.1
-      postgres-array: 2.0.0
-      postgres-bytea: 1.0.0
-      postgres-date: 1.0.7
-      postgres-interval: 1.2.0
-    dev: false
-
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
 
@@ -25648,7 +25596,7 @@ packages:
     dependencies:
       lilconfig: 2.1.0
       postcss: 8.4.21
-      ts-node: 10.9.1(@swc/core@1.3.70)(@types/node@18.14.2)(typescript@5.1.6)
+      ts-node: 10.9.1(@swc/core@1.3.70)(@types/node@18.14.2)(typescript@5.0.4)
       yaml: 2.3.1
     dev: true
 
@@ -26029,28 +25977,6 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
-  /postgres-array@2.0.0:
-    resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
-    engines: {node: '>=4'}
-    dev: false
-
-  /postgres-bytea@1.0.0:
-    resolution: {integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==}
-    engines: {node: '>=0.10.0'}
-    dev: false
-
-  /postgres-date@1.0.7:
-    resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
-    engines: {node: '>=0.10.0'}
-    dev: false
-
-  /postgres-interval@1.2.0:
-    resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      xtend: 4.0.2
-    dev: false
-
   /prebuild-install@7.1.1:
     resolution: {integrity: sha512-jAXscXWMcCK8GgCoHOfIr0ODh5ai8mj63L2nWrjuAgXE6tDyYGnx4/8o/rCgU+B4JSyZBKbeZqzhtwtC3ovxjw==}
     engines: {node: '>=10'}
@@ -26251,6 +26177,7 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+    dev: true
 
   /property-information@5.6.0:
     resolution: {integrity: sha512-YUHSPk+A30YPv+0Qf8i9Mbfe/C0hdPXk1s1jPVToV8pk8BQtpw10ct89Eo7OWkutrwqvT0eicAxlOg3dOAu8JA==}
@@ -26538,18 +26465,6 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-dropzone@14.2.3(react@18.2.0):
-    resolution: {integrity: sha512-O3om8I+PkFKbxCukfIR3QAGftYXDZfOE2N1mr/7qebQJHs7U+/RSL/9xomJNpRg9kM5h9soQSdf0Gc7OHF5Fug==}
-    engines: {node: '>= 10.13'}
-    peerDependencies:
-      react: '>= 16.8 || 18.0.0'
-    dependencies:
-      attr-accept: 2.2.2
-      file-selector: 0.6.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
   /react-element-to-jsx-string@15.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-UDg4lXB6BzlobN60P8fHWVPX3Kyw8ORrTeBtClmIlGdkOOE+GYQSFvmEU5iLLpwp/6v42DINwNcwOhOLfQ//FQ==}
     peerDependencies:
@@ -26582,6 +26497,7 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: true
 
   /react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -29203,11 +29119,6 @@ packages:
     resolution: {integrity: sha512-rkTVqu6IjfQ/6+uNuuc3sZek4CEYxTJom3IktzgdSxcZqdARuebbA/f4QmAxMQIxqq9ZLEUkSYqvuk1I6VKq4g==}
     dev: true
 
-  /throttles@1.0.1:
-    resolution: {integrity: sha512-fab7Xg+zELr9KOv4fkaBoe/b3L0GMGLd0IBSCn16GoE/Qx6/OfCr1eGNyEcDU2pUA79qQfZ8kPQWlRuok4YwTw==}
-    engines: {node: '>=6'}
-    dev: false
-
   /through2-filter@3.0.0:
     resolution: {integrity: sha512-jaRjI2WxN3W1V8/FMZ9HKIBXixtiqs3SQSX4/YGIiP3gL6djW48VoZq9tDqeCWs3MT8YY5wb/zli8VW8snY1CA==}
     dependencies:
@@ -29676,6 +29587,44 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+
+  /tsup@7.2.0(@swc/core@1.3.70)(postcss@8.4.21)(ts-node@10.9.1)(typescript@5.0.4):
+    resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': ^1
+      postcss: ^8.4.12
+      typescript: '>=4.1.0'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      postcss:
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@swc/core': 1.3.70(@swc/helpers@0.5.0)
+      bundle-require: 4.0.1(esbuild@0.18.20)
+      cac: 6.7.14
+      chokidar: 3.5.3
+      debug: 4.3.4(supports-color@9.4.0)
+      esbuild: 0.18.20
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss: 8.4.21
+      postcss-load-config: 4.0.1(postcss@8.4.21)(ts-node@10.9.1)
+      resolve-from: 5.0.0
+      rollup: 3.28.0
+      source-map: 0.8.0-beta.0
+      sucrase: 3.34.0
+      tree-kill: 1.2.2
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
 
   /tsup@7.2.0(@swc/core@1.3.70)(postcss@8.4.21)(ts-node@10.9.1)(typescript@5.1.6):
     resolution: {integrity: sha512-vDHlczXbgUvY3rWvqFEbSqmC1L7woozbzngMqTtL2PGBODTtWlRwGDDawhvWzr5c1QjKe4OAKqJGfE1xeXUvtQ==}
@@ -30850,7 +30799,7 @@ packages:
     engines: {node: '>=8.9.0'}
     hasBin: true
     dependencies:
-      axios: 0.21.4(debug@4.3.4)
+      axios: 0.21.4
       joi: 17.9.2
       lodash: 4.17.21
       minimist: 1.2.8

@@ -85,9 +85,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "clier"
-version = "0.0.5"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c0804dba73257568fd75164b4172fd33bbcc8aa202158ad6c300dfcf5f26819"
+checksum = "6bcfd86e8076ee32ae08209bb46522e85bc22f00106ea32b5f4b5914223f2416"
 
 [[package]]
 name = "core-foundation"

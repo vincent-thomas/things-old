@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../libs/format/index.ts"],"sourcesContent":["export * from \"./src/buffer\";\n"],"names":[],"mappings":";;uBAAc"}

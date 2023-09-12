@@ -1,33 +1,24 @@
-use crate::get_cli;
-use clier::{use_help, Args, Command};
+use std::vec;
+
+use clier::Command;
 use inquire::Text;
 
-pub fn command(options: Args) {
-    if options.commands.get(1).is_none() {
-        use_help(get_cli().commands, get_cli().options)
-    }
-    let command = options.commands.get(1).unwrap();
+pub fn login_command(args: clier::Args) -> i32 {
+    println!("Login at: http://localhost:8080/auth/google/authorize?src=terminal");
+    let name = Text::new("Enter token here:").prompt();
 
-    if command == "login" {
-        println!("Login at: http://localhost:8080/auth/google/authorize?src=terminal");
-        let name = Text::new("Enter token here:").prompt();
+    println!("{}", name.unwrap());
+    0
+}
+pub fn token_command(_args: clier::Args) -> i32 {
+    let name = Text::new("Enter token here:").prompt();
 
-        println!("{}", name.unwrap());
-    } else if command == "token" {
-        let _name = Text::new("Enter token here:").prompt();
-
-        // let res =
-        // reqwest::blocking::get("http://localhost:8080/auth/user").
-        // ("", ;
-    }
+    println!("{}", name.unwrap());
+    0
 }
 
 pub fn auth_command() -> Command {
-    Command {
-        name: "auth",
-        description: "Authenticate with Things Cloud",
-        usage: Some("auth <subcommand>"),
-        help_string: None,
-        handler: command,
-    }
+    Command::new("auth", "Authenticate with Things", None, |_| 0)
+        .push_cmd("login", "Login to things", None, login_command)
+        .push_cmd("token", "Authenticate with token", None, token_command)
 }
